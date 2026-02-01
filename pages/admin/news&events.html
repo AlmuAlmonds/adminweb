@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PULSE Admin – Events</title>
+
+<link rel="stylesheet" href="../../assets/global.css">
+<link rel="stylesheet" href="../../assets/news-events.css">
+</head>
+
+<body class="news-events-page">
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <h3><img src="../../images/PULSE OG.png" alt="PULSE" style="height: 20px; margin-right: 8px; vertical-align: middle;"> P.U.L.S.E Admin</h3>
+    <a href="admin.html">Dashboard</a>
+    <a href="admintasks.html">Tasks</a>
+    <a href="accounts.html">Accounts</a>
+    <a href="news&events.html" class="active">News & Events</a>
+    <div class="sidebar-divider">SECURITY</div>
+    <a href="loginlogs.html">Login Logs</a>
+</div>
+
+<!-- Main -->
+<div class="main">
+
+    <!-- Topbar -->
+    <div class="topbar">
+        <h2>Overview</h2>
+        <div class="topbar-right">
+            <div class="icons">
+                <span onclick="location.href='settings.html'">⚙️</span>
+                <span>🔔</span>
+            </div>
+            <div class="search">
+                <input type="text" placeholder="Search for something">
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab -->
+    <div class="tab">
+        <span>Events</span>
+    </div>
+
+    <!-- Update Cards -->
+    <div class="card-group">
+        <div class="update-card update-news" onclick="location.href='news&events.html'">
+            <h2>📰 Update</h2>
+            <p>News</p>
+        </div>
+
+        <div class="update-card update-events">
+            <h2>📅 Update</h2>
+            <p>Events</p>
+        </div>
+    </div>
+
+    <!-- Events Table -->
+    <div class="table-card">
+        <div class="table-header">
+            <strong>☰ Events Entries</strong>
+            <button>🔄 REFRESH</button>
+        </div>
+
+        <div class="table-controls">
+            <span>SHOW</span>
+            <select>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+            </select>
+            <span>ENTRIES</span>
+            <input type="text" placeholder="Search Events...">
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>IMAGE</th>
+                    <th>CAPTION</th>
+                    <th>LINK</th>
+                    <th>ACTIONS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>12</td>
+                    <td class="image-cell">🖼️</td>
+                    <td>HEAT INDEX ADVISORY</td>
+                    <td>🔗</td>
+                    <td class="actions">
+                        <a href="additems.html">✏️</a>
+                    </td>
+                </tr>
+                <tr class="highlight">
+                    <td>13</td>
+                    <td class="image-cell">🖼️</td>
+                    <td>NO PASOK ADVISORY</td>
+                    <td>🔗</td>
+                    <td class="actions">
+                        <a href="additems.html">✏️</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="table-footer">
+            <a href="additems.html" class="action-link">ADD NEW ITEM</a>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

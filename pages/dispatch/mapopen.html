@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PULSE – Task Details</title>
+<link rel="stylesheet" href="../../assets/global.css">
+<link rel="stylesheet" href="../../assets/mapopen.css">
+</head>
+
+<body class="mapopen-page">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <h3><img src="../../images/PULSE OG.png" alt="PULSE" style="height: 20px; margin-right: 8px; vertical-align: middle;"> P.U.L.S.E DISPATCH</h3>
+    <a href="dispatch.html">Dashboard</a>
+    <a href="tasks.html" class="active">Tasks</a>
+    <a href="responews.html">News & Events</a>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+        <h2>Overview</h2>
+        <div class="topbar-right">
+            <div class="icons">
+    <button class="icon-btn" onclick="location.href='resposettings.html'">⚙️</button>
+    <button class="icon-btn">🔔</button>
+</div>
+
+            <div class="search">
+                <input type="text" placeholder="Search for something">
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="card">
+
+        <div class="top-section">
+
+            <!-- LOCATION -->
+            <div class="map-box">
+                <strong>REQUEST LOCATION</strong>
+                <div class="map-placeholder"></div>
+                <button class="map-btn" onclick="openMap()">OPEN MAP</button>
+            </div>
+
+            <!-- DETAILS -->
+            <div class="details-box">
+                <h4>REQUEST DETAILS</h4>
+
+                <div class="details-grid">
+                    <div><strong>Requester:</strong> Kim</div>
+                    <div><strong>Date/Time:</strong> 12/12/2025 | 12:30</div>
+                    <div><strong>Contact:</strong> 0909090909</div>
+                    <div><strong>Emergency Type:</strong> Fire</div>
+                </div>
+
+                <button class="call-btn">CALL REQUESTER</button>
+            </div>
+        </div>
+
+        <!-- RESPONDER TABLE -->
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>RESPONDER</th>
+                    <th>CONTACT #</th>
+                    <th>TYPE</th>
+                    <th>STATION</th>
+                    <th>ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>0909</td>
+                    <td>Almu Pogi</td>
+                    <td>0908080797</td>
+                    <td>FIREFIGHTER</td>
+                    <td>HQ</td>
+                    <td><button class="action-btn unsend">UNSEND</button></td>
+                </tr>
+                <tr>
+                    <td>0909</td>
+                    <td>Almu Pogi</td>
+                    <td>0908080797</td>
+                    <td>MEDIC</td>
+                    <td>HOSPITAL</td>
+                    <td><button class="action-btn send">SEND RESPONDER</button></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<!-- MAP MODAL -->
+<div id="mapModal" class="modal-overlay">
+    <div class="modal-box">
+        <div class="modal-header">
+            REQUEST LOCATION MAP
+            <button onclick="closeMap()">✖</button>
+        </div>
+        <div class="modal-body">
+            <iframe src="https://www.google.com/maps?q=Manila&output=embed"></iframe>
+        </div>
+    </div>
+</div>
+
+<script>
+function openMap() {
+    document.getElementById("mapModal").style.display = "flex";
+}
+
+function closeMap() {
+    document.getElementById("mapModal").style.display = "none";
+}
+</script>
+
+</body>
+</html>

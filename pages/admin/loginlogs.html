@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PULSE Admin – Login Logs</title>
+
+<link rel="stylesheet" href="../../assets/global.css">
+<link rel="stylesheet" href="../../assets/loginlogs.css">
+</head>
+
+<body class="loginlogs-page">
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <h3><img src="../../images/PULSE OG.png" alt="PULSE" style="height: 20px; margin-right: 8px; vertical-align: middle;"> P.U.L.S.E Admin</h3>
+    <a href="admin.html">Dashboard</a>
+    <a href="admintasks.html">Tasks</a>
+    <a href="accounts.html">Accounts</a>
+    <a href="news&events.html">News & Events</a>
+    <div class="sidebar-divider">SECURITY</div>
+    <a href="loginlogs.html" class="active">Login Logs</a>
+</div>
+
+<!-- Main -->
+<div class="main">
+
+    <!-- Topbar -->
+    <div class="topbar">
+        <h2>Overview</h2>
+        <div class="topbar-right">
+            <div class="icons">
+                <span onclick="location.href='settings.html'">⚙️</span>
+                <span>🔔</span>
+            </div>
+            <div class="search">
+                <input type="text" placeholder="Searching">
+            </div>
+        </div>
+    </div>
+
+    <!-- Logs Card -->
+    <div class="card">
+        <h3>Filter Contents</h3>
+
+        <div class="filters">
+            <select>
+                <option>All Users</option>
+                <option>Users</option>
+                <option>Responders</option>
+            </select>
+
+            <select>
+                <option>Activity</option>
+                <option>Online</option>
+                <option>Offline</option>
+            </select>
+
+            <select>
+                <option>Records</option>
+                <option>Least</option>
+                <option>Greatest</option>
+            </select>
+
+            <select>
+                <option>Date</option>
+                <option>Newest</option>
+                <option>Oldest</option>
+            </select>
+
+            <select>
+                <option>Default</option>
+                <option>Ascending</option>
+                <option>Descending</option>
+            </select>
+
+            <button>Filter</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>TYPE</th>
+                    <th>USER</th>
+                    <th>IP ADDRESS</th>
+                    <th>DATE & TIME</th>
+                    <th>ACTIVITY</th>
+                    <th>DETAILS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>01</td>
+                    <td>Responder</td>
+                    <td>Almu Pogi</td>
+                    <td>192.168.67.69</td>
+                    <td>12-12-21 | 69:69</td>
+                    <td>ONLINE</td>
+                    <td><span class="details-btn" onclick="openModal()">ⓘ</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="detailsModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span>LOG ENTRY NO.#####</span>
+            <span class="close" onclick="closeModal()">X</span>
+        </div>
+        <p><b>User ID:</b> 67</p>
+        <p><b>Username:</b> Almu Pogi</p>
+        <p><b>Type:</b> Responder</p>
+        <p><b>IP Address:</b> 192.168.67.69</p>
+        <p><b>Activity:</b> Online</p>
+        <p><b>Timestamp:</b> 12-12-21 | 69:69</p>
+    </div>
+</div>
+
+<script>
+function openModal() {
+    document.getElementById("detailsModal").style.display = "flex";
+}
+function closeModal() {
+    document.getElementById("detailsModal").style.display = "none";
+}
+</script>
+
+</body>
+</html>

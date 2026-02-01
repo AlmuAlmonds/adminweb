@@ -1,0 +1,127 @@
+/* ----- From pages/admin/loginlogs.html ----- */
+.loginlogs-page * { box-sizing: border-box; font-family: 'Poppins', Arial, sans-serif; }
+.loginlogs-page { margin: 0; background: #F5F0E8; }
+
+/* Sidebar */
+.loginlogs-page .sidebar {
+    width: 230px;
+    height: 100vh;
+    background: #8B7B6D;
+    position: fixed;
+    padding: 20px;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+}
+.loginlogs-page .sidebar h3 { 
+    margin-bottom: 30px;
+    color: #fff;
+    font-weight: 600;
+}
+.loginlogs-page .sidebar a {
+    display: block; 
+    padding: 12px; 
+    margin-bottom: 10px;
+    text-decoration: none; 
+    color: #ecf0f1; 
+    border-radius: 12px;
+}
+.loginlogs-page .sidebar a.active { 
+    background: #7A9B7F; 
+    color: #fff; }
+
+.loginlogs-page .sidebar-divider {
+    margin: 20px 0 10px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #6b7280;
+    text-transform: uppercase;
+    padding-left: 12px;
+    pointer-events: none; /* makes it non-clickable */
+}
+
+/* Main */
+.loginlogs-page .main { margin-left: 250px; padding: 20px; }
+
+/* Topbar */
+.loginlogs-page .topbar {
+    display: flex; justify-content: space-between; align-items: center;
+}
+.loginlogs-page .topbar-right { display: flex; align-items: center; gap: 12px; }
+.loginlogs-page .icons { display: flex; gap: 8px; }
+.loginlogs-page .icons span { font-size: 18px; cursor: pointer; }
+
+.loginlogs-page .search input {
+    padding: 8px 15px; width: 250px;
+    border-radius: 20px; border: 1px solid #D4C5B0;
+    background: #F5F1ED;
+    color: #4A4A4A;
+}
+
+/* Card */
+.loginlogs-page .card {
+    background: #FFFBF8;
+    border-radius: 20px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,.05);
+    border: 1px solid #E8DCC8;
+}
+
+/* Filters */
+.filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.filters select, .filters button {
+    padding: 8px 14px;
+    border-radius: 20px;
+    border: none;
+    background: #7A9B7F;
+    color: white;
+    cursor: pointer;
+}
+
+/* Table */
+table { width: 100%; border-collapse: collapse; }
+th, td {
+    padding: 14px;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 14px;
+    text-align: left;
+}
+th { background: #f3f4f6; }
+
+/* Details icon */
+.details-btn {
+    cursor: pointer;
+    color: #3498db;
+    font-weight: bold;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    justify-content: center;
+    align-items: center;
+}
+.modal-content {
+    background: white;
+    padding: 25px;
+    width: 400px;
+    border-radius: 15px;
+}
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+.close {
+    cursor: pointer;
+}
+.modal-content p { margin: 8px 0; }

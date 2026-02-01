@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PULSE Admin – Accounts</title>
+<link rel="stylesheet" href="../../assets/global.css">
+<link rel="stylesheet" href="../../assets/accounts.css">
+</head>
+<body class="accounts-page">
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <h3><img src="../../images/PULSE OG.png" alt="PULSE" style="height: 20px; margin-right: 8px; vertical-align: middle;"> P.U.L.S.E Admin</h3>
+    <a href="admin.html">Dashboard</a>
+    <a href="admintasks.html">Tasks</a>
+    <a href="accounts.html" class="active">Accounts</a>
+    <a href="news&events.html">News & Events</a>
+    <div class="sidebar-divider">SECURITY</div>
+    <a href="loginlogs.html">Login Logs</a>
+</div>
+
+<!-- Main Content -->
+<div class="main">
+ <div class="topbar">
+        <h2>Overview</h2>
+
+        <div class="topbar-right">
+            <div class="icons">
+                <a href="settings.html" class="icon-link">⚙️</a>
+                <span>🔔</span>
+            </div>
+
+            <div class="search">
+                <input type="text" placeholder="Search for something">
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="users">Users</button>
+        <button class="tab-btn" data-tab="responders">Responders</button>
+        <button class="tab-btn" data-tab="blacklisted">Blacklisted</button>
+    </div>
+
+    <!-- Table -->
+    <div class="card">
+        <table>
+            <thead>
+                <tr>
+                    <th>NO.</th>
+                    <th>NAME</th>
+                    <th>PHONE</th>
+                    <th>EMAIL</th>
+                    <th>ACTION</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Dynamic rows will be inserted here -->
+            </tbody>
+        </table>
+    </div>
+    <!-- EDIT MODAL -->
+<div id="editModal" class="modal hidden">
+    <div class="modal-content">
+        <h3>Edit Profile</h3>
+
+        <div class="form-group">
+            <label>NAME</label>
+            <input type="text" id="editName">
+        </div>
+
+        <div class="form-group">
+            <label>MOBILE</label>
+            <input type="text" id="editPhone">
+        </div>
+
+        <div class="form-group">
+            <label>EMAIL</label>
+            <input type="email" id="editEmail">
+        </div>
+
+        <div class="modal-actions">
+            <button onclick="closeEditModal()">Cancel</button>
+            <button class="save-btn">Save</button>
+        </div>
+    </div>
+</div>
+
+</div>
+<script>
+// Account data separated by type
+const accountsData = {
+    users: [
+        { id: 1, name: 'ALMU', phone: '909090909', email: 'almu@gmail.com' },
+        { id: 2, name: 'NEIL', phone: '008080808', email: 'ne@l' },
+        { id: 3, name: 'ALYANNA', phone: '070707070', email: 'aly@nna' },
+        { id: 4, name: 'DEMITRY', phone: '606060606', email: 'demitry@hotmail' },
+        { id: 5, name: 'JENISSA', phone: '050505050', email: 'j@inissa' }
+    ],
+    responders: [
+        { id: 6, name: 'DR. CARLOS SANTOS', phone: '555-1001', email: 'carlos.santos@pulse.gov' },
+        { id: 7, name: 'EMT MARIA CRUZ', phone: '555-1002', email: 'maria.cruz@pulse.gov' },
+        { id: 8, name: 'NURSE JUAN DELUCA', phone: '555-1003', email: 'juan.deluca@pulse.gov' },
+        { id: 9, name: 'PARAMEDIC ROSA FLORES', phone: '555-1004', email: 'rosa.flores@pulse.gov' }
+    ],
+    blacklisted: [
+        { id: 10, name: 'JOHN TESTER', phone: '555-9999', email: 'john.tester@example.com' },
+        { id: 11, name: 'SPAM USER', phone: '555-8888', email: 'spamuser@example.com' }
+    ]
+};
+
+let currentTab = 'users';
+let currentRow = null;
+
+function renderTable(data) {
+    const tbody = document.getElementById('tableBody');
+    tbody.innerHTML = '';
+    
+    data.forEach((account, index) => {
+        const row = document.createElement('tr');
+        row.dataset.id = account.id;
+        row.dataset.name = account.name;
+        row.dataset.phone = account.phone;
+        row.dataset.email = account.email;
+        
+        row.innerHTML = `
+            <td>${String(index + 1).padStart(2, '0')}</td>
+            <td>${account.name}</td>
+            <td>${account.phone}</td>
+            <td>${account.email}</td>
+            <td>
+                <button class="action-link edit-btn">Edit</button>
+                <button class="action-btn delete">Delete</button>
+            </td>
+        `;
+        
+        tbody.appendChild(row);
+    });
+    
+    attachRowEventListeners();
+}
+
+function attachRowEventListeners() {
+    document.querySelectorAll('table .edit-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const row = btn.closest('tr');
+            openEdit(row);
+        });
+    });
+
+    document.querySelectorAll('table .delete').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const row = btn.closest('tr');
+            if (confirm('Are you sure you want to delete this account?')) {
+                const accountId = parseInt(row.dataset.id);
+                accountsData[currentTab] = accountsData[currentTab].filter(acc => acc.id !== accountId);
+                renderTable(accountsData[currentTab]);
+            }
+        });
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const editModal = document.getElementById('editModal');
+    const editName = document.getElementById('editName');
+    const editPhone = document.getElementById('editPhone');
+    const editEmail = document.getElementById('editEmail');
+
+    function openEdit(row) {
+        currentRow = row;
+        editName.value = row.dataset.name;
+        editPhone.value = row.dataset.phone;
+        editEmail.value = row.dataset.email;
+        editModal.classList.remove('hidden');
+        editModal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeEdit() {
+        editModal.classList.add('hidden');
+        editModal.setAttribute('aria-hidden', 'true');
+        currentRow = null;
+    }
+
+    // Tab button event listeners
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentTab = btn.dataset.tab;
+            renderTable(accountsData[currentTab]);
+        });
+    });
+
+    // Save button
+    document.querySelector('.modal-actions .save-btn').addEventListener('click', () => {
+        if (!currentRow) return closeEdit();
+        
+        const accountId = parseInt(currentRow.dataset.id);
+        const accountIndex = accountsData[currentTab].findIndex(acc => acc.id === accountId);
+        
+        if (accountIndex !== -1) {
+            accountsData[currentTab][accountIndex].name = editName.value;
+            accountsData[currentTab][accountIndex].phone = editPhone.value;
+            accountsData[currentTab][accountIndex].email = editEmail.value;
+        }
+        
+        renderTable(accountsData[currentTab]);
+        closeEdit();
+    });
+
+    // Cancel button
+    document.querySelector('.modal-actions button').addEventListener('click', closeEdit);
+
+    // Initial render
+    renderTable(accountsData.users);
+});
+</script>
+
+</body>
+</html>

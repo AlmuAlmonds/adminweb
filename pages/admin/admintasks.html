@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PULSE Admin – Tasks</title>
+<link rel="stylesheet" href="../../assets/global.css">
+<link rel="stylesheet" href="../../assets/admintasks.css">
+</head>
+
+<body class="admintasks-page">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <h3><img src="../../images/PULSE OG.png" alt="PULSE" style="height: 20px; margin-right: 8px; vertical-align: middle;"> P.U.L.S.E Admin</h3>
+    <a href="admin.html">Dashboard</a>
+    <a href="admintasks.html" class="active">Tasks</a>
+    <a href="accounts.html">Accounts</a>
+    <a href="news&events.html">News & Events</a>
+    <div class="sidebar-divider">SECURITY</div>
+    <a href="loginlogs.html">Login Logs</a>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+    <div class="topbar">
+        <h2>Overview</h2>
+        <div class="topbar-right">
+            <div class="icons">
+                <span onclick="location.href='settings.html'">⚙️</span>
+                <span>🔔</span>
+            </div>
+            <div class="search">
+                <input type="text" placeholder="Search for something">
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Cards -->
+    <div class="status-cards">
+        <div class="status-card requests">
+            <span class="icon">📋</span>
+            <div class="status-content">
+                <span class="status-label">REQUESTS</span>
+                <span class="status-count">12</span>
+            </div>
+        </div>
+
+        <div class="status-card pending">
+            <span class="icon">⏱️</span>
+            <div class="status-content">
+                <span class="status-label">PENDING</span>
+                <span class="status-count">5</span>
+            </div>
+        </div>
+
+        <div class="status-card records">
+            <span class="icon">📁</span>
+            <div class="status-content">
+                <span class="status-label">RECORDS</span>
+                <span class="status-count">28</span>
+            </div>
+        </div>
+
+        <div class="status-card cancelled">
+            <span class="icon">❌</span>
+            <div class="status-content">
+                <span class="status-label">CANCELLED</span>
+                <span class="status-count">2</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Changes Table -->
+    <div class="card">
+        <h4>ACCOUNT CHANGES REQUEST</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>NAME</th>
+                    <th>DESCRIPTION</th>
+                    <th>TYPE</th>
+                    <th>ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-id="001" data-name="ALMU" data-requestby="John Doe" data-datetime="2026-01-28 10:30 AM" data-type="NAME CHANGE" data-description="PEDE PO MAGPAPALIIT NG ###?">
+                    <td>01</td>
+                    <td>ALMU</td>
+                    <td>NAME CHANGE</td>
+                    <td><span class="type-badge name">NAME CHANGE</span></td>
+                    <td><button class="open-btn">OPEN</button></td>
+                </tr>
+                <tr data-id="002" data-name="NEIL" data-requestby="Jane Smith" data-datetime="2026-01-27 02:15 PM" data-type="PASSWORD CHANGE" data-description="RESET PASSWORD. SECURITY CONCERN.">
+                    <td>02</td>
+                    <td>NEIL</td>
+                    <td>PASSWORD CHANGE</td>
+                    <td><span class="type-badge password">PASSWORD CHANGE</span></td>
+                    <td><button class="open-btn">OPEN</button></td>
+                </tr>
+                <tr data-id="003" data-name="ALYANNA" data-requestby="Mike Johnson" data-datetime="2026-01-26 04:45 PM" data-type="PASSWORD CHANGE" data-description="USER REQUESTED PASSWORD RESET">
+                    <td>03</td>
+                    <td>ALYANNA</td>
+                    <td>PASSWORD CHANGE</td>
+                    <td><span class="type-badge password">PASSWORD CHANGE</span></td>
+                    <td><button class="open-btn">OPEN</button></td>
+                </tr>
+                <tr data-id="004" data-name="DEMITRY" data-requestby="Sarah Wilson" data-datetime="2026-01-25 11:20 AM" data-type="EMAIL CHANGE" data-description="UPDATE EMAIL ADDRESS FOR ACCOUNT">
+                    <td>04</td>
+                    <td>DEMITRY</td>
+                    <td>EMAIL CHANGE</td>
+                    <td><span class="type-badge email">EMAIL CHANGE</span></td>
+                    <td><button class="open-btn">OPEN</button></td>
+                </tr>
+                <tr data-id="005" data-name="JENISSA" data-requestby="Alex Brown" data-datetime="2026-01-24 03:30 PM" data-type="EMAIL CHANGE" data-description="CHANGE EMAIL TO NEW DOMAIN">
+                    <td>05</td>
+                    <td>JENISSA</td>
+                    <td>EMAIL CHANGE</td>
+                    <td><span class="type-badge email">EMAIL CHANGE</span></td>
+                    <td><button class="open-btn">OPEN</button></td>
+                </tr>
+                <tr data-id="006" data-name="CHUCK" data-requestby="Emily Davis" data-datetime="2026-01-23 09:00 AM" data-type="PASSWORD CHANGE" data-description="ACCOUNT LOCKED - RESET REQUIRED">
+                    <td>06</td>
+                    <td>CHUCK</td>
+                    <td>PASSWORD CHANGE</td>
+                    <td><span class="type-badge password">PASSWORD CHANGE</span></td>
+                    <td><button class="open-btn">OPEN</button></td>
+                </tr>
+                <tr data-id="007" data-name="MIGUEL" data-requestby="Robert Taylor" data-datetime="2026-01-22 01:15 PM" data-type="NAME CHANGE" data-description="LEGAL NAME CHANGE DOCUMENTATION PROVIDED">
+                    <td>07</td>
+                    <td>MIGUEL</td>
+                    <td>NAME CHANGE</td>
+                    <td><span class="type-badge name">NAME CHANGE</span></td>
+                    <td><button class="open-btn">OPEN</button></td>
+                </tr>
+                <tr data-id="008" data-name="DAYLAN" data-requestby="Lisa Anderson" data-datetime="2026-01-21 08:45 AM" data-type="PASSWORD CHANGE" data-description="USER FORGOT PASSWORD">
+                    <td>08</td>
+                    <td>DAYLAN</td>
+                    <td>PASSWORD CHANGE</td>
+                    <td><span class="type-badge password">PASSWORD CHANGE</span></td>
+                    <td><button class="open-btn">OPEN</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Request Details Modal -->
+    <div id="detailsModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            
+            <div class="details-section">
+                <h3>DETAILS</h3>
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <label>REQUEST NO</label>
+                        <span id="modalRequestNo"></span>
+                    </div>
+                    <div class="detail-item">
+                        <label>REQUESTED BY</label>
+                        <span id="modalRequestedBy"></span>
+                    </div>
+                    <div class="detail-item">
+                        <label>DATE & TIME REQUESTED</label>
+                        <span id="modalDateTime"></span>
+                    </div>
+                    <div class="detail-item">
+                        <label>REQUEST TYPE</label>
+                        <span id="modalRequestType"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="description-section">
+                <h3>DESCRIPTION</h3>
+                <div class="description-text" id="modalDescription"></div>
+            </div>
+
+            <div class="status-section">
+                <label>STATUS</label>
+                <select id="statusSelect" class="status-select">
+                    <option value="">SELECT</option>
+                    <option value="approved">APPROVED</option>
+                    <option value="rejected">REJECTED</option>
+                    <option value="pending">PENDING REVIEW</option>
+                </select>
+            </div>
+
+            <button class="resolve-btn">RESOLVE</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const modal = document.getElementById('detailsModal');
+    const modalClose = document.querySelector('.modal-close');
+    const modalOverlay = document.querySelector('.modal-overlay');
+    const resolveBtn = document.querySelector('.resolve-btn');
+    const statusSelect = document.getElementById('statusSelect');
+
+    // Open modal when OPEN button is clicked
+    document.querySelectorAll('.open-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const row = btn.closest('tr');
+            const requestNo = row.dataset.id;
+            const name = row.dataset.name;
+            const requestBy = row.dataset.requestby;
+            const dateTime = row.dataset.datetime;
+            const requestType = row.dataset.type;
+            const description = row.dataset.description;
+
+            // Populate modal with data
+            document.getElementById('modalRequestNo').textContent = requestNo;
+            document.getElementById('modalRequestedBy').textContent = requestBy;
+            document.getElementById('modalDateTime').textContent = dateTime;
+            document.getElementById('modalRequestType').textContent = requestType;
+            document.getElementById('modalDescription').textContent = description;
+            statusSelect.value = '';
+
+            // Show modal
+            modal.classList.remove('hidden');
+        });
+    });
+
+    // Close modal
+    function closeModal() {
+        modal.classList.add('hidden');
+    }
+
+    modalClose.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', closeModal);
+
+    // Resolve button
+    resolveBtn.addEventListener('click', () => {
+        const status = statusSelect.value;
+        if (!status) {
+            alert('Please select a status');
+            return;
+        }
+        alert(`Request resolved with status: ${status.toUpperCase()}`);
+        closeModal();
+    });
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
+});
+</script>
+
+</body>
+</html>

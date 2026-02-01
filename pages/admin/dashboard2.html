@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PULSE Admin – Security</title>
+
+<link rel="stylesheet" href="../../assets/global.css">
+<link rel="stylesheet" href="../../assets/dashboard2.css">
+</head>
+
+<body class="dashboard2-page">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <h3><img src="../../images/PULSE OG.png" alt="PULSE" style="height: 20px; margin-right: 8px; vertical-align: middle;"> P.U.L.S.E Admin</h3>
+    <a href="admin.html" class="active">Dashboard</a>
+    <a href="admintasks.html">Tasks</a>
+    <a href="accounts.html">Accounts</a>
+    <a href="news&events.html">News & Events</a>
+    <div class="sidebar-divider">SECURITY</div>
+    <a href="loginlogs.html">Login Logs</a>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+    <!-- TOPBAR -->
+     <div class="topbar">
+        <h2>Overview</h2>
+
+        <div class="topbar-right">
+            <div class="icons">
+                <a href="settings.html" class="icon-link">⚙️</a>
+                <span>🔔</span>
+            </div>
+
+            <div class="search">
+                <input type="text" placeholder="Search for something">
+            </div>
+        </div>
+    </div>
+
+    <!-- STATUS -->
+    <div class="tabs">
+        <span class="active">Requests</span>
+        <span>Pending</span>
+        <span>Records</span>
+        <span>Cancelled</span>
+    </div>
+
+    <!-- TABLE -->
+    <div class="card">
+        <div class="card-header">
+            <strong>☰ Account Changes Request</strong>
+            <button>🔄 REFRESH</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>NAME</th>
+                    <th>DESCRIPTION</th>
+                    <th>TYPE</th>
+                    <th>ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>01</td>
+                    <td>ALMU</td>
+                    <td>Name Change</td>
+                    <td class="type">NAME CHANGE</td>
+                    <td><a href="dashboard3.html" class="action-link">OPEN</a></td>
+                </tr>
+                <tr>
+                    <td>02</td>
+                    <td>NEIL</td>
+                    <td>Password Change</td>
+                    <td class="type">PASSWORD CHANGE</td>
+                    <td><a href="dashboard3.html" class="action-link">OPEN</a></td>
+                </tr>
+                <tr>
+                    <td>03</td>
+                    <td>ALYANNA</td>
+                    <td>Password Change</td>
+                    <td class="type">PASSWORD CHANGE</td>
+                    <td><a href="dashboard3.html" class="action-link">OPEN</a></td>
+                </tr>
+                <tr>
+                    <td>04</td>
+                    <td>DEMITRY</td>
+                    <td>Email Change</td>
+                    <td class="type">EMAIL CHANGE</td>
+                    <td><a href="dashboard3.html" class="action-link">OPEN</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>
