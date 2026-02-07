@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="../images/PULSE OG.png" type="image/png" />
+    <title>PULSE ADMIN | Dashboard</title>
+
+    <!-- ========== All CSS files linkup ========= -->
+    <link rel="stylesheet" href="../admin/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../admin/assets/css/lineicons.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="../admin/assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="../admin/assets/css/main.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+<body>
+    <!-- ======== Preloader =========== -->
+    <div id="preloader">
+      <div class="spinner"></div>
+    </div>
+    <!-- ======== Preloader =========== -->
+
+    <!-- ======== sidebar-nav start =========== -->
+    <aside class="sidebar-nav-wrapper">
+      <div class="navbar-logo">
+        <a href="index.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+          <img src="../images/PULSE OG.png" alt="logo" style="width: 45px; height: 45px; object-fit: contain;" />
+          <span style="font-size: 18px; font-weight: 600; color: #3b5998;">PULSE Admin</span>
+        </a>
+      </div>
+      <nav class="sidebar-nav">
+        <ul>
+          <!-- Dashboard -->
+          <li class="nav-item active">
+            <a href="index.html">
+              <span class="icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4 13H10C10.55 13 11 12.55 11 12V4C11 3.45 10.55 3 10 3H4C3.45 3 3 3.45 3 4V12C3 12.55 3.45 13 4 13ZM4 21H10C10.55 21 11 20.55 11 20V16C11 15.45 10.55 15 10 15H4C3.45 15 3 15.45 3 16V20C3 20.55 3.45 21 4 21ZM14 21H20C20.55 21 21 20.55 21 20V12C21 11.45 20.55 11 20 11H14C13.45 11 13 11.45 13 12V20C13 20.55 13.45 21 14 21ZM13 4V8C13 8.55 13.45 9 14 9H20C20.55 9 21 8.55 21 8V4C21 3.45 20.55 3 20 3H14C13.45 3 13 3.45 13 4Z" fill="currentColor"/>
+                </svg>
+              </span>
+              <span class="text">Dashboard</span>
+            </a>
+          </li>
+          <!-- Emergencies -->
+          <li class="nav-item">
+            <a href="emergencies.html">
+              <span class="icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" fill="currentColor"/>
+                </svg>
+              </span>
+              <span class="text">Emergencies</span>
+            </a>
+          </li>
+          <!-- Map -->
+          <li class="nav-item">
+            <a href="map.html">
+              <span class="icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5.01L6.4 9 10 13.09 15.35 8l1.42 1.41L10 16z" fill="currentColor"/>
+                </svg>
+              </span>
+              <span class="text">Map</span>
+            </a>
+          </li>
+          <!-- Dispatch -->
+          <li class="nav-item">
+            <a href="dispatch.html">
+              <span class="icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm11 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM5 11l1.5-4.5h11L19 11H5z" fill="currentColor"/>
+                </svg>
+              </span>
+              <span class="text">Dispatch</span>
+            </a>
+          </li>
+          <!-- Users -->
+          <li class="nav-item">
+            <a href="users.html">
+              <span class="icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V19C4 19.55 4.45 20 5 20H19C19.55 20 20 19.55 20 19V18C20 15.34 14.67 14 12 14Z" fill="currentColor"/>
+                </svg>
+              </span>
+              <span class="text">Users</span>
+            </a>
+          </li>
+          <!-- Reports -->
+          <li class="nav-item">
+            <a href="reports.html">
+              <span class="icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z" fill="currentColor"/>
+                </svg>
+              </span>
+              <span class="text">Reports</span>
+            </a>
+          </li>
+          <!-- Logs -->
+          <li class="nav-item" style="margin-bottom: 15px;">
+            <a href="logs.html">
+              <span class="icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M11.99 2C6.47 2 2 6.48 2 12C2 17.52 6.47 22 11.99 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 11.99 2ZM12 20C7.58 20 4 16.42 4 12C4 7.58 7.58 4 12 4C16.42 4 20 7.58 20 12C20 16.42 16.42 20 12 20ZM12.5 7H11V13L16.25 16.15L17 14.92L12.5 12.25V7Z" fill="currentColor"/>
+                </svg>
+              </span>
+              <span class="text">Logs</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+    <div class="overlay"></div>
+    <!-- ======== sidebar-nav end =========== -->
+
+    <!-- ======== main-wrapper start =========== -->
+    <main class="main-wrapper">
+      <!-- ========== header start ========== -->
+      <header class="header">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-5 col-md-5 col-6">
+              <div class="header-left d-flex align-items-center">
+                <div class="menu-toggle-btn mr-15">
+                  <button id="menu-toggle" class="main-btn primary-btn btn-hover">
+                    <i class="lni lni-chevron-left me-2"></i> Menu
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-7 col-md-7 col-6">
+              <div class="header-right">
+                <!-- notification start -->
+                <div class="notification-box ml-15 d-none d-md-flex">
+                  <button class="dropdown-toggle" type="button" id="notification" data-bs-toggle="dropdown" aria-expanded="false">
+                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M11 20.1667C9.88317 20.1667 8.88718 19.63 8.23901 18.7917H13.761C13.113 19.63 12.1169 20.1667 11 20.1667Z" fill="" />
+                      <path d="M10.1157 2.74999C10.1157 2.24374 10.5117 1.83333 11 1.83333C11.4883 1.83333 11.8842 2.24374 11.8842 2.74999V2.82604C14.3932 3.26245 16.3051 5.52474 16.3051 8.24999V14.287C16.3051 14.5301 16.3982 14.7633 16.564 14.9352L18.2029 16.6342C18.4814 16.9229 18.2842 17.4167 17.8903 17.4167H4.10961C3.71574 17.4167 3.5185 16.9229 3.797 16.6342L5.43589 14.9352C5.6017 14.7633 5.69485 14.5301 5.69485 14.287V8.24999C5.69485 5.52474 7.60672 3.26245 10.1157 2.82604V2.74999Z" fill="" />
+                    </svg>
+                    <span></span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notification">
+                    <li><a href="#0"><div class="image"><img src="../admin/assets/images/lead/lead-6.png" alt="" /></div><div class="content"><h6>Emergency alert</h6><span>2 mins ago</span></div></a></li>
+                  </ul>
+                </div>
+                <!-- notification end -->
+                <!-- profile start -->
+                <div class="profile-box ml-15">
+                  <button class="dropdown-toggle bg-transparent border-0" type="button" id="profile" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="profile-info">
+                      <div class="info">
+                        <div class="image">
+                          <img src="../admin/assets/images/profile/profile-image.png" alt="" />
+                        </div>
+                        <div>
+                          <h6 class="fw-500">CEDOC Admin</h6>
+                          <p>Administrator</p>
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profile">
+                    <li><a href="#0"><i class="lni lni-exit"></i> Sign Out</a></li>
+                  </ul>
+                </div>
+                <!-- profile end -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+      <!-- ========== header end ========== -->
+
+      <!-- ========== section start ========== -->
+      <section class="section">
+        <div class="container-fluid">
+          <!-- ========== title-wrapper start ========== -->
+          <div class="title-wrapper pt-30">
+            <div class="row align-items-center">
+              <div class="col-md-6">
+                <div class="title">
+                  <h2>Dashboard</h2>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="breadcrumb-wrapper">
+                  <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                    </ol>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- ========== title-wrapper end ========== -->
+
+          <!-- KPI Cards -->
+          <div class="row g-3 mb-4">
+            <div class="col-lg-3 col-md-6">
+              <div class="card-style pb-30 mb-30" style="min-height: 180px;">
+                <div class="card-header mb-4"><h5>Active Emergencies</h5></div>
+                <div style="display:flex; align-items:flex-end; gap:10px;">
+                  <h2 style="margin:0; font-size:32px; color:#dc3545;">24</h2>
+                  <span style="color:#28a745; font-size:12px; margin-bottom:4px;">+3 today</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="card-style pb-30 mb-30" style="min-height: 180px;">
+                <div class="card-header mb-4"><h5>Pending Verification</h5></div>
+                <div style="display:flex; align-items:flex-end; gap:10px;">
+                  <h2 style="margin:0; font-size:32px; color:#ffc107;">8</h2>
+                  <span style="color:#dc3545; font-size:12px; margin-bottom:4px;">-2 from yesterday</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="card-style pb-30 mb-30" style="min-height: 180px;">
+                <div class="card-header mb-4"><h5>Responders Available</h5></div>
+                <div style="display:flex; align-items:flex-end; gap:10px;">
+                  <h2 style="margin:0; font-size:32px; color:#28a745;">47</h2>
+                  <span style="color:#28a745; font-size:12px; margin-bottom:4px;">+5 online</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="card-style pb-30 mb-30" style="min-height: 180px;">
+                <div class="card-header mb-4"><h5>Avg Response Time</h5></div>
+                <div style="display:flex; flex-direction:column; align-items:flex-start; gap:2px;">
+                  <h2 style="margin:0; font-size:48px; color:#0dcaf0; line-height:1; font-weight:700;">6.8</h2>
+                  <span style="color:#0dcaf0; font-size:13px;">min</span>
+                  <span style="color:#28a745; font-size:12px;">-1.2 min</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts Row -->
+          <div class="row">
+            <div class="col-lg-8">
+              <div class="card-style mb-30">
+                <div class="card-header">
+                  <h5 class="card-title">Recent Incidents</h5>
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-hover" id="incidentsTable">
+                    <thead>
+                      <tr><th>ID</th><th>Type</th><th>Location</th><th>Reported</th><th>Status</th><th>Action</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>INC-001</strong></td>
+                        <td><span class="badge bg-danger">Medical</span></td>
+                        <td>Barangay Addition Hills</td>
+                        <td>14:23</td>
+                        <td><span class="badge bg-warning">Pending</span></td>
+                        <td><button class="btn btn-sm btn-primary">View</button></td>
+                      </tr>
+                      <tr>
+                        <td><strong>INC-002</strong></td>
+                        <td><span class="badge bg-warning">Fire</span></td>
+                        <td>San Juan Avenue</td>
+                        <td>14:18</td>
+                        <td><span class="badge bg-danger">Active</span></td>
+                        <td><button class="btn btn-sm btn-primary">View</button></td>
+                      </tr>
+                      <tr>
+                        <td><strong>INC-003</strong></td>
+                        <td><span class="badge bg-info">Crime</span></td>
+                        <td>Pinaglabanan Road</td>
+                        <td>14:15</td>
+                        <td><span class="badge bg-warning">Dispatched</span></td>
+                        <td><button class="btn btn-sm btn-primary">View</button></td>
+                      </tr>
+                      <tr>
+                        <td><strong>INC-004</strong></td>
+                        <td><span class="badge bg-success">Rescue</span></td>
+                        <td>Greenmeadows Subdivision</td>
+                        <td>14:10</td>
+                        <td><span class="badge bg-success">Resolved</span></td>
+                        <td><button class="btn btn-sm btn-secondary">View</button></td>
+                      </tr>
+                      <tr>
+                        <td><strong>INC-005</strong></td>
+                        <td><span class="badge bg-danger">Medical</span></td>
+                        <td>Bayan Community Center</td>
+                        <td>14:05</td>
+                        <td><span class="badge bg-success">Resolved</span></td>
+                        <td><button class="btn btn-sm btn-secondary">View</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="card-style mb-30">
+                <div class="card-header"><h5>Emergency Types</h5></div>
+                <div class="card-body"><canvas id="emergencyTypesChart"></canvas></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- More Charts -->
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="card-style mb-30">
+                <div class="card-header"><h5>Daily Incident Trend</h5></div>
+                <div class="card-body"><canvas id="dailyTrendChart"></canvas></div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="card-style mb-30">
+                <div class="card-header"><h5>Response Time Trend</h5></div>
+                <div class="card-body"><canvas id="responseTimeChart"></canvas></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- ========== section end ========== -->
+
+      <!-- ========== footer start =========== -->
+      <footer class="footer">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-6 order-last order-md-first">
+              <div class="copyright text-center text-md-start">
+                <p class="text-sm">PULSE Admin Dashboard</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="terms d-flex justify-content-center justify-content-md-end">
+                <a href="#0" class="text-sm">Privacy & Policy</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+      <!-- ========== footer end =========== -->
+    </main>
+    <!-- ======== main-wrapper end =========== -->
+
+    <!-- ========= All Javascript files linkup ======== -->
+    <script src="../admin/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../admin/assets/js/main.js"></script>
+    <script src="js/mock-data.js"></script>
+    <script src="js/dashboard.js"></script>
+  </body>

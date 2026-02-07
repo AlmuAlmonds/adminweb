@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="../images/PULSE OG.png" type="image/png" />
-    <title>PULSE ADMIN | Tasks</title>
+    <title>PULSE CEDOC | Operations Task Panel</title>
 
     <!-- ========== All CSS files linkup ========= -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
@@ -24,35 +24,45 @@
         cursor: pointer;
         transition: all 0.2s ease;
       }
-      .status-badge.requests {
-        background: #dc3545;
-        color: white;
-        border: 2px solid #dc3545;
-      }
-      .status-badge.requests.active {
-        background: #fff;
-        color: #dc3545;
-        border: 2px solid #dc3545;
-      }
       .status-badge.pending {
-        background: #3b5998;
-        color: white;
-        border: 2px solid #3b5998;
+        background: #ffc10720;
+        color: #ffc107;
+        border: 2px solid #ffc107;
       }
       .status-badge.pending.active {
-        background: #fff;
-        color: #3b5998;
-        border: 2px solid #3b5998;
+        background: #ffc107;
+        color: white;
+        border: 2px solid #ffc107;
       }
-      .status-badge.records {
+      .status-badge.active {
+        background: #0dcaf020;
+        color: #0dcaf0;
+        border: 2px solid #0dcaf0;
+      }
+      .status-badge.active.active {
+        background: #0dcaf0;
+        color: white;
+        border: 2px solid #0dcaf0;
+      }
+      .status-badge.resolved {
+        background: #19875420;
+        color: #198754;
+        border: 2px solid #198754;
+      }
+      .status-badge.resolved.active {
         background: #198754;
         color: white;
         border: 2px solid #198754;
       }
-      .status-badge.records.active {
-        background: #fff;
-        color: #198754;
-        border: 2px solid #198754;
+      .status-badge.escalated {
+        background: #dc354520;
+        color: #dc3545;
+        border: 2px solid #dc3545;
+      }
+      .status-badge.escalated.active {
+        background: #dc3545;
+        color: white;
+        border: 2px solid #dc3545;
       }
       .filter-buttons {
         display: flex;
@@ -108,6 +118,57 @@
         border-radius: 12px;
         font-size: 12px;
       }
+      .priority-critical {
+        background-color: #ffebee;
+        border-left: 4px solid #dc3545;
+      }
+      .priority-high {
+        background-color: #fff3e0;
+        border-left: 4px solid #fd7e14;
+      }
+      .priority-medium {
+        background-color: #fffbea;
+        border-left: 4px solid #ffc107;
+      }
+      .priority-low {
+        background-color: #e3f2fd;
+        border-left: 4px solid #0dcaf0;
+      }
+      .priority-critical-badge, .priority-high-badge, .priority-medium-badge, .priority-low-badge {
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .priority-critical-badge {
+        background: #dc3545;
+        color: white;
+      }
+      .priority-high-badge {
+        background: #fd7e14;
+        color: white;
+      }
+      .priority-medium-badge {
+        background: #ffc107;
+        color: #333;
+      }
+      .priority-low-badge {
+        background: #0dcaf0;
+        color: white;
+      }
+      .status-badge-inline {
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .status-pending { background: #ffc10720; color: #ffc107; }
+      .status-inprogress { background: #0dcaf020; color: #0dcaf0; }
+      .status-resolved { background: #19875420; color: #198754; }
+      .status-escalated { background: #dc354520; color: #dc3545; }
     </style>
   </head>
   <body>
@@ -149,7 +210,7 @@
               <span class="text">Tasks</span>
             </a>
           </li>
-          <!-- Accounts -->
+          <!-- User Management -->
           <li class="nav-item">
             <a href="accounts.html">
               <span class="icon">
@@ -157,7 +218,7 @@
                   <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V19C4 19.55 4.45 20 5 20H19C19.55 20 20 19.55 20 19V18C20 15.34 14.67 14 12 14Z" fill="currentColor"/>
                 </svg>
               </span>
-              <span class="text">Accounts</span>
+              <span class="text">User Management</span>
             </a>
           </li>
           <!-- News & Events -->
@@ -356,7 +417,8 @@
             <div class="row align-items-center">
               <div class="col-md-6">
                 <div class="title">
-                  <h2>Overview</h2>
+                  <h2>CEDOC Operations Task Panel</h2>
+                  <p style="color: #666; margin-top: 5px; font-size: 14px;">Real-time emergency incident management and responder coordination for San Juan CEDOC</p>
                 </div>
               </div>
               <!-- end col -->
@@ -368,7 +430,7 @@
                         <a href="index.html">Dashboard</a>
                       </li>
                       <li class="breadcrumb-item active" aria-current="page">
-                        Tasks
+                        Operations Tasks
                       </li>
                     </ol>
                   </nav>
@@ -382,58 +444,61 @@
 
           <!-- Filter Buttons -->
           <div class="filter-buttons">
-            <button class="status-badge requests active" data-filter="users" onclick="setActiveFilter(this, 'users')">
-              <i class="lni lni-user"></i> Users Request
+            <button class="status-badge pending active" data-filter="pending" onclick="setActiveFilter(this, 'pending')">
+              <i class="lni lni-timer"></i> Pending Incidents
             </button>
-            <button class="status-badge pending" data-filter="responder" onclick="setActiveFilter(this, 'responder')">
-              <i class="lni lni-users"></i> Responder Requests
+            <button class="status-badge active" data-filter="inprogress" onclick="setActiveFilter(this, 'inprogress')">
+              <i class="lni lni-spinner-arrow"></i> Active Responses
             </button>
-            <button class="status-badge records" data-filter="records" onclick="setActiveFilter(this, 'records')">
-              <i class="lni lni-checkmark-circle"></i> Records
+            <button class="status-badge resolved" data-filter="resolved" onclick="setActiveFilter(this, 'resolved')">
+              <i class="lni lni-checkmark-circle"></i> Resolved
+            </button>
+            <button class="status-badge escalated" data-filter="escalated" onclick="setActiveFilter(this, 'escalated')">
+              <i class="lni lni-warning"></i> Escalated/Critical
             </button>
           </div>
 
-          <!-- Task Cards Summary -->
+          <!-- Incident Cards Summary -->
           <div class="row mb-30">
-            <div class="col-xl-3 col-lg-4 col-sm-6">
-              <div class="icon-card mb-30">
-                <div class="icon" style="background: #dc354520; color: #dc3545;">
-                  <i class="lni lni-warning"></i>
-                </div>
-                <div class="content">
-                  <h6 class="mb-10">Pending Requests</h6>
-                  <h3 class="text-bold mb-10">24</h3>
-                  <p class="text-sm text-danger">
-                    <i class="lni lni-arrow-up"></i> +5
-                    <span class="text-gray">new today</span>
-                  </p>
-                </div>
-              </div>
-            </div>
             <div class="col-xl-3 col-lg-4 col-sm-6">
               <div class="icon-card mb-30">
                 <div class="icon" style="background: #ffc10720; color: #ffc107;">
                   <i class="lni lni-timer"></i>
                 </div>
                 <div class="content">
-                  <h6 class="mb-10">In Progress</h6>
-                  <h3 class="text-bold mb-10">12</h3>
-                  <p class="text-sm text-warning">
-                    <i class="lni lni-spinner-arrow"></i> Processing
+                  <h6 class="mb-10">Pending Incidents</h6>
+                  <h3 class="text-bold mb-10" id="pending-count">8</h3>
+                  <p class="text-sm" style="color: #ffc107;">
+                    <i class="lni lni-arrow-up"></i> +2
+                    <span class="text-gray">last hour</span>
                   </p>
                 </div>
               </div>
             </div>
             <div class="col-xl-3 col-lg-4 col-sm-6">
               <div class="icon-card mb-30">
-                <div class="icon success">
+                <div class="icon" style="background: #0dcaf020; color: #0dcaf0;">
+                  <i class="lni lni-spinner-arrow"></i>
+                </div>
+                <div class="content">
+                  <h6 class="mb-10">Active Responses</h6>
+                  <h3 class="text-bold mb-10" id="active-count">14</h3>
+                  <p class="text-sm" style="color: #0dcaf0;">
+                    <i class="lni lni-pulse"></i> In Action
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-4 col-sm-6">
+              <div class="icon-card mb-30">
+                <div class="icon" style="background: #19875420; color: #198754;">
                   <i class="lni lni-checkmark-circle"></i>
                 </div>
                 <div class="content">
-                  <h6 class="mb-10">Completed</h6>
-                  <h3 class="text-bold mb-10">156</h3>
+                  <h6 class="mb-10">Resolved Incidents</h6>
+                  <h3 class="text-bold mb-10" id="resolved-count">127</h3>
                   <p class="text-sm text-success">
-                    <i class="lni lni-arrow-up"></i> +12
+                    <i class="lni lni-arrow-up"></i> +18
                     <span class="text-gray">this week</span>
                   </p>
                 </div>
@@ -441,92 +506,161 @@
             </div>
             <div class="col-xl-3 col-lg-4 col-sm-6">
               <div class="icon-card mb-30">
-                <div class="icon" style="background: #6f42c120; color: #6f42c1;">
-                  <i class="lni lni-close"></i>
+                <div class="icon" style="background: #dc354520; color: #dc3545;">
+                  <i class="lni lni-warning"></i>
                 </div>
                 <div class="content">
-                  <h6 class="mb-10">Cancelled</h6>
-                  <h3 class="text-bold mb-10">8</h3>
-                  <p class="text-sm text-secondary">
-                    <span class="text-gray">This month</span>
+                  <h6 class="mb-10">Escalated/Critical</h6>
+                  <h3 class="text-bold mb-10" id="escalated-count">3</h3>
+                  <p class="text-sm text-danger">
+                    <i class="lni lni-alert"></i> Requires Attention
                   </p>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Account Changes Request Table -->
+          <!-- Emergency Incidents Table -->
           <div class="card-style mb-30">
             <div class="title d-flex flex-wrap justify-content-between align-items-center mb-20">
-              <h6 class="text-medium task-table-title">USER CHANGES REQUEST</h6>
+              <h6 class="text-medium task-table-title">ACTIVE INCIDENTS & RESPONSES</h6>
+              <button class="btn btn-sm btn-primary" onclick="alert('Quick reporting feature: Submit new incident to CEDOC system')"><i class="lni lni-plus"></i> Report Incident</button>
             </div>
             <div class="table-responsive">
               <table class="table">
                 <thead>
                   <tr>
-                    <th>ID</th>
-                    <th>NAME</th>
-                    <th>DESCRIPTION</th>
-                    <th>TYPE</th>
-                    <th>ACTION</th>
+                    <th>Incident ID</th>
+                    <th>Report Type</th>
+                    <th>Reporter</th>
+                    <th>Location</th>
+                    <th>Priority</th>
+                    <th>Assigned Responder</th>
+                    <th>Status</th>
+                    <th>Time Reported</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>01.</td>
-                    <td>ALMU</td>
-                    <td>NAME CHANGE</td>
-                    <td><span class="type-badge">NAME CHANGE</span></td>
-                    <td><a href="tasksopen.html" class="btn-open">OPEN</a></td>
+                  <tr class="priority-critical" data-status="pending" data-priority="critical">
+                    <td><strong>INC-2026-001</strong></td>
+                    <td><span class="type-badge">🚒 Fire</span></td>
+                    <td>Maria Santos</td>
+                    <td>Pinaglabanan St., San Juan</td>
+                    <td><span class="priority-critical-badge">Critical</span></td>
+                    <td>Responder Unit 01 (BFP)</td>
+                    <td><span class="status-badge-inline status-pending">⏳ Pending</span></td>
+                    <td>02:15 PM</td>
+                    <td>
+                      <button class="btn btn-sm btn-info" onclick="alert('View Details: Structure fire at commercial building')"><i class="lni lni-eye"></i></button>
+                      <button class="btn btn-sm btn-warning" onclick="alert('Assigned to Unit 01')"><i class="lni lni-user-1"></i></button>
+                      <button class="btn btn-sm btn-danger" onclick="alert('Escalation authorized to backup units')">⚠️</button>
+                    </td>
                   </tr>
-                  <tr>
-                    <td>02.</td>
-                    <td>NEIL</td>
-                    <td>PASSWORD CHANGE</td>
-                    <td><span class="type-badge">PASSWORD CHANGE</span></td>
-                    <td><a href="tasksopen.html" class="btn-open">OPEN</a></td>
+                  <tr class="priority-high" data-status="inprogress" data-priority="high">
+                    <td><strong>INC-2026-002</strong></td>
+                    <td><span class="type-badge">🚑 Medical</span></td>
+                    <td>John Reyes</td>
+                    <td>North Avenue, San Juan</td>
+                    <td><span class="priority-high-badge">High</span></td>
+                    <td>Responder Unit 05 (PNP-ACG)</td>
+                    <td><span class="status-badge-inline status-inprogress">🔄 In Progress</span></td>
+                    <td>02:05 PM</td>
+                    <td>
+                      <button class="btn btn-sm btn-info" onclick="alert('View Details: Traffic accident with injuries')"><i class="lni lni-eye"></i></button>
+                      <button class="btn btn-sm btn-warning" onclick="alert('Assign backup responder')"><i class="lni lni-user-1"></i></button>
+                      <button class="btn btn-sm btn-danger" onclick="alert('Escalate if needed')">⚠️</button>
+                    </td>
                   </tr>
-                  <tr>
-                    <td>03.</td>
-                    <td>ALYANNA</td>
-                    <td>PASSWORD CHANGE</td>
-                    <td><span class="type-badge">PASSWORD CHANGE</span></td>
-                    <td><a href="tasksopen.html" class="btn-open">OPEN</a></td>
+                  <tr class="priority-high" data-status="inprogress" data-priority="high">
+                    <td><strong>INC-2026-003</strong></td>
+                    <td><span class="type-badge">⚠️ Disaster</span></td>
+                    <td>Anonymous Caller</td>
+                    <td>Canlubang Area, San Juan</td>
+                    <td><span class="priority-high-badge">High</span></td>
+                    <td>Responder Unit 02 & 03 (CDRRMO)</td>
+                    <td><span class="status-badge-inline status-inprogress">🔄 In Progress</span></td>
+                    <td>01:45 PM</td>
+                    <td>
+                      <button class="btn btn-sm btn-info" onclick="alert('View Details: Flash flood warning area')"><i class="lni lni-eye"></i></button>
+                      <button class="btn btn-sm btn-warning" onclick="alert('Responders already assigned')"><i class="lni lni-user-1"></i></button>
+                      <button class="btn btn-sm btn-danger" onclick="alert('Escalate to emergency operations')">⚠️</button>
+                    </td>
                   </tr>
-                  <tr>
-                    <td>04.</td>
-                    <td>DEMITRY</td>
-                    <td>EMAIL CHANGE</td>
-                    <td><span class="type-badge">EMAIL CHANGE</span></td>
-                    <td><a href="tasksopen.html" class="btn-open">OPEN</a></td>
+                  <tr class="priority-medium" data-status="inprogress" data-priority="medium">
+                    <td><strong>INC-2026-004</strong></td>
+                    <td><span class="type-badge">👮 Crime</span></td>
+                    <td>Witness (Confidential)</td>
+                    <td>Sta. Lucia Ave., San Juan</td>
+                    <td><span class="priority-medium-badge">Medium</span></td>
+                    <td>Responder Unit 07 (PNP)</td>
+                    <td><span class="status-badge-inline status-inprogress">🔄 In Progress</span></td>
+                    <td>01:30 PM</td>
+                    <td>
+                      <button class="btn btn-sm btn-info" onclick="alert('View Details: Suspicious activity reported')"><i class="lni lni-eye"></i></button>
+                      <button class="btn btn-sm btn-warning" onclick="alert('Officer En Route')"><i class="lni lni-user-1"></i></button>
+                      <button class="btn btn-sm btn-danger" onclick="alert('Request backup if necessary')">⚠️</button>
+                    </td>
                   </tr>
-                  <tr>
-                    <td>05.</td>
-                    <td>JENISSA</td>
-                    <td>EMAIL CHANGE</td>
-                    <td><span class="type-badge">EMAIL CHANGE</span></td>
-                    <td><a href="tasksopen.html" class="btn-open">OPEN</a></td>
+                  <tr class="priority-low" data-status="inprogress" data-priority="low">
+                    <td><strong>INC-2026-005</strong></td>
+                    <td><span class="type-badge">🚗 Traffic</span></td>
+                    <td>CCTV Monitoring</td>
+                    <td>McArthur Highway, San Juan</td>
+                    <td><span class="priority-low-badge">Low</span></td>
+                    <td>Responder Unit 06 (Traffic)</td>
+                    <td><span class="status-badge-inline status-inprogress">🔄 In Progress</span></td>
+                    <td>01:15 PM</td>
+                    <td>
+                      <button class="btn btn-sm btn-info" onclick="alert('View Details: Road congestion at intersection')"><i class="lni lni-eye"></i></button>
+                      <button class="btn btn-sm btn-warning" onclick="alert('Traffic enforcement team notified')"><i class="lni lni-user-1"></i></button>
+                      <button class="btn btn-sm btn-danger" onclick="alert('Escalate if needed')">⚠️</button>
+                    </td>
                   </tr>
-                  <tr>
-                    <td>06.</td>
-                    <td>CHUCK</td>
-                    <td>PASSWORD CHANGE</td>
-                    <td><span class="type-badge">PASSWORD CHANGE</span></td>
-                    <td><a href="tasksopen.html" class="btn-open">OPEN</a></td>
+                  <tr class="priority-medium" data-status="resolved" data-priority="medium">
+                    <td><strong>INC-2026-006</strong></td>
+                    <td><span class="type-badge">🚑 Medical</span></td>
+                    <td>Concerned Citizen</td>
+                    <td>Commonwealth Ave., San Juan</td>
+                    <td><span class="priority-medium-badge">Medium</span></td>
+                    <td>Responder Unit 04 (RHU)</td>
+                    <td><span class="status-badge-inline status-resolved">✓ Resolved</span></td>
+                    <td>12:45 PM</td>
+                    <td>
+                      <button class="btn btn-sm btn-info" onclick="alert('View Details: Patient transported to hospital')"><i class="lni lni-eye"></i></button>
+                      <button class="btn btn-sm btn-secondary" onclick="alert('Case closed')"><i class="lni lni-check"></i></button>
+                      <button class="btn btn-sm btn-secondary" onclick="alert('No further action needed')">✓</button>
+                    </td>
                   </tr>
-                  <tr>
-                    <td>07.</td>
-                    <td>MIGUEL</td>
-                    <td>NAME CHANGE</td>
-                    <td><span class="type-badge">NAME CHANGE</span></td>
-                    <td><a href="tasksopen.html" class="btn-open">OPEN</a></td>
+                  <tr class="priority-low" data-status="resolved" data-priority="low">
+                    <td><strong>INC-2026-007</strong></td>
+                    <td><span class="type-badge">⚠️ Welfare Check</span></td>
+                    <td>Barangay Official</td>
+                    <td>Amparo St., San Juan</td>
+                    <td><span class="priority-low-badge">Low</span></td>
+                    <td>Responder Unit 08 (Barangay)</td>
+                    <td><span class="status-badge-inline status-resolved">✓ Resolved</span></td>
+                    <td>11:30 AM</td>
+                    <td>
+                      <button class="btn btn-sm btn-info" onclick="alert('View Details: Senior citizen checked on')"><i class="lni lni-eye"></i></button>
+                      <button class="btn btn-sm btn-secondary" onclick="alert('All is well')"><i class="lni lni-check"></i></button>
+                      <button class="btn btn-sm btn-secondary" onclick="alert('Case resolved')">✓</button>
+                    </td>
                   </tr>
-                  <tr>
-                    <td>08.</td>
-                    <td>DAYLAN</td>
-                    <td>PASSWORD CHANGE</td>
-                    <td><span class="type-badge">PASSWORD CHANGE</span></td>
-                    <td><a href="tasksopen.html" class="btn-open">OPEN</a></td>
+                  <tr class="priority-critical" data-status="escalated" data-priority="critical">
+                    <td><strong>INC-2026-008</strong></td>
+                    <td><span class="type-badge">🚨 Disaster</span></td>
+                    <td>Emergency Hotline</td>
+                    <td>Bagong Komunidad, San Juan</td>
+                    <td><span class="priority-critical-badge">Critical</span></td>
+                    <td>Multi-agency Response (Escalated)</td>
+                    <td><span class="status-badge-inline status-escalated">⚠️ Escalated</span></td>
+                    <td>11:00 AM</td>
+                    <td>
+                      <button class="btn btn-sm btn-info" onclick="alert('View Details: Building collapse - multiple victims')"><i class="lni lni-eye"></i></button>
+                      <button class="btn btn-sm btn-danger" style="pointer-events: none;"><i class="lni lni-user-1"></i></button>
+                      <button class="btn btn-sm btn-danger" onclick="alert('Multi-agency coordination initiated')">🚨</button>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -569,7 +703,7 @@
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script>
-      // Filter button toggle functionality
+      // Filter button toggle functionality for emergency incidents
       function setActiveFilter(btn, filterType) {
         // Remove active class from all filter buttons
         document.querySelectorAll('.filter-buttons .status-badge').forEach(function(button) {
@@ -578,18 +712,60 @@
         // Add active class to clicked button
         btn.classList.add('active');
         
-        // Update table title based on filter
+        // Filter table rows based on status
+        var tableRows = document.querySelectorAll('table tbody tr');
+        var statusCounts = { pending: 0, inprogress: 0, resolved: 0, escalated: 0 };
+        
+        tableRows.forEach(function(row) {
+          var status = row.getAttribute('data-status');
+          var isVisible = (filterType === 'pending' && status === 'pending') ||
+                         (filterType === 'inprogress' && status === 'inprogress') ||
+                         (filterType === 'resolved' && status === 'resolved') ||
+                         (filterType === 'escalated' && status === 'escalated');
+          
+          row.style.display = isVisible ? '' : 'none';
+          
+          // Count incidents for each status
+          if (status === 'pending') statusCounts.pending++;
+          if (status === 'inprogress') statusCounts.inprogress++;
+          if (status === 'resolved') statusCounts.resolved++;
+          if (status === 'escalated') statusCounts.escalated++;
+        });
+        
+        // Update title based on filter
         var tableTitle = document.querySelector('.task-table-title');
         if (tableTitle) {
-          if (filterType === 'users') {
-            tableTitle.textContent = 'USER CHANGES REQUEST';
-          } else if (filterType === 'responder') {
-            tableTitle.textContent = 'RESPONDER CHANGES REQUEST';
-          } else if (filterType === 'records') {
-            tableTitle.textContent = 'COMPLETED RECORDS';
+          if (filterType === 'pending') {
+            tableTitle.textContent = 'PENDING INCIDENTS (' + statusCounts.pending + ')';
+          } else if (filterType === 'inprogress') {
+            tableTitle.textContent = 'ACTIVE RESPONSES (' + statusCounts.inprogress + ')';
+          } else if (filterType === 'resolved') {
+            tableTitle.textContent = 'RESOLVED INCIDENTS (' + statusCounts.resolved + ')';
+          } else if (filterType === 'escalated') {
+            tableTitle.textContent = 'ESCALATED/CRITICAL INCIDENTS (' + statusCounts.escalated + ')';
           }
         }
       }
+      
+      // Initialize counts on page load
+      document.addEventListener('DOMContentLoaded', function() {
+        var tableRows = document.querySelectorAll('table tbody tr');
+        var counts = { pending: 0, inprogress: 0, resolved: 0, escalated: 0 };
+        
+        tableRows.forEach(function(row) {
+          var status = row.getAttribute('data-status');
+          if (status === 'pending') counts.pending++;
+          if (status === 'inprogress') counts.inprogress++;
+          if (status === 'resolved') counts.resolved++;
+          if (status === 'escalated') counts.escalated++;
+        });
+        
+        // Update summary cards
+        document.getElementById('pending-count').textContent = counts.pending;
+        document.getElementById('active-count').textContent = counts.inprogress;
+        document.getElementById('resolved-count').textContent = counts.resolved;
+        document.getElementById('escalated-count').textContent = counts.escalated;
+      });
     </script>
   </body>
 </html>
