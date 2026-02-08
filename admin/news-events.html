@@ -12,7 +12,17 @@
     <link rel="stylesheet" href="assets/css/lineicons.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="../dispatch/css/accessibility.css" />
     <style>
+      /* Header Actions */
+      .header-actions { display: flex; align-items: center; justify-content: flex-end; gap: 12px; }
+      .time-display { font-size: 14px; color: #6b7280; font-weight: 500; white-space: nowrap; }
+      .btn-refresh-icon {
+        width: 40px; height: 40px; border-radius: 8px; border: 1px solid #e5e7eb;
+        background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer;
+      }
+      .btn-refresh-icon:hover { background: #f3f4f6; }
+      
       /* Emergency Board Styling */
       .advisory-banner {
         background: linear-gradient(135deg, #1a3a52 0%, #2d5f8d 100%);
@@ -405,17 +415,7 @@
               <span class="text">Dashboard</span>
             </a>
           </li>
-          <!-- Tasks -->
-          <li class="nav-item">
-            <a href="tasks.html">
-              <span class="icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM10.71 16.29C10.32 16.68 9.69 16.68 9.3 16.29L5.71 12.7C5.32 12.31 5.32 11.68 5.71 11.29C6.1 10.9 6.73 10.9 7.12 11.29L10 14.17L16.88 7.29C17.27 6.9 17.9 6.9 18.29 7.29C18.68 7.68 18.68 8.31 18.29 8.7L10.71 16.29Z" fill="currentColor"/>
-                </svg>
-              </span>
-              <span class="text">Tasks</span>
-            </a>
-          </li>
+
           <!-- Accounts -->
           <li class="nav-item">
             <a href="accounts.html">
@@ -457,7 +457,7 @@
                   <path d="M11.99 2C6.47 2 2 6.48 2 12C2 17.52 6.47 22 11.99 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 11.99 2ZM12 20C7.58 20 4 16.42 4 12C4 7.58 7.58 4 12 4C16.42 4 20 7.58 20 12C20 16.42 16.42 20 12 20ZM12.5 7H11V13L16.25 16.15L17 14.92L12.5 12.25V7Z" fill="currentColor"/>
                 </svg>
               </span>
-              <span class="text">Login Logs</span>
+              <span class="text">Logs</span>
             </a>
           </li>
         </ul>
@@ -548,15 +548,6 @@
                   </ul>
                 </div>
                 <!-- message end -->
-                <!-- settings start -->
-                <div class="settings-box ml-15 d-none d-md-flex">
-                  <button class="dropdown-toggle" type="button" title="Settings" data-bs-toggle="modal" data-bs-target="#accessibilityModal">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 0 0 .12-.65l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.027 7.027 0 0 0-1.62-.94l-.36-2.54A.5.5 0 0 0 12.34 1h-3.68a.5.5 0 0 0-.5.42l-.36 2.54c-.59.22-1.14.52-1.62.94l-2.39-.96a.5.5 0 0 0-.6.22L1.47 7c-.14.24-.09.54.12.73l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94L1.59 12.77a.5.5 0 0 0-.12.65l1.92 3.32c.14.24.43.34.68.23l2.39-.96c.48.42 1.03.72 1.62.94l.36 2.54c.04.24.25.42.5.42h3.68c.25 0 .46-.18.5-.42l.36-2.54c.59-.22 1.14-.52 1.62-.94l2.39.96c.25.1.54 0 .68-.23l1.92-3.32a.5.5 0 0 0-.12-.65l-2.03-1.58ZM10.5 13.5A2.5 2.5 0 1 1 13 11a2.5 2.5 0 0 1-2.5 2.5Z" fill="currentColor"/>
-                    </svg>
-                  </button>
-                </div>
-                <!-- settings end -->
                 <!-- profile start -->
                 <div class="profile-box ml-15">
                   <button class="dropdown-toggle bg-transparent border-0" type="button" id="profile"
@@ -599,9 +590,6 @@
                     <li>
                       <a href="#0"> <i class="lni lni-inbox"></i> Messages </a>
                     </li>
-                    <li>
-                      <a href="#0"> <i class="lni lni-cog"></i> Settings </a>
-                    </li>
                     <li class="divider"></li>
                     <li>
                       <a href="#0"> <i class="lni lni-exit"></i> Sign Out </a>
@@ -624,23 +612,17 @@
             <div class="row align-items-center">
               <div class="col-md-6">
                 <div class="title">
-                  <h2>📢 Public Advisory & Emergency Bulletin Board</h2>
+                  <h2>Public Advisory & Emergency Bulletin Board</h2>
                   <p style="color: #666; font-size: 14px; margin-top: 5px;">Real-time alerts, safety notices, and emergency announcements for San Juan CEDOC</p>
                 </div>
               </div>
               <!-- end col -->
               <div class="col-md-6">
-                <div class="breadcrumb-wrapper">
-                  <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                      <li class="breadcrumb-item">
-                        <a href="index.html">Dashboard</a>
-                      </li>
-                      <li class="breadcrumb-item active" aria-current="page">
-                        Public Advisory Board
-                      </li>
-                    </ol>
-                  </nav>
+                <div class="header-actions">
+                  <span class="time-display" id="liveTime">00:00:00 AM</span>
+                  <button class="btn-refresh-icon" onclick="location.reload()" title="Refresh">
+                    <i class="lni lni-reload"></i>
+                  </button>
                 </div>
               </div>
               <!-- end col -->
@@ -648,18 +630,6 @@
             <!-- end row -->
           </div>
           <!-- ========== title-wrapper end ========== -->
-
-          <!-- Advisory Banner -->
-          <div class="advisory-banner">
-            <div class="advisory-icon">🚨</div>
-            <div class="advisory-content">
-              <h2>Active Emergency Response Center</h2>
-              <p>Stay informed with real-time advisories for San Juan CEDOC. Check back frequently for critical alerts.</p>
-            </div>
-            <button class="main-btn primary-btn btn-hover" style="margin-left: auto; white-space: nowrap;">
-              <i class="lni lni-bolt"></i> PUBLISH URGENT ALERT
-            </button>
-          </div>
 
           <style>
             .switchable-section{display:none}
@@ -734,7 +704,7 @@
                 </thead>
                 <tbody>
                   <!-- Critical Alert -->
-                  <tr class="priority-critical">
+                  <tr class="priority-critical" data-id="ADV-2026-001" data-title="SEVERE WEATHER WARNING: High Wind Alert" data-type="🚨 Emergency Advisory" data-priority="CRITICAL" data-audience="🌐 All Citizens" data-date="Feb 7, 2026 | 14:30" data-status="✓ Active" data-description="A severe high wind weather alert has been issued for San Juan City and surrounding areas. Sustained winds of 60-80 km/h with gusts up to 100 km/h are expected. All citizens are advised to stay indoors, secure loose outdoor items, avoid traveling if possible, and monitor local news for updates. This alert expires on Feb 8, 12:00 PM.">
                     <td><span class="pin-btn pinned">📌</span></td>
                     <td><strong>ADV-2026-001</strong></td>
                     <td><span class="priority-badge priority-critical-badge">🚨 Emergency Advisory</span></td>
@@ -744,11 +714,11 @@
                     <td>Feb 7, 2026 | 14:30</td>
                     <td>Feb 8, 12:00</td>
                     <td><span class="status-active">✓ Active</span></td>
-                    <td><button class="btn btn-sm btn-primary">View</button> <button class="btn btn-sm btn-warning">Edit</button></td>
+                    <td><button class="btn btn-sm btn-primary view-btn">View</button> <button class="btn btn-sm btn-warning">Edit</button></td>
                   </tr>
 
                   <!-- High Priority -->
-                  <tr class="priority-high">
+                  <tr class="priority-high" data-id="ADV-2026-002" data-title="Community Health Outreach - Free Medical Clinic" data-type="⚠️ Safety Notice" data-priority="HIGH" data-audience="♿ PWDs & Elderly" data-date="Feb 7, 2026 | 12:15" data-status="✓ Active" data-description="The San Juan City Health Department is conducting a free medical clinic specially designed for Persons with Disabilities (PWDs) and elderly citizens. Services include general health check-ups, blood pressure screening, consultation with medical professionals, and assistance with health insurance enrollment. Location: City Convention Center, 2nd Floor. Hours: 8:00 AM - 5:00 PM daily until Feb 10.">
                     <td><span class="pin-btn">📍</span></td>
                     <td><strong>ADV-2026-002</strong></td>
                     <td><span class="priority-badge priority-high-badge">⚠️ Safety Notice</span></td>
@@ -758,11 +728,11 @@
                     <td>Feb 7, 2026 | 12:15</td>
                     <td>Feb 10, 18:00</td>
                     <td><span class="status-active">✓ Active</span></td>
-                    <td><button class="btn btn-sm btn-primary">View</button> <button class="btn btn-sm btn-warning">Edit</button></td>
+                    <td><button class="btn btn-sm btn-primary view-btn">View</button> <button class="btn btn-sm btn-warning">Edit</button></td>
                   </tr>
 
                   <!-- Weather Alert -->
-                  <tr class="priority-high">
+                  <tr class="priority-high" data-id="ADV-2026-003" data-title="Heat Index Advisory: Extreme Heat Expected Today" data-type="🌦️ Weather Alert" data-priority="HIGH" data-audience="👥 Citizens" data-date="Feb 7, 2026 | 08:00" data-status="✓ Active" data-description="The Philippine Atmospheric, Geophysical and Astronomical Services Administration (PAGASA) has issued a Heat Index Advisory for San Juan City. Heat Index levels are expected to reach 40-42°C today. Heat safety tips: Stay hydrated, avoid prolonged sun exposure, wear light-colored clothing, check on elderly neighbors, and limit outdoor activities. This advisory expires at 8:00 PM today.">
                     <td><span class="pin-btn">📍</span></td>
                     <td><strong>ADV-2026-003</strong></td>
                     <td><span class="priority-badge priority-high-badge">🌦️ Weather Alert</span></td>
@@ -772,11 +742,11 @@
                     <td>Feb 7, 2026 | 08:00</td>
                     <td>Feb 7, 20:00</td>
                     <td><span class="status-active">✓ Active</span></td>
-                    <td><button class="btn btn-sm btn-primary">View</button> <button class="btn btn-sm btn-warning">Edit</button></td>
+                    <td><button class="btn btn-sm btn-primary view-btn">View</button> <button class="btn btn-sm btn-warning">Edit</button></td>
                   </tr>
 
                   <!-- News/Info -->
-                  <tr class="priority-medium">
+                  <tr class="priority-medium" data-id="ADV-2026-004" data-title="San Juan City Launches Community Safety Program" data-type="📰 News" data-priority="MEDIUM" data-audience="🌐 All Citizens" data-date="Feb 6, 2026 | 10:30" data-status="✓ Active" data-description="San Juan City Government has officially launched the 'Community Safety First' program aimed at reducing crime and improving public safety. Key initiatives include increased patrols in high-risk areas, community-police partnerships, street lighting improvements, and youth engagement programs. Citizens are encouraged to report suspicious activities to the hotline: 02-234-5678. Community meetings scheduled for Feb 10 and Feb 17 at city hall.">
                     <td><span class="pin-btn">📍</span></td>
                     <td><strong>ADV-2026-004</strong></td>
                     <td><span class="priority-badge priority-medium-badge">📰 News</span></td>
@@ -786,11 +756,11 @@
                     <td>Feb 6, 2026 | 10:30</td>
                     <td>Feb 13, 23:59</td>
                     <td><span class="status-active">✓ Active</span></td>
-                    <td><button class="btn btn-sm btn-primary">View</button> <button class="btn btn-sm btn-warning">Edit</button></td>
+                    <td><button class="btn btn-sm btn-primary view-btn">View</button> <button class="btn btn-sm btn-warning">Edit</button></td>
                   </tr>
 
                   <!-- Responder Notice -->
-                  <tr class="priority-medium">
+                  <tr class="priority-medium" data-id="ADV-2026-005" data-title="Traffic Advisory: Road Closure on Main Street for Maintenance" data-type="👮 Responder Notice" data-priority="MEDIUM" data-audience="👮 Responders" data-date="Feb 6, 2026 | 16:45" data-status="✓ Active" data-description="Main Street will be closed from 10:00 PM to 5:00 AM from Feb 7-9 for urgent road maintenance and pothole repairs. All emergency responders should use alternate routes: San Pedro Avenue or Jorge Avenue. For dispatch coordination, contact CEDOC at extension 204. Affected area: Main Street between Bonifacio and Luna intersections. Estimated completion: Feb 9, 6:00 AM.">
                     <td><span class="pin-btn">📍</span></td>
                     <td><strong>ADV-2026-005</strong></td>
                     <td><span class="priority-badge priority-medium-badge">👮 Responder Notice</span></td>
@@ -800,11 +770,11 @@
                     <td>Feb 6, 2026 | 16:45</td>
                     <td>Feb 9, 18:00</td>
                     <td><span class="status-active">✓ Active</span></td>
-                    <td><button class="btn btn-sm btn-primary">View</button> <button class="btn btn-sm btn-warning">Edit</button></td>
+                    <td><button class="btn btn-sm btn-primary view-btn">View</button> <button class="btn btn-sm btn-warning">Edit</button></td>
                   </tr>
 
                   <!-- Low Priority Info -->
-                  <tr class="priority-low">
+                  <tr class="priority-low" data-id="ADV-2026-006" data-title="Schedule: Barangay Assembly Meeting Next Week" data-type="ℹ️ Information" data-priority="LOW" data-audience="🌐 All Citizens" data-date="Feb 5, 2026 | 14:00" data-status="✓ Active" data-description="The monthly Barangay Assembly meeting of Barangay Kristong Hari is scheduled for Feb 12, 2026 at 2:00 PM at the Barangay Hall. All residents are welcome to attend. Topics to be discussed: infrastructure projects, community programs, and budget allocation. For more information, contact the Barangay Secretary at (02) 123-4567 or visit the official barangay website.">
                     <td><span class="pin-btn">📍</span></td>
                     <td><strong>ADV-2026-006</strong></td>
                     <td><span class="priority-badge priority-low-badge">ℹ️ Information</span></td>
@@ -814,7 +784,7 @@
                     <td>Feb 5, 2026 | 14:00</td>
                     <td>Feb 12, 23:59</td>
                     <td><span class="status-active">✓ Active</span></td>
-                    <td><button class="btn btn-sm btn-primary">View</button> <button class="btn btn-sm btn-warning">Edit</button></td>
+                    <td><button class="btn btn-sm btn-primary view-btn">View</button> <button class="btn btn-sm btn-warning">Edit</button></td>
                   </tr>
                 </tbody>
               </table>
@@ -875,7 +845,7 @@
                   </tr>
 
                   <!-- Previous News -->
-                  <tr>
+                  <tr data-id="ADV-2026-007" data-title="Municipal Hall Renovation Project Updates" data-type="📰 News" data-priority="LOW" data-audience="🌐 All Citizens" data-date="Feb 3, 2026 | 11:20" data-status="✓ Active" data-description="Updates on the San Juan City Municipal Hall renovation project: Phase 2 (interior electrical systems) began on Feb 1 and is 40% complete. Expected completion of all phases: June 2026. Temporary offices have been set up at the Extension Building across the street. Walk-in services available Monday-Friday 8:00 AM - 4:00 PM. For inquiries, call the main hotline at 02-456-7890.">
                     <td><span class="pin-btn">📍</span></td>
                     <td><strong>ADV-2026-007</strong></td>
                     <td><span class="priority-badge priority-medium-badge">📰 News</span></td>
@@ -884,11 +854,11 @@
                     <td><span class="audience-badge audience-all">🌐 All Citizens</span></td>
                     <td>Feb 3, 2026 | 11:20</td>
                     <td><span class="status-active">✓ Active</span></td>
-                    <td><button class="btn btn-sm btn-primary">View</button> <button class="btn btn-sm btn-warning">Edit</button></td>
+                    <td><button class="btn btn-sm btn-primary view-btn">View</button> <button class="btn btn-sm btn-warning">Edit</button></td>
                   </tr>
 
                   <!-- Previous Alert -->
-                  <tr>
+                  <tr data-id="ADV-2026-008" data-title="Dengue Prevention Awareness Campaign" data-type="⚠️ Safety Notice" data-priority="HIGH" data-audience="👥 Citizens" data-date="Feb 2, 2026 | 15:45" data-status="✓ Active" data-description="The San Juan City Health Office launches an intensive Dengue Prevention Awareness Campaign. Dengue cases have increased by 15% in the city. Preventive measures: Eliminate standing water, use mosquito screens, wear protective clothing during dawn/dusk, and report vector problems to the city health office. Free fumigation services available in all barangays. Dengue hotline: 02-789-0123. Symptoms: sudden fever, severe headache, muscle pain, rash. Seek medical attention immediately.">
                     <td><span class="pin-btn">📍</span></td>
                     <td><strong>ADV-2026-008</strong></td>
                     <td><span class="priority-badge priority-high-badge">⚠️ Safety Notice</span></td>
@@ -897,7 +867,7 @@
                     <td><span class="audience-badge audience-citizens">👥 Citizens</span></td>
                     <td>Feb 2, 2026 | 15:45</td>
                     <td><span class="status-active">✓ Active</span></td>
-                    <td><button class="btn btn-sm btn-primary">View</button> <button class="btn btn-sm btn-warning">Edit</button></td>
+                    <td><button class="btn btn-sm btn-primary view-btn">View</button> <button class="btn btn-sm btn-warning">Edit</button></td>
                   </tr>
                 </tbody>
               </table>
@@ -944,6 +914,250 @@
     <!-- ========= All Javascript files linkup ======== -->
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/main.js"></script>
+
+    <!-- ========= Advisory View Modal ========== -->
+    <div id="advisoryModal" class="advisory-modal-overlay">
+      <div class="advisory-modal-content">
+        <div class="advisory-modal-header">
+          <h2 id="modalTitle">Advisory Details</h2>
+          <button class="advisory-modal-close" onclick="closeAdvisoryModal()">&times;</button>
+        </div>
+        <div class="advisory-modal-body">
+          <div class="advisory-detail-row">
+            <span class="label">Advisory ID:</span>
+            <span id="modalId" class="value"></span>
+          </div>
+          <div class="advisory-detail-row">
+            <span class="label">Type:</span>
+            <span id="modalType" class="value"></span>
+          </div>
+          <div class="advisory-detail-row">
+            <span class="label">Priority Level:</span>
+            <span id="modalPriority" class="value"></span>
+          </div>
+          <div class="advisory-detail-row">
+            <span class="label">Target Audience:</span>
+            <span id="modalAudience" class="value"></span>
+          </div>
+          <div class="advisory-detail-row">
+            <span class="label">Date Posted:</span>
+            <span id="modalDate" class="value"></span>
+          </div>
+          <div class="advisory-detail-row">
+            <span class="label">Status:</span>
+            <span id="modalStatus" class="value"></span>
+          </div>
+          <div class="advisory-detail-full">
+            <h4>Details:</h4>
+            <p id="modalDescription"></p>
+          </div>
+        </div>
+        <div class="advisory-modal-footer">
+          <button class="btn btn-secondary" onclick="closeAdvisoryModal()">Close</button>
+          <button class="btn btn-primary">Edit</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Advisory Modal CSS -->
+    <style>
+      /* Modal Overlay */
+      .advisory-modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .advisory-modal-overlay.show {
+        display: flex;
+        opacity: 1;
+      }
+
+      /* Modal Content */
+      .advisory-modal-content {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        max-width: 600px;
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+        animation: slideUp 0.3s ease;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Modal Header */
+      .advisory-modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 25px;
+        border-bottom: 2px solid #f0f0f0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 12px 12px 0 0;
+      }
+
+      .advisory-modal-header h2 {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 700;
+      }
+
+      .advisory-modal-close {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        font-size: 32px;
+        cursor: pointer;
+        padding: 0;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: all 0.2s ease;
+      }
+
+      .advisory-modal-close:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: rotate(90deg);
+      }
+
+      /* Modal Body */
+      .advisory-modal-body {
+        padding: 25px;
+      }
+
+      .advisory-detail-row {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .advisory-detail-row .label {
+        font-weight: 700;
+        color: #555;
+        min-width: 140px;
+        font-size: 14px;
+      }
+
+      .advisory-detail-row .value {
+        color: #333;
+        font-size: 14px;
+        word-break: break-word;
+      }
+
+      .advisory-detail-full {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 2px solid #f0f0f0;
+      }
+
+      .advisory-detail-full h4 {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: #333;
+      }
+
+      .advisory-detail-full p {
+        color: #555;
+        line-height: 1.6;
+        font-size: 14px;
+        margin: 0;
+      }
+
+      /* Modal Footer */
+      .advisory-modal-footer {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        padding: 20px 25px;
+        border-top: 1px solid #f0f0f0;
+        background: #f9f9f9;
+        border-radius: 0 0 12px 12px;
+      }
+
+      .advisory-modal-footer .btn {
+        padding: 10px 25px;
+        font-size: 14px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-weight: 600;
+      }
+
+      .advisory-modal-footer .btn-secondary {
+        background: #e0e0e0;
+        color: #333;
+      }
+
+      .advisory-modal-footer .btn-secondary:hover {
+        background: #d0d0d0;
+      }
+
+      .advisory-modal-footer .btn-primary {
+        background: #667eea;
+        color: white;
+      }
+
+      .advisory-modal-footer .btn-primary:hover {
+        background: #5568d3;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 600px) {
+        .advisory-modal-content {
+          width: 95%;
+          max-height: 85vh;
+        }
+
+        .advisory-modal-header {
+          padding: 20px;
+        }
+
+        .advisory-modal-header h2 {
+          font-size: 18px;
+        }
+
+        .advisory-modal-body {
+          padding: 15px;
+        }
+
+        .advisory-detail-row {
+          flex-direction: column;
+          gap: 5px;
+        }
+
+        .advisory-detail-row .label {
+          min-width: auto;
+        }
+      }
+    </style>
     
     <!-- Accessibility Settings Modal -->
     <div class="modal fade" id="accessibilityModal" tabindex="-1" aria-labelledby="accessibilityModalLabel" aria-hidden="true">
@@ -1059,6 +1273,64 @@
       </div>
     </div>
     <script>
+      // ========= Advisory Modal Functions =========
+      function openAdvisoryModal(advisoryId) {
+        const modal = document.getElementById('advisoryModal');
+        
+        // Find the row with this advisory ID
+        const row = document.querySelector(`tr[data-id="${advisoryId}"]`);
+        if (!row) return;
+
+        // Populate modal with data from row attributes
+        document.getElementById('modalId').textContent = row.getAttribute('data-id');
+        document.getElementById('modalTitle').textContent = row.getAttribute('data-title');
+        document.getElementById('modalType').textContent = row.getAttribute('data-type');
+        document.getElementById('modalPriority').textContent = row.getAttribute('data-priority');
+        document.getElementById('modalAudience').textContent = row.getAttribute('data-audience');
+        document.getElementById('modalDate').textContent = row.getAttribute('data-date');
+        document.getElementById('modalStatus').textContent = row.getAttribute('data-status');
+        document.getElementById('modalDescription').textContent = row.getAttribute('data-description');
+
+        // Show modal with animation
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeAdvisoryModal() {
+        const modal = document.getElementById('advisoryModal');
+        modal.classList.remove('show');
+        document.body.style.overflow = 'auto';
+      }
+
+      // Setup View button handlers
+      document.addEventListener('DOMContentLoaded', () => {
+        // Add click handler to all View buttons
+        document.querySelectorAll('.view-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Get advisory ID from the closest tr element
+            const row = btn.closest('tr');
+            const advisoryId = row.getAttribute('data-id');
+            openAdvisoryModal(advisoryId);
+          });
+        });
+
+        // Close modal when clicking on overlay background (but not modal content)
+        const modal = document.getElementById('advisoryModal');
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) {
+            closeAdvisoryModal();
+          }
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            closeAdvisoryModal();
+          }
+        });
+      });
+
       // Section switcher for advisory board
       function showSection(sectionKey) {
         const newsSection = document.getElementById('news-section');
@@ -1202,5 +1474,53 @@
         });
       });
     </script>
+    <script>
+      function updateTime() {
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        const displayHours = String(hours % 12 || 12).padStart(2, '0');
+        document.getElementById('liveTime').textContent = `${displayHours}:${minutes}:${seconds} ${ampm}`;
+      }
+      // Initialize on page load and update every second
+      updateTime();
+      setInterval(updateTime, 1000);
+    </script>
+    <script src="../dispatch/js/accessibility.js"></script>
+
+    <!-- ========== Accessibility FAB ========== -->
+    <button id="a11yFab" class="a11y-fab" title="Accessibility Settings" aria-label="Open Accessibility Settings">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M12 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm9 7h-6l-1.41 7.06L16 22h-2.5l-1.5-5-1.5 5H8l2.41-5.94L9 9H3V7h18v2z"/></svg>
+    </button>
+    <div id="a11yOverlay" class="a11y-overlay"></div>
+    <div id="a11yPanel" class="a11y-panel" role="dialog" aria-label="Accessibility Settings">
+      <div class="a11y-panel-header"><h3><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm9 7h-6l-1.41 7.06L16 22h-2.5l-1.5-5-1.5 5H8l2.41-5.94L9 9H3V7h18v2z"/></svg> Accessibility Settings</h3><button id="a11yCloseBtn" class="a11y-close-btn" aria-label="Close">&times;</button></div>
+      <div class="a11y-panel-body">
+        <div class="a11y-section"><h4 class="a11y-section-title"><span class="a11y-icon purple"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5C10.55 5.4 8.45 5 6.5 5 5.33 5 4.11 5.15 3 5.5v14.07c0 .25.25.46.5.37C4.57 19.52 5.53 19.35 6.5 19.35c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5.97 0 1.93.09 2.88.36.23.07.62-.09.62-.36V5z"/></svg></span> Reading Assistance</h4>
+          <div class="a11y-option"><div class="a11y-option-info"><strong>Text-to-Speech</strong><small>Click any text to hear it read aloud</small></div><label class="a11y-switch"><input type="checkbox" id="a11yTTS"><span class="a11y-slider"></span></label></div>
+          <button id="a11yReadPage" class="a11y-read-page-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg> Read Page Aloud</button>
+          <div class="a11y-option"><div class="a11y-option-info"><strong>Dyslexia-Friendly Font</strong><small>Switch to OpenDyslexic typeface</small></div><label class="a11y-switch"><input type="checkbox" id="a11yDyslexia"><span class="a11y-slider"></span></label></div>
+          <div class="a11y-option"><div class="a11y-option-info"><strong>Text Size</strong><small>Adjust base text size</small></div><div class="a11y-range-wrap"><input type="range" id="a11yTextSize" class="a11y-range" min="80" max="200" step="10" value="100"><span id="a11yTextSizeVal" class="a11y-range-val">100%</span></div></div>
+        </div>
+        <div class="a11y-section"><h4 class="a11y-section-title"><span class="a11y-icon blue"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg></span> Visual Modes</h4>
+          <div class="a11y-option"><div class="a11y-option-info"><strong>High Contrast</strong><small>Dark background with bright text</small></div><label class="a11y-switch"><input type="checkbox" id="a11yContrast"><span class="a11y-slider"></span></label></div>
+          <div class="a11y-option"><div class="a11y-option-info"><strong>Large UI Elements</strong><small>Bigger buttons, text, and spacing</small></div><label class="a11y-switch"><input type="checkbox" id="a11yLargeUI"><span class="a11y-slider"></span></label></div>
+          <div class="a11y-option"><div class="a11y-option-info"><strong>Simple Mode</strong><small>Hide charts and non-essential details</small></div><label class="a11y-switch"><input type="checkbox" id="a11ySimple"><span class="a11y-slider"></span></label></div>
+          <div class="a11y-option"><div class="a11y-option-info"><strong>Colorblind Palette</strong><small>Adjusted colors for color vision deficiency</small></div><label class="a11y-switch"><input type="checkbox" id="a11yColorblind"><span class="a11y-slider"></span></label></div>
+        </div>
+        <div class="a11y-section"><h4 class="a11y-section-title"><span class="a11y-icon amber"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span> Navigation & Feedback</h4>
+          <div class="a11y-option"><div class="a11y-option-info"><strong>Voice Guidance</strong><small>Announce navigation changes aloud</small></div><label class="a11y-switch"><input type="checkbox" id="a11yVoice"><span class="a11y-slider"></span></label></div>
+          <div class="a11y-option"><div class="a11y-option-info"><strong>Icon Labels</strong><small>Show text labels alongside icons</small></div><label class="a11y-switch"><input type="checkbox" id="a11yIconLabels"><span class="a11y-slider"></span></label></div>
+          <div class="a11y-option"><div class="a11y-option-info"><strong>Confirmation Prompts</strong><small>Ask before critical actions</small></div><label class="a11y-switch"><input type="checkbox" id="a11yConfirm"><span class="a11y-slider"></span></label></div>
+        </div>
+        <div class="a11y-section"><h4 class="a11y-section-title"><span class="a11y-icon red"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg></span> Emergency</h4>
+          <div class="a11y-option"><div class="a11y-option-info"><strong>One-Tap Emergency</strong><small>Show quick emergency shortcut button</small></div><label class="a11y-switch"><input type="checkbox" id="a11yEmergency"><span class="a11y-slider"></span></label></div>
+          <button id="a11yEmergencyAction" class="a11y-emergency-btn" style="display:none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg> Send Emergency Alert</button>
+        </div>
+      </div>
+      <div class="a11y-panel-footer"><button id="a11yResetBtn" class="a11y-reset-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg> Reset All Settings</button></div>
+    </div>
   </body>
 </html>

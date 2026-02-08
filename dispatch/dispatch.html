@@ -5,407 +5,596 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="shortcut icon" href="../images/PULSE OG.png" type="image/png" />
-  <title>PULSE ADMIN | Dispatch Monitor</title>
+  <title>PULSE ADMIN | Map Dispatch</title>
 
   <!-- ========== All CSS files linkup ========= -->
   <link rel="stylesheet" href="../admin/assets/css/bootstrap.min.css" />
   <link rel="stylesheet" href="../admin/assets/css/lineicons.css" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="../admin/assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="../admin/assets/css/main.css" />
+  <link rel="stylesheet" href="css/accessibility.css" />
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
   <style>
-    /* Dispatch Page Specific Styles */
-    .dispatch-grid {
-      display: grid;
-      grid-template-columns: 1fr 400px;
-      gap: 20px;
-      min-height: calc(100vh - 180px);
+    /* ====== Map-Based Dispatch Dashboard ====== */
+    :root {
+      --dp-bg: #f0f2f5;
+      --dp-card: #ffffff;
+      --dp-border: #e2e6ea;
+      --dp-text: #1e293b;
+      --dp-muted: #64748b;
+      --dp-red: #ef4444;
+      --dp-orange: #f59e0b;
+      --dp-green: #22c55e;
+      --dp-blue: #3b82f6;
+      --dp-purple: #8b5cf6;
+      --dp-teal: #14b8a6;
+      --dp-radius: 10px;
+      --dp-shadow: 0 2px 12px rgba(0,0,0,.08);
     }
-    
-    .dispatch-main {
+
+    .main-wrapper .section { padding: 0 !important; }
+    .main-wrapper .section .container-fluid { padding: 0 !important; max-width: 100% !important; }
+
+    /* ---- Layout Shell ---- */
+    .dispatch-shell {
+      display: flex;
+      height: calc(100vh - 65px);
+      overflow: hidden;
+      background: var(--dp-bg);
+    }
+
+    /* ---- Stats Toolbar ---- */
+    .dispatch-toolbar {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 800;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .stat-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--dp-card);
+      border-radius: 40px;
+      padding: 6px 16px 6px 8px;
+      box-shadow: var(--dp-shadow);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--dp-text);
+      border: 1px solid var(--dp-border);
+    }
+
+    .stat-chip .chip-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .stat-chip .chip-dot.red   { background: var(--dp-red); }
+    .stat-chip .chip-dot.green { background: var(--dp-green); }
+    .stat-chip .chip-dot.blue  { background: var(--dp-blue); }
+    .stat-chip .chip-dot.orange{ background: var(--dp-orange); }
+
+    /* ---- Map Area ---- */
+    .map-area {
+      flex: 1;
+      position: relative;
+      min-width: 0;
+    }
+
+    #dispatchMap {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ---- Map Filter Bar ---- */
+    .map-filters {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 800;
+      display: flex;
+      gap: 6px;
+    }
+
+    .map-filter-btn {
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--dp-border);
+      background: var(--dp-card);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--dp-muted);
+      transition: all .2s;
+      box-shadow: var(--dp-shadow);
+    }
+
+    .map-filter-btn:hover { background: #f8f9fb; }
+    .map-filter-btn.active { background: var(--dp-blue); color: #fff; border-color: var(--dp-blue); }
+
+    /* ---- Right Side Panel ---- */
+    .side-panel {
+      width: 380px;
+      background: var(--dp-card);
+      border-left: 1px solid var(--dp-border);
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      overflow: hidden;
+      flex-shrink: 0;
     }
-    
-    .dispatch-stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
-    }
-    
-    .dispatch-stat {
-      background: white;
-      border-radius: 10px;
-      padding: 15px 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+    .sp-header {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--dp-border);
       display: flex;
       align-items: center;
-      gap: 12px;
+      justify-content: space-between;
+      flex-shrink: 0;
     }
-    
-    .dispatch-stat-icon {
-      width: 45px;
-      height: 45px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 18px;
-    }
-    
-    .dispatch-stat-icon.available { background: #27ae60; }
-    .dispatch-stat-icon.dispatched { background: #f39c12; }
-    .dispatch-stat-icon.returning { background: #3498db; }
-    .dispatch-stat-icon.offline { background: #95a5a6; }
-    
-    .dispatch-stat-info h4 {
-      font-size: 24px;
+
+    .sp-header h3 {
+      font-size: 15px;
       font-weight: 700;
       margin: 0;
+      color: var(--dp-text);
     }
-    
-    .dispatch-stat-info p {
-      font-size: 12px;
-      color: #666;
-      margin: 0;
+
+    .sp-badge {
+      background: var(--dp-red);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 9px;
+      border-radius: 20px;
     }
-    
-    .responder-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 15px;
+
+    /* ---- Tabs ---- */
+    .sp-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--dp-border);
+      flex-shrink: 0;
     }
-    
-    .responder-card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      border-left: 4px solid #ddd;
-      transition: all 0.2s;
+
+    .sp-tab {
+      flex: 1;
+      text-align: center;
+      padding: 10px 0;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--dp-muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all .2s;
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
     }
-    
-    .responder-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+
+    .sp-tab:hover { color: var(--dp-text); }
+    .sp-tab.active { color: var(--dp-blue); border-bottom-color: var(--dp-blue); }
+
+    /* ---- Search ---- */
+    .sp-search {
+      padding: 10px 18px;
+      border-bottom: 1px solid var(--dp-border);
+      flex-shrink: 0;
     }
-    
-    .responder-card.available { border-left-color: #27ae60; }
-    .responder-card.dispatched { border-left-color: #f39c12; }
-    .responder-card.returning { border-left-color: #3498db; }
-    .responder-card.offline { border-left-color: #95a5a6; }
-    
-    .responder-header {
+
+    .sp-search input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--dp-border);
+      border-radius: 8px;
+      font-size: 13px;
+      outline: none;
+      background: #f8f9fb;
+    }
+
+    .sp-search input:focus { border-color: var(--dp-blue); background: #fff; }
+
+    /* ---- Scrollable List ---- */
+    .sp-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 12px;
+    }
+
+    /* ---- Incident Card ---- */
+    .inc-card {
+      background: #fff;
+      border: 1px solid var(--dp-border);
+      border-radius: var(--dp-radius);
+      padding: 14px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all .15s;
+    }
+
+    .inc-card:hover { border-color: var(--dp-blue); box-shadow: 0 0 0 2px rgba(59,130,246,.12); }
+    .inc-card.selected { border-color: var(--dp-blue); background: #f0f6ff; }
+
+    .inc-card-top {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 15px;
+      margin-bottom: 8px;
     }
-    
-    .responder-unit-info {
+
+    .inc-id {
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--dp-text);
+    }
+
+    .inc-status {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: .3px;
+    }
+
+    .inc-status.new        { background: #fee2e2; color: #dc2626; }
+    .inc-status.dispatched { background: #fef3c7; color: #d97706; }
+    .inc-status.enroute    { background: #dbeafe; color: #2563eb; }
+    .inc-status.resolved   { background: #dcfce7; color: #16a34a; }
+
+    .inc-category {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--dp-text);
+      margin-bottom: 4px;
+    }
+
+    .cat-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .cat-dot.medical  { background: var(--dp-red); }
+    .cat-dot.fire     { background: var(--dp-orange); }
+    .cat-dot.crime    { background: var(--dp-purple); }
+    .cat-dot.disaster { background: #6366f1; }
+    .cat-dot.rescue   { background: var(--dp-teal); }
+
+    .inc-location {
+      font-size: 12px;
+      color: var(--dp-muted);
+      margin-bottom: 6px;
+    }
+
+    .inc-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--dp-muted);
+    }
+
+    .inc-time { display: flex; align-items: center; gap: 4px; }
+
+    .inc-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .inc-btn {
+      flex: 1;
+      padding: 7px 0;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .15s;
+    }
+
+    .inc-btn.dispatch-btn {
+      background: var(--dp-blue);
+      color: #fff;
+    }
+
+    .inc-btn.dispatch-btn:hover { background: #2563eb; }
+
+    .inc-btn.details-btn {
+      background: #f1f5f9;
+      color: var(--dp-text);
+    }
+
+    .inc-btn.details-btn:hover { background: #e2e8f0; }
+
+    /* ---- Responder Card ---- */
+    .resp-card {
+      background: #fff;
+      border: 1px solid var(--dp-border);
+      border-radius: var(--dp-radius);
+      padding: 14px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all .15s;
+    }
+
+    .resp-card:hover { border-color: var(--dp-green); box-shadow: 0 0 0 2px rgba(34,197,94,.12); }
+
+    .resp-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .resp-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--dp-text);
+    }
+
+    .resp-status {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+    }
+
+    .resp-status.available  { background: #dcfce7; color: #16a34a; }
+    .resp-status.dispatched { background: #fef3c7; color: #d97706; }
+    .resp-status.returning  { background: #dbeafe; color: #2563eb; }
+    .resp-status.offline    { background: #f1f5f9; color: #94a3b8; }
+
+    .resp-details {
+      font-size: 12px;
+      color: var(--dp-muted);
+      line-height: 1.7;
+    }
+
+    .resp-assign-btn {
+      width: 100%;
+      margin-top: 10px;
+      padding: 7px 0;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--dp-green);
+      color: #fff;
+      transition: all .15s;
+    }
+
+    .resp-assign-btn:hover { background: #16a34a; }
+    .resp-assign-btn:disabled { background: #e2e8f0; color: #94a3b8; cursor: default; }
+
+    /* ---- Marker Detail Popup ---- */
+    .marker-popup {
+      min-width: 240px;
+    }
+
+    .marker-popup h4 {
+      font-size: 14px;
+      font-weight: 700;
+      margin: 0 0 4px 0;
+    }
+
+    .marker-popup .popup-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      padding: 3px 0;
+      color: #555;
+    }
+
+    .marker-popup .popup-row strong {
+      color: #1e293b;
+    }
+
+    .marker-popup .popup-dispatch-btn {
+      display: block;
+      width: 100%;
+      margin-top: 10px;
+      padding: 8px;
+      border: none;
+      border-radius: 6px;
+      background: var(--dp-blue);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .marker-popup .popup-dispatch-btn:hover { background: #2563eb; }
+
+    /* ---- Assign Modal ---- */
+    .assign-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.45);
+      z-index: 9000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .assign-overlay.visible { display: flex; }
+
+    .assign-modal {
+      background: var(--dp-card);
+      border-radius: 14px;
+      width: 440px;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,.2);
+      padding: 24px;
+    }
+
+    .assign-modal h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0 0 4px 0;
+    }
+
+    .assign-modal .modal-sub {
+      font-size: 12px;
+      color: var(--dp-muted);
+      margin-bottom: 16px;
+    }
+
+    .assign-modal .resp-option {
       display: flex;
       align-items: center;
       gap: 12px;
+      padding: 12px;
+      border: 1px solid var(--dp-border);
+      border-radius: 10px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all .15s;
     }
-    
-    .unit-icon {
-      width: 45px;
-      height: 45px;
+
+    .assign-modal .resp-option:hover { border-color: var(--dp-blue); background: #f0f6ff; }
+    .assign-modal .resp-option.selected { border-color: var(--dp-blue); background: #eff6ff; box-shadow: 0 0 0 2px rgba(59,130,246,.2); }
+
+    .resp-option .resp-icon {
+      width: 40px; height: 40px;
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
       font-size: 18px;
+      color: #fff;
+      flex-shrink: 0;
     }
-    
-    .unit-icon.ambulance { background: #e74c3c; }
-    .unit-icon.fire { background: #f39c12; }
-    .unit-icon.police { background: #3498db; }
-    .unit-icon.rescue { background: #1abc9c; }
-    
-    .unit-details h4 {
-      margin: 0;
-      font-size: 15px;
-      font-weight: 600;
-    }
-    
-    .unit-details p {
-      margin: 0;
-      font-size: 12px;
-      color: #666;
-    }
-    
-    .unit-status-badge {
-      font-size: 11px;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-weight: 600;
-    }
-    
-    .unit-status-badge.available {
-      background: #e8f5e9;
-      color: #27ae60;
-    }
-    
-    .unit-status-badge.dispatched {
-      background: #fef3e2;
-      color: #f39c12;
-    }
-    
-    .unit-status-badge.returning {
-      background: #e8f4fd;
-      color: #3498db;
-    }
-    
-    .unit-status-badge.offline {
-      background: #f5f5f5;
-      color: #666;
-    }
-    
-    .responder-details {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+
+    .resp-option .resp-icon.ambulance { background: var(--dp-red); }
+    .resp-option .resp-icon.fire      { background: var(--dp-orange); }
+    .resp-option .resp-icon.police    { background: var(--dp-blue); }
+    .resp-option .resp-icon.rescue    { background: var(--dp-teal); }
+
+    .resp-option .resp-opt-info { flex: 1; }
+    .resp-option .resp-opt-name { font-size: 13px; font-weight: 600; color: var(--dp-text); }
+    .resp-option .resp-opt-meta { font-size: 11px; color: var(--dp-muted); }
+
+    .assign-modal .modal-actions {
+      display: flex;
       gap: 10px;
-      margin-bottom: 15px;
+      margin-top: 16px;
     }
-    
-    .detail-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-    }
-    
-    .detail-item i {
-      width: 14px;
-      color: #999;
-    }
-    
-    .responder-assignment {
-      padding: 12px;
-      background: #f9f9f9;
-      border-radius: 8px;
-      margin-bottom: 15px;
-    }
-    
-    .assignment-label {
-      font-size: 11px;
-      color: #666;
-      margin-bottom: 5px;
-    }
-    
-    .assignment-incident {
-      font-size: 13px;
-      font-weight: 600;
-      color: #333;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .responder-actions {
-      display: flex;
-      gap: 8px;
-    }
-    
-    .resp-action-btn {
+
+    .assign-modal .modal-actions .modal-btn {
       flex: 1;
-      padding: 8px;
+      padding: 10px;
       border: none;
-      border-radius: 6px;
-      font-size: 12px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      transition: all 0.2s;
-    }
-    
-    .resp-action-btn.primary {
-      background: var(--pulse-primary);
-      color: white;
-    }
-    
-    .resp-action-btn.secondary {
-      background: #f0f0f0;
-      color: #333;
-    }
-    
-    .resp-action-btn:hover {
-      transform: scale(1.02);
-    }
-    
-    /* Timeline Panel */
-    .timeline-panel {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .panel-header {
-      padding: 20px;
-      border-bottom: 1px solid #eee;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .panel-header h3 {
-      margin: 0;
-      font-size: 16px;
-    }
-    
-    .incident-selector {
-      padding: 10px 15px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      font-size: 13px;
-    }
-    
-    .panel-body {
-      padding: 20px;
-      flex: 1;
-      overflow-y: auto;
-    }
-    
-    .selected-incident {
-      padding: 15px;
-      background: #fde8e8;
       border-radius: 8px;
-      margin-bottom: 20px;
-    }
-    
-    .selected-incident-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    
-    .selected-incident-type {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 600;
-      color: #e74c3c;
-    }
-    
-    .selected-incident-id {
-      font-size: 12px;
-      color: #666;
-      font-family: monospace;
-    }
-    
-    .selected-incident-location {
       font-size: 13px;
-      color: #666;
-    }
-    
-    .dispatch-timeline {
-      position: relative;
-      padding-left: 25px;
-    }
-    
-    .dispatch-timeline::before {
-      content: '';
-      position: absolute;
-      left: 8px;
-      top: 0;
-      bottom: 0;
-      width: 2px;
-      background: #eee;
-    }
-    
-    .timeline-step {
-      position: relative;
-      padding-bottom: 25px;
-    }
-    
-    .timeline-step:last-child {
-      padding-bottom: 0;
-    }
-    
-    .step-marker {
-      position: absolute;
-      left: -25px;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: #ddd;
-      border: 3px solid white;
-      box-shadow: 0 0 0 2px #ddd;
-    }
-    
-    .timeline-step.completed .step-marker {
-      background: #27ae60;
-      box-shadow: 0 0 0 2px #27ae60;
-    }
-    
-    .timeline-step.active .step-marker {
-      background: #3498db;
-      box-shadow: 0 0 0 2px #3498db;
-      animation: pulse-marker 2s infinite;
-    }
-    
-    @keyframes pulse-marker {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-    }
-    
-    .step-content {
-      padding-left: 10px;
-    }
-    
-    .step-time {
-      font-size: 11px;
-      color: #999;
-      font-family: monospace;
-    }
-    
-    .step-title {
-      font-size: 14px;
       font-weight: 600;
-      margin: 5px 0;
+      cursor: pointer;
     }
-    
-    .step-details {
-      font-size: 12px;
-      color: #666;
+
+    .modal-btn.confirm { background: var(--dp-blue); color: #fff; }
+    .modal-btn.confirm:hover { background: #2563eb; }
+    .modal-btn.confirm:disabled { background: #cbd5e1; cursor: default; }
+    .modal-btn.cancel { background: #f1f5f9; color: var(--dp-text); }
+    .modal-btn.cancel:hover { background: #e2e8f0; }
+
+    /* ---- Side Panel Toggle (mobile) ---- */
+    .sp-toggle-btn {
+      display: none;
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      z-index: 800;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: none;
+      background: var(--dp-blue);
+      color: #fff;
+      font-size: 22px;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0,0,0,.25);
     }
-    
-    .timeline-step.pending .step-title,
-    .timeline-step.pending .step-details {
-      color: #ccc;
+
+    /* ---- Leaflet Popup Override ---- */
+    .leaflet-popup-content-wrapper {
+      border-radius: 10px !important;
+      box-shadow: 0 6px 24px rgba(0,0,0,.15) !important;
     }
-    
-    @media (max-width: 1200px) {
-      .dispatch-grid {
-        grid-template-columns: 1fr;
+
+    .leaflet-popup-content { margin: 12px 14px !important; }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 900px) {
+      .side-panel {
+        position: fixed;
+        right: -400px;
+        top: 65px;
+        height: calc(100vh - 65px);
+        z-index: 1500;
+        transition: right .3s ease;
+        box-shadow: -4px 0 20px rgba(0,0,0,.15);
       }
-      
-      .dispatch-stats {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      
-      .timeline-panel {
-        max-height: 500px;
-      }
+
+      .side-panel.open { right: 0; }
+
+      .sp-toggle-btn { display: flex; align-items: center; justify-content: center; }
+
+      .dispatch-toolbar { top: auto; bottom: 80px; left: 12px; }
     }
-    
-    @media (max-width: 768px) {
-      .dispatch-stats {
-        grid-template-columns: 1fr;
-      }
-      
-      .responder-cards {
-        grid-template-columns: 1fr;
-      }
+
+    @media (max-width: 500px) {
+      .side-panel { width: 100%; right: -100%; }
+      .dispatch-toolbar { flex-direction: column; gap: 4px; }
+      .map-filters { flex-wrap: wrap; top: 8px; right: 8px; }
+    }
+
+    /* ---- Toast Notification ---- */
+    .dp-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #1e293b;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      z-index: 9999;
+      opacity: 0;
+      transition: all .35s ease;
+      box-shadow: 0 8px 24px rgba(0,0,0,.2);
+    }
+
+    .dp-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ---- Pulse animation for active markers ---- */
+    @keyframes marker-pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(239,68,68,.5); }
+      70%  { box-shadow: 0 0 0 14px rgba(239,68,68,0); }
+      100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
+    }
+
+    .pulse-marker {
+      animation: marker-pulse 2s infinite;
+      border-radius: 50%;
     }
   </style>
 </head>
@@ -426,83 +615,11 @@
     </div>
     <nav class="sidebar-nav">
       <ul>
-        <!-- Dashboard -->
-        <li class="nav-item">
-          <a href="index.html">
-            <span class="icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M4 13H10C10.55 13 11 12.55 11 12V4C11 3.45 10.55 3 10 3H4C3.45 3 3 3.45 3 4V12C3 12.55 3.45 13 4 13ZM4 21H10C10.55 21 11 20.55 11 20V16C11 15.45 10.55 15 10 15H4C3.45 15 3 15.45 3 16V20C3 20.55 3.45 21 4 21ZM14 21H20C20.55 21 21 20.55 21 20V12C21 11.45 20.55 11 20 11H14C13.45 11 13 11.45 13 12V20C13 20.55 13.45 21 14 21ZM13 4V8C13 8.55 13.45 9 14 9H20C20.55 9 21 8.55 21 8V4C21 3.45 20.55 3 20 3H14C13.45 3 13 3.45 13 4Z" fill="currentColor"/>
-              </svg>
-            </span>
-            <span class="text">Dashboard</span>
-          </a>
-        </li>
-        <!-- Emergencies -->
-        <li class="nav-item">
-          <a href="emergencies.html">
-            <span class="icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 7C13.66 7 15 8.34 15 10C15 11.66 13.66 13 12 13C10.34 13 9 11.66 9 10C9 8.34 10.34 7 12 7ZM12 19.2C9.5 19.2 7.29 17.92 6 15.98C6.03 13.99 10 12.9 12 12.9C13.99 12.9 17.97 13.99 18 15.98C16.71 17.92 14.5 19.2 12 19.2Z" fill="currentColor"/>
-              </svg>
-            </span>
-            <span class="text">Emergencies</span>
-          </a>
-        </li>
-        <!-- Map -->
-        <li class="nav-item">
-          <a href="map.html">
-            <span class="icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 7C13.66 7 15 8.34 15 10C15 11.66 13.66 13 12 13C10.34 13 9 11.66 9 10C9 8.34 10.34 7 12 7Z" fill="currentColor"/>
-              </svg>
-            </span>
-            <span class="text">Map</span>
-          </a>
-        </li>
-        <!-- User Management -->
-        <li class="nav-item">
-          <a href="users.html">
-            <span class="icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V19C4 19.55 4.45 20 5 20H19C19.55 20 20 19.55 20 19V18C20 15.34 14.67 14 12 14Z" fill="currentColor"/>
-              </svg>
-            </span>
-            <span class="text">User Management</span>
-          </a>
-        </li>
-        <!-- Dispatch -->
-        <li class="nav-item active">
-          <a href="dispatch.html">
-            <span class="icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18 18.5C16.9 18.5 16 19.4 16 20.5C16 21.6 16.9 22.5 18 22.5C19.1 22.5 20 21.6 20 20.5C20 19.4 19.1 18.5 18 18.5ZM19.43 8.98C19.74 8.5 20 7.96 20 7.44V4C20 2.9 19.1 2 18 2H4C2.9 2 2 2.9 2 4V10C2 11.1 2.9 12 4 12H14.54C14.6 12 14.67 12 14.73 11.99C14.12 12.89 13.6 14.02 13.37 15.28H4C2.9 15.28 2 16.18 2 17.28V22C2 23.1 2.9 24 4 24H16.73C16.14 23.05 15.8 21.96 15.8 20.8C15.8 16.89 18.98 13.7 22.9 13.7C23.61 13.7 24.3 13.78 24.97 13.95V9C24.97 8.48 24.74 7.97 24.41 7.49L19.43 8.98ZM4 10V4H18V7.44L4 10ZM6 17.5C4.9 17.5 4 18.4 4 19.5C4 20.6 4.9 21.5 6 21.5C7.1 21.5 8 20.6 8 19.5C8 18.4 7.1 17.5 6 17.5Z" fill="currentColor"/>
-              </svg>
-            </span>
-            <span class="text">Dispatch</span>
-          </a>
-        </li>
-        <!-- Reports -->
-        <li class="nav-item">
-          <a href="reports.html">
-            <span class="icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5 9.2H3C2.4 9.2 2 9.6 2 10.2V21C2 21.6 2.4 22 3 22H21C21.6 22 22 21.6 22 21V10.2C22 9.6 21.6 9.2 21 9.2H19.1C19.1 8.6 19.1 8.1 19.1 7.6C19.1 5.9 20.4 4.4 22 4.2V2.2C20.8 2.4 19.6 3 18.7 3.9C17.8 3 16.3 2 14.6 2C10.1 2 6.6 5.5 6.6 10C6.6 10.1 6.6 10.2 6.6 10.2C5.4 10.4 4.6 11.4 4.6 12.6V21C4.6 21.6 5 22 5.6 22H23C23.6 22 24 21.6 24 21V19.9C23.3 20 22.6 20 22 20H4V10.2C4 9.6 4.4 9.2 5 9.2Z" fill="currentColor"/>
-              </svg>
-            </span>
-            <span class="text">Reports</span>
-          </a>
-        </li>
-        <!-- Logs -->
-        <li class="nav-item">
-          <a href="logs.html">
-            <span class="icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M11.99 2C6.47 2 2 6.48 2 12C2 17.52 6.47 22 11.99 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 11.99 2ZM12 20C7.58 20 4 16.42 4 12C4 7.58 7.58 4 12 4C16.42 4 20 7.58 20 12C20 16.42 16.42 20 12 20ZM12.5 7H11V13L16.25 16.15L17 14.92L12.5 12.25V7Z" fill="currentColor"/>
-              </svg>
-            </span>
-            <span class="text">Logs</span>
-          </a>
-        </li>
+        <li class="nav-item"><a href="index.html"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 13H10C10.55 13 11 12.55 11 12V4C11 3.45 10.55 3 10 3H4C3.45 3 3 3.45 3 4V12C3 12.55 3.45 13 4 13ZM4 21H10C10.55 21 11 20.55 11 20V16C11 15.45 10.55 15 10 15H4C3.45 15 3 3.45 3 16V20C3 20.55 3.45 21 4 21ZM14 21H20C20.55 21 21 20.55 21 20V12C21 11.45 20.55 11 20 11H14C13.45 11 13 11.45 13 12V20C13 20.55 13.45 21 14 21ZM13 4V8C13 8.55 13.45 9 14 9H20C20.55 9 21 8.55 21 8V4C21 3.45 20.55 3 20 3H14C13.45 3 13 3.45 13 4Z" fill="currentColor"/></svg></span><span class="text">Dashboard</span></a></li>
+        <li class="nav-item"><a href="emergencies.html"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" fill="currentColor"/></svg></span><span class="text">Emergencies</span></a></li>
+        <li class="nav-item active"><a href="dispatch.html"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm11 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM5 11l1.5-4.5h11L19 11H5z" fill="currentColor"/></svg></span><span class="text">Dispatch</span></a></li>
+        <li class="nav-item"><a href="reports.html"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z" fill="currentColor"/></svg></span><span class="text">Reports</span></a></li>
+        <li class="nav-item" style="margin-bottom: 15px;"><a href="news-events-view.html"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 3H4C2.9 3 2 3.9 2 5V19C2 20.1 2.9 21 4 21H20C21.1 21 22 20.1 22 19V5C22 3.9 21.1 3 20 3ZM5 7H10V13H5V7ZM19 17H5V15H19V17ZM19 13H12V11H19V13ZM19 9H12V7H19V9Z" fill="currentColor"/></svg></span><span class="text">News & Events</span></a></li>
       </ul>
     </nav>
   </aside>
@@ -522,17 +639,10 @@
                   <i class="lni lni-chevron-left me-2"></i> Menu
                 </button>
               </div>
-              <div class="header-search d-none d-md-flex">
-                <form action="#">
-                  <input type="text" placeholder="Search..." />
-                  <button><i class="lni lni-search-alt"></i></button>
-                </form>
-              </div>
             </div>
           </div>
           <div class="col-lg-7 col-md-7 col-6">
             <div class="header-right">
-              <!-- profile start -->
               <div class="profile-box ml-15">
                 <button class="dropdown-toggle bg-transparent border-0" type="button" id="profile" data-bs-toggle="dropdown" aria-expanded="false">
                   <div class="profile-info">
@@ -544,30 +654,12 @@
                   </div>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profile">
-                  <li>
-                    <a href="#0">
-                      <i class="lni lni-user"></i>
-                      Profile
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#0">
-                      <i class="lni lni-cog"></i>
-                      Settings
-                    </a>
-                  </li>
-                  <li>
-                    <hr class="dropdown-divider" />
-                  </li>
-                  <li>
-                    <a href="#0">
-                      <i class="lni lni-exit"></i>
-                      Sign Out
-                    </a>
-                  </li>
+                  <li><a href="#0"><i class="lni lni-user"></i> Profile</a></li>
+                  <li><a href="#0"><i class="lni lni-cog"></i> Settings</a></li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li><a href="#0"><i class="lni lni-exit"></i> Sign Out</a></li>
                 </ul>
               </div>
-              <!-- profile end -->
             </div>
           </div>
         </div>
@@ -575,271 +667,619 @@
     </header>
     <!-- ========== header end ========== -->
 
-    <!-- ========== section start ========== -->
+    <!-- ========== Map Dispatch Dashboard ========== -->
     <section class="section">
       <div class="container-fluid">
-        <!-- page title & breadcrumb start -->
-        <div class="row align-items-center mb-4">
-          <div class="col-sm-4">
-            <div class="page-title-box">
-              <h4 class="page-title">Dispatch Monitoring</h4>
+        <div class="dispatch-shell">
+          <!-- ===== Map Area ===== -->
+          <div class="map-area">
+            <!-- Live Stats Toolbar -->
+            <div class="dispatch-toolbar">
+              <div class="stat-chip"><span class="chip-dot red"></span><span id="statActive">6</span> Active</div>
+              <div class="stat-chip"><span class="chip-dot green"></span><span id="statAvailable">3</span> Available</div>
+              <div class="stat-chip"><span class="chip-dot orange"></span><span id="statDispatched">2</span> Dispatched</div>
+              <div class="stat-chip"><span class="chip-dot blue"></span><span id="statResolved">1</span> Resolved</div>
             </div>
-          </div>
-          <div class="col-sm-8">
-            <div class="breadcrumb-links">
-              <a href="index.html">Dashboard</a>
-              <span>Dispatch</span>
-            </div>
-          </div>
-        </div>
-        <!-- page title & breadcrumb end -->
 
-        <!-- Responder Stats -->
-        <div class="row mb-4">
-          <div class="col-xxl-3 col-lg-6">
-            <div class="card card-stat">
-              <div class="card-body">
-                <div class="d-flex align-items-end justify-content-between">
-                  <div>
-                    <p class="dz-emai-con">On Duty</p>
-                    <h2>42</h2>
-                  </div>
-                  <div class="card-icon success">
-                    <i class="lni lni-checkmark-circle"></i>
-                  </div>
-                </div>
-              </div>
+            <!-- Map Filters -->
+            <div class="map-filters">
+              <button class="map-filter-btn active" data-filter="all">All</button>
+              <button class="map-filter-btn" data-filter="incidents">Incidents</button>
+              <button class="map-filter-btn" data-filter="responders">Responders</button>
+              <button class="map-filter-btn" data-filter="active-only">Active Only</button>
             </div>
-          </div>
-          <div class="col-xxl-3 col-lg-6">
-            <div class="card card-stat">
-              <div class="card-body">
-                <div class="d-flex align-items-end justify-content-between">
-                  <div>
-                    <p class="dz-emai-con">Idle</p>
-                    <h2>18</h2>
-                  </div>
-                  <div class="card-icon warning">
-                    <i class="lni lni-hourglass"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-xxl-3 col-lg-6">
-            <div class="card card-stat">
-              <div class="card-body">
-                <div class="d-flex align-items-end justify-content-between">
-                  <div>
-                    <p class="dz-emai-con">Active Calls</p>
-                    <h2>7</h2>
-                  </div>
-                  <div class="card-icon primary">
-                    <i class="lni lni-phone"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-xxl-3 col-lg-6">
-            <div class="card card-stat">
-              <div class="card-body">
-                <div class="d-flex align-items-end justify-content-between">
-                  <div>
-                    <p class="dz-emai-con">Avg ETA</p>
-                    <h2>4.3m</h2>
-                  </div>
-                  <div class="card-icon info">
-                    <i class="lni lni-map"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <!-- Responder Cards -->
-        <div class="row mb-4">
-          <div class="col-12">
-            <h5 class="mb-3">Active Responders</h5>
-            <div id="responderCards" class="row">
-              <!-- Populated by JavaScript -->
-            </div>
-          </div>
-        </div>
+            <!-- Leaflet Map -->
+            <div id="dispatchMap"></div>
 
-        <!-- Dispatch Timeline -->
-        <div class="row">
-          <div class="col-12">
-            <div class="card">
-              <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Dispatch Timeline</h5>
-                <select class="form-select" style="width: 250px;" id="incidentSelect">
-                  <option value="INC-001">INC-2026-0147 (Medical)</option>
-                  <option value="INC-002">INC-2026-0146 (Fire)</option>
-                  <option value="INC-003">INC-2026-0145 (Crime)</option>
-                </select>
-              </div>
-              <div class="card-body">
-                <div id="dispatchTimeline">
-                  <!-- Populated by JavaScript -->
-                </div>
-              </div>
+            <!-- Mobile Side Panel Toggle -->
+            <button class="sp-toggle-btn" id="spToggle" title="Incidents Panel">
+              <i class="lni lni-list"></i>
+            </button>
+          </div>
+
+          <!-- ===== Right Side Panel ===== -->
+          <div class="side-panel" id="sidePanel">
+            <div class="sp-header">
+              <h3>Dispatch Console</h3>
+              <span class="sp-badge" id="activeCount">6</span>
+            </div>
+
+            <!-- Tabs -->
+            <div class="sp-tabs">
+              <button class="sp-tab active" data-tab="incidents">Incidents</button>
+              <button class="sp-tab" data-tab="responders">Responders</button>
+            </div>
+
+            <!-- Search -->
+            <div class="sp-search">
+              <input type="text" id="spSearch" placeholder="Search by ID, location, or category..." />
+            </div>
+
+            <!-- Incidents List -->
+            <div class="sp-list" id="incidentsList">
+              <!-- Populated by JS -->
+            </div>
+
+            <!-- Responders List -->
+            <div class="sp-list" id="respondersList" style="display:none;">
+              <!-- Populated by JS -->
             </div>
           </div>
         </div>
       </div>
     </section>
-    <!-- ========== section end ========== -->
+    <!-- ========== Map Dispatch Dashboard End ========== -->
   </main>
   <!-- ======== main-wrapper end =========== -->
 
+  <!-- Assign Responder Modal -->
+  <div class="assign-overlay" id="assignOverlay">
+    <div class="assign-modal">
+      <h3>Assign Responder</h3>
+      <p class="modal-sub" id="assignTarget">Select a responder for INC-2026-0147</p>
+      <div id="assignOptions">
+        <!-- Populated by JS -->
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn cancel" id="assignCancel">Cancel</button>
+        <button class="modal-btn confirm" id="assignConfirm" disabled>Confirm Dispatch</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="dp-toast" id="dpToast"></div>
+
+  <!-- ========== Scripts ========== -->
   <script src="../admin/assets/js/bootstrap.bundle.min.js"></script>
   <script src="../admin/assets/js/main.js"></script>
   <script src="js/mock-data.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      initializePage();
-      populateResponderCards();
-      populateDispatchTimeline();
+  /* ============================================================
+     PULSE — Map-Based Dispatch Dashboard Engine
+     ============================================================ */
+  (function () {
+    'use strict';
+
+    // ── San Juan City center ──
+    const MAP_CENTER = [14.6019, 121.0355];
+    const MAP_ZOOM = 15;
+
+    // ── Mock Incident Data ──
+    const incidents = [
+      { id:'INC-2026-0147', category:'Medical',  status:'New',        lat:14.6045, lng:121.0380, location:'Brgy. Greenhills, San Juan City',         reported:'2 mins ago',  priority:'High',   reporter:'Juan Dela Cruz' },
+      { id:'INC-2026-0146', category:'Fire',     status:'Dispatched', lat:14.5985, lng:121.0295, location:'Brgy. Addition Hills, San Juan City',     reported:'8 mins ago',  priority:'High',   reporter:'Maria Santos' },
+      { id:'INC-2026-0145', category:'Crime',    status:'En Route',   lat:14.6010, lng:121.0340, location:'Brgy. Batis, San Juan City',              reported:'15 mins ago', priority:'Medium', reporter:'Pedro Reyes' },
+      { id:'INC-2026-0144', category:'Rescue',   status:'New',        lat:14.5950, lng:121.0370, location:'Brgy. Little Baguio, San Juan City',      reported:'23 mins ago', priority:'High',   reporter:'Ana Garcia' },
+      { id:'INC-2026-0143', category:'Medical',  status:'Resolved',   lat:14.6055, lng:121.0320, location:'Brgy. Corazon de Jesus, San Juan City',   reported:'35 mins ago', priority:'Low',    reporter:'Carlos Mendoza' },
+      { id:'INC-2026-0142', category:'Disaster', status:'New',        lat:14.5990, lng:121.0410, location:'Brgy. Ermitaño, San Juan City',           reported:'45 mins ago', priority:'High',   reporter:'Rosa Aquino' },
+      { id:'INC-2026-0141', category:'Fire',     status:'Dispatched', lat:14.6030, lng:121.0260, location:'Brgy. Isabelita, San Juan City',          reported:'52 mins ago', priority:'Medium', reporter:'Lito Ferrer' },
+      { id:'INC-2026-0140', category:'Crime',    status:'New',        lat:14.6070, lng:121.0350, location:'Brgy. Kabayanan, San Juan City',          reported:'1 hour ago',  priority:'Medium', reporter:'Elena Cruz' }
+    ];
+
+    // ── Mock Responder Data ──
+    const responders = [
+      { id:'RES-001', name:'Unit A-01 (Ambulance)',  type:'Medical',  typeClass:'ambulance', status:'Available',  lat:14.6020, lng:121.0355, personnel:4, assignedTo:null },
+      { id:'RES-002', name:'Unit F-01 (Fire Truck)', type:'Fire',     typeClass:'fire',      status:'Dispatched', lat:14.5988, lng:121.0298, personnel:6, assignedTo:'INC-2026-0146' },
+      { id:'RES-003', name:'Unit P-01 (Patrol Car)', type:'Police',   typeClass:'police',    status:'Available',  lat:14.6025, lng:121.0360, personnel:2, assignedTo:null },
+      { id:'RES-004', name:'Unit R-01 (Rescue Van)', type:'Rescue',   typeClass:'rescue',    status:'Dispatched', lat:14.5955, lng:121.0372, personnel:5, assignedTo:'INC-2026-0144' },
+      { id:'RES-005', name:'Unit A-02 (Ambulance)',  type:'Medical',  typeClass:'ambulance', status:'Available',  lat:14.6040, lng:121.0330, personnel:4, assignedTo:null },
+      { id:'RES-006', name:'Unit F-02 (Fire Truck)', type:'Fire',     typeClass:'fire',      status:'Returning', lat:14.6060, lng:121.0310, personnel:6, assignedTo:null },
+      { id:'RES-007', name:'Unit P-02 (Patrol Car)', type:'Police',   typeClass:'police',    status:'Available',  lat:14.6005, lng:121.0390, personnel:3, assignedTo:null }
+    ];
+
+    // ── State ──
+    let map, incidentMarkers = [], responderMarkers = [];
+    let activeFilter = 'all';
+    let activeTab = 'incidents';
+    let selectedIncidentId = null;
+    let selectedResponderId = null;
+
+    // ── Category config ──
+    const catConfig = {
+      Medical:  { color: '#ef4444', icon: '🏥' },
+      Fire:    { color: '#f59e0b', icon: '🔥' },
+      Crime:   { color: '#8b5cf6', icon: '🚔' },
+      Disaster:{ color: '#6366f1', icon: '🌊' },
+      Rescue:  { color: '#14b8a6', icon: '🚁' }
+    };
+
+    const statusCls = { 'New':'new', 'Dispatched':'dispatched', 'En Route':'enroute', 'Resolved':'resolved' };
+
+    // ──────────────────────────────────────
+    //  INIT
+    // ──────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', function () {
+      initMap();
+      renderIncidents();
+      renderResponders();
+      renderMapMarkers();
+      updateStats();
+      bindEvents();
       setupMenuToggle();
+
+      // Check for incident parameter from emergencies page
+      const params = new URLSearchParams(window.location.search);
+      const incidentId = params.get('incident');
+      if (incidentId) {
+        setTimeout(() => {
+          flyToIncident(incidentId);
+          highlightIncidentCard(incidentId);
+        }, 500);
+      }
     });
-    
+
     function setupMenuToggle() {
-      const menuToggle = document.getElementById('menu-toggle');
+      const btn = document.getElementById('menu-toggle');
       const sidebar = document.querySelector('.sidebar-nav-wrapper');
-      if (menuToggle) {
-        menuToggle.addEventListener('click', function() {
-          sidebar.classList.toggle('active');
+      if (btn) btn.addEventListener('click', () => sidebar.classList.toggle('active'));
+    }
+
+    // ──────────────────────────────────────
+    //  MAP
+    // ──────────────────────────────────────
+    function initMap() {
+      map = L.map('dispatchMap', {
+        center: MAP_CENTER,
+        zoom: MAP_ZOOM,
+        zoomControl: false
+      });
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+        maxZoom: 19
+      }).addTo(map);
+
+      L.control.zoom({ position: 'bottomleft' }).addTo(map);
+    }
+
+    // ── Custom Marker Icons ──
+    function incidentIcon(category, status) {
+      const cfg = catConfig[category] || catConfig.Medical;
+      const isActive = status !== 'Resolved';
+      return L.divIcon({
+        className: '',
+        html: `<div style="
+          width:32px;height:32px;border-radius:50%;
+          background:${cfg.color};
+          border:3px solid #fff;
+          display:flex;align-items:center;justify-content:center;
+          font-size:14px;
+          box-shadow:0 2px 8px rgba(0,0,0,.3);
+          ${isActive ? 'animation:marker-pulse 2s infinite;' : 'opacity:.6;'}
+        ">${cfg.icon}</div>`,
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+        popupAnchor: [0, -20]
+      });
+    }
+
+    function responderIcon(typeClass, status) {
+      const bg = status === 'Available' ? '#22c55e' : status === 'Returning' ? '#3b82f6' : '#f59e0b';
+      const icons = { ambulance:'🚑', fire:'🚒', police:'🚓', rescue:'🚐' };
+      return L.divIcon({
+        className: '',
+        html: `<div style="
+          width:30px;height:30px;border-radius:8px;
+          background:${bg};
+          border:2px solid #fff;
+          display:flex;align-items:center;justify-content:center;
+          font-size:14px;
+          box-shadow:0 2px 8px rgba(0,0,0,.3);
+        ">${icons[typeClass] || '🚗'}</div>`,
+        iconSize: [30, 30],
+        iconAnchor: [15, 15],
+        popupAnchor: [0, -18]
+      });
+    }
+
+    function renderMapMarkers() {
+      // Clear existing
+      incidentMarkers.forEach(m => map.removeLayer(m));
+      responderMarkers.forEach(m => map.removeLayer(m));
+      incidentMarkers = [];
+      responderMarkers = [];
+
+      const showIncidents = activeFilter === 'all' || activeFilter === 'incidents' || activeFilter === 'active-only';
+      const showResponders = activeFilter === 'all' || activeFilter === 'responders';
+
+      if (showIncidents) {
+        incidents.forEach(inc => {
+          if (activeFilter === 'active-only' && inc.status === 'Resolved') return;
+          const marker = L.marker([inc.lat, inc.lng], { icon: incidentIcon(inc.category, inc.status) })
+            .addTo(map)
+            .bindPopup(incidentPopupHTML(inc));
+          marker._incId = inc.id;
+          marker.on('click', () => {
+            selectedIncidentId = inc.id;
+            highlightIncidentCard(inc.id);
+          });
+          incidentMarkers.push(marker);
+        });
+      }
+
+      if (showResponders) {
+        responders.forEach(resp => {
+          if (activeFilter === 'active-only' && resp.status === 'Returning') return;
+          const marker = L.marker([resp.lat, resp.lng], { icon: responderIcon(resp.typeClass, resp.status) })
+            .addTo(map)
+            .bindPopup(responderPopupHTML(resp));
+          marker._respId = resp.id;
+          responderMarkers.push(marker);
         });
       }
     }
-    
-    function initializePage() {
-      // Initialize page
+
+    function incidentPopupHTML(inc) {
+      const cfg = catConfig[inc.category] || catConfig.Medical;
+      return `<div class="marker-popup">
+        <h4 style="color:${cfg.color}">${cfg.icon} ${inc.category} Emergency</h4>
+        <div class="popup-row"><span>ID</span><strong>${inc.id}</strong></div>
+        <div class="popup-row"><span>Status</span><strong>${inc.status}</strong></div>
+        <div class="popup-row"><span>Priority</span><strong>${inc.priority}</strong></div>
+        <div class="popup-row"><span>Location</span><strong>${inc.location}</strong></div>
+        <div class="popup-row"><span>Reported</span><strong>${inc.reported}</strong></div>
+        <div class="popup-row"><span>Reporter</span><strong>${inc.reporter}</strong></div>
+        ${inc.status !== 'Resolved' ? `<button class="popup-dispatch-btn" onclick="window.dispatchApp.openAssign('${inc.id}')">⚡ Dispatch Responder</button>` : ''}
+      </div>`;
     }
-    
-    function populateResponderCards() {
-      const container = document.getElementById('responderCards');
-      
-      const responders = [
-        { id: 'RES-001', name: 'Unit A-01', type: 'Ambulance', typeClass: 'ambulance', status: 'Available', personnel: 4, location: 'CEDOC HQ', incident: null },
-        { id: 'RES-002', name: 'Unit F-01', type: 'Fire Truck', typeClass: 'fire', status: 'Dispatched', personnel: 6, location: 'Brgy. Addition Hills', incident: 'INC-2026-0146' },
-        { id: 'RES-003', name: 'Unit P-01', type: 'Patrol Car', typeClass: 'police', status: 'Available', personnel: 2, location: 'CEDOC HQ', incident: null },
-        { id: 'RES-004', name: 'Unit R-01', type: 'Rescue Van', typeClass: 'rescue', status: 'Dispatched', personnel: 5, location: 'Brgy. Little Baguio', incident: 'INC-2026-0144' },
-        { id: 'RES-005', name: 'Unit A-02', type: 'Ambulance', typeClass: 'ambulance', status: 'Returning', personnel: 4, location: 'En Route', incident: null },
-        { id: 'RES-006', name: 'Unit F-02', type: 'Fire Truck', typeClass: 'fire', status: 'Available', personnel: 6, location: 'CEDOC HQ', incident: null }
-      ];
-      
-      const iconMap = {
-        'ambulance': 'lni-ambulance',
-        'fire': 'lni-fire',
-        'police': 'lni-shield',
-        'rescue': 'lni-life-ring'
-      };
-      
-      const badgeMap = {
-        'Available': 'success',
-        'Dispatched': 'warning',
-        'Returning': 'info',
-        'Offline': 'secondary'
-      };
-      
-      container.innerHTML = responders.map(resp => `
-        <div class="col-md-6 col-lg-4 mb-3">
-          <div class="card">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-start mb-3">
-                <div class="d-flex align-items-center gap-2">
-                  <div style="width: 45px; height: 45px; border-radius: 10px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white;">
-                    <i class="lni ${iconMap[resp.typeClass]}"></i>
-                  </div>
-                  <div>
-                    <h6 class="mb-0">${resp.name}</h6>
-                    <p class="mb-0 text-muted" style="font-size: 12px;">${resp.type}</p>
-                  </div>
-                </div>
-                <span class="badge bg-${badgeMap[resp.status]}">${resp.status}</span>
-              </div>
-              
-              <div class="small text-muted mb-2">
-                <div class="mb-1"><i class="lni lni-users"></i> ${resp.personnel} Personnel</div>
-                <div class="mb-1"><i class="lni lni-map-marker"></i> ${resp.location}</div>
-                ${resp.incident ? `<div class="text-warning"><i class="lni lni-alarm"></i> ${resp.incident}</div>` : ''}
-              </div>
-              
-              <div class="d-flex gap-2 mt-3">
-                ${resp.status === 'Available' ? `
-                  <button class="btn btn-sm btn-primary w-100" onclick="assignUnit('${resp.id}')">
-                    <i class="lni lni-send"></i> Dispatch
-                  </button>
-                ` : resp.status === 'Dispatched' ? `
-                  <button class="btn btn-sm btn-outline-primary flex-1" onclick="viewAssignment('${resp.id}')">
-                    <i class="lni lni-eye"></i> Track
-                  </button>
-                  <button class="btn btn-sm btn-success flex-1" onclick="markComplete('${resp.id}')">
-                    <i class="lni lni-checkmark"></i> Complete
-                  </button>
-                ` : `
-                  <button class="btn btn-sm btn-outline-secondary w-100" onclick="viewDetails('${resp.id}')">
-                    <i class="lni lni-info"></i> Details
-                  </button>
-                `}
-              </div>
-            </div>
-          </div>
-        </div>
-      `).join('');
+
+    function responderPopupHTML(resp) {
+      const assigned = resp.assignedTo ? `<div class="popup-row"><span>Assigned</span><strong>${resp.assignedTo}</strong></div>` : '';
+      return `<div class="marker-popup">
+        <h4>${resp.name}</h4>
+        <div class="popup-row"><span>Type</span><strong>${resp.type}</strong></div>
+        <div class="popup-row"><span>Status</span><strong>${resp.status}</strong></div>
+        <div class="popup-row"><span>Personnel</span><strong>${resp.personnel}</strong></div>
+        ${assigned}
+      </div>`;
     }
-    
-    function populateDispatchTimeline() {
-      const timeline = document.getElementById('dispatchTimeline');
-      
-      const timelineData = [
-        { time: '14:23:45', event: 'Emergency Call Received', details: 'Fire emergency reported at Addition Hills', status: 'completed' },
-        { time: '14:24:12', event: 'Dispatch Center Notified', details: 'Alert sent to all available fire units', status: 'completed' },
-        { time: '14:24:35', event: 'Unit F-01 Dispatched', details: 'Fire truck unit dispatched with 6 personnel', status: 'completed' },
-        { time: '14:25:10', event: 'Unit En Route', details: 'Estimated arrival: 4 minutes 20 seconds', status: 'active' },
-        { time: '14:29:30', event: 'Unit Arriving', details: 'Approaching incident location', status: 'pending' },
-        { time: 'TBD', event: 'Scene Assessment', details: 'Waiting for unit to arrive', status: 'pending' }
-      ];
-      
-      timeline.innerHTML = timelineData.map((step, idx) => `
-        <div class="d-flex mb-4 pb-3 ${idx !== timelineData.length - 1 ? 'border-bottom' : ''}">
-          <div class="me-3">
-            <div style="width: 30px; height: 30px; border-radius: 50%; background: ${step.status === 'completed' ? '#27ae60' : step.status === 'active' ? '#f39c12' : '#e0e0e0'}; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
-              ${step.status === 'completed' ? '<i class="lni lni-checkmark"></i>' : step.status === 'active' ? '<span style="width: 8px; height: 8px; background: white; border-radius: 50%;"></span>' : ''}
-            </div>
-          </div>
-          <div>
-            <div class="d-flex justify-content-between align-items-start">
-              <h6 class="mb-1">${step.event}</h6>
-              <small class="text-muted">${step.time}</small>
-            </div>
-            <p class="mb-0 text-muted" style="font-size: 13px;">${step.details}</p>
-          </div>
-        </div>
-      `).join('');
-    }
-    
-    function assignUnit(id) {
-      alert('Opening dispatch assignment for ' + id);
-    }
-    
-    function viewAssignment(id) {
-      alert('Viewing assignment for ' + id);
-    }
-    
-    function markComplete(id) {
-      if (confirm('Mark this dispatch as complete?')) {
-        alert('Dispatch completed for ' + id);
-        populateResponderCards();
+
+    // ──────────────────────────────────────
+    //  SIDE PANEL — Incidents
+    // ──────────────────────────────────────
+    function renderIncidents(filter) {
+      const list = document.getElementById('incidentsList');
+      const q = (filter || '').toLowerCase();
+      const filtered = incidents.filter(inc => {
+        if (!q) return true;
+        return inc.id.toLowerCase().includes(q) || inc.location.toLowerCase().includes(q) || inc.category.toLowerCase().includes(q);
+      });
+
+      if (!filtered.length) {
+        list.innerHTML = '<div style="text-align:center;padding:40px 20px;color:#94a3b8;font-size:13px;">No incidents match your search.</div>';
+        return;
       }
+
+      list.innerHTML = filtered.map(inc => {
+        const cat = inc.category.toLowerCase();
+        const cls = statusCls[inc.status] || 'new';
+        const isSelected = inc.id === selectedIncidentId;
+        return `
+          <div class="inc-card ${isSelected ? 'selected' : ''}" data-inc-id="${inc.id}">
+            <div class="inc-card-top">
+              <span class="inc-id">${inc.id}</span>
+              <span class="inc-status ${cls}">${inc.status}</span>
+            </div>
+            <div class="inc-category">
+              <span class="cat-dot ${cat}"></span>
+              ${inc.category} — ${inc.priority} Priority
+            </div>
+            <div class="inc-location">📍 ${inc.location}</div>
+            <div class="inc-meta">
+              <span class="inc-time">🕐 ${inc.reported}</span>
+              <span>👤 ${inc.reporter}</span>
+            </div>
+            ${inc.status !== 'Resolved' ? `
+            <div class="inc-actions">
+              <button class="inc-btn dispatch-btn" onclick="event.stopPropagation(); window.dispatchApp.openAssign('${inc.id}')">⚡ Dispatch</button>
+              <button class="inc-btn details-btn" onclick="event.stopPropagation(); window.dispatchApp.flyToIncident('${inc.id}')">📍 Locate</button>
+            </div>` : `
+            <div class="inc-actions">
+              <button class="inc-btn details-btn" onclick="event.stopPropagation(); window.dispatchApp.flyToIncident('${inc.id}')">📍 Locate</button>
+            </div>`}
+          </div>`;
+      }).join('');
+
+      // Click to select + fly to
+      list.querySelectorAll('.inc-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const id = card.dataset.incId;
+          selectedIncidentId = id;
+          renderIncidents(document.getElementById('spSearch').value);
+          flyToIncident(id);
+        });
+      });
     }
-    
-    function viewDetails(id) {
-      alert('Viewing details for ' + id);
+
+    // ──────────────────────────────────────
+    //  SIDE PANEL — Responders
+    // ──────────────────────────────────────
+    function renderResponders(filter) {
+      const list = document.getElementById('respondersList');
+      const q = (filter || '').toLowerCase();
+      const filtered = responders.filter(r => {
+        if (!q) return true;
+        return r.id.toLowerCase().includes(q) || r.name.toLowerCase().includes(q) || r.type.toLowerCase().includes(q);
+      });
+
+      if (!filtered.length) {
+        list.innerHTML = '<div style="text-align:center;padding:40px 20px;color:#94a3b8;font-size:13px;">No responders match your search.</div>';
+        return;
+      }
+
+      list.innerHTML = filtered.map(resp => {
+        const sCls = resp.status.toLowerCase().replace(' ', '');
+        const assignedLabel = resp.assignedTo ? `Assigned: ${resp.assignedTo}` : 'Standing by';
+        return `
+          <div class="resp-card" data-resp-id="${resp.id}">
+            <div class="resp-card-top">
+              <span class="resp-name">${resp.name}</span>
+              <span class="resp-status ${sCls}">${resp.status}</span>
+            </div>
+            <div class="resp-details">
+              👥 ${resp.personnel} personnel &nbsp;·&nbsp; ${resp.type}<br/>
+              📋 ${assignedLabel}
+            </div>
+            ${resp.status === 'Available' ?
+              `<button class="resp-assign-btn" onclick="event.stopPropagation(); window.dispatchApp.showAssignForResponder('${resp.id}')">Assign to Incident</button>` :
+              `<button class="resp-assign-btn" disabled>${resp.status}</button>`
+            }
+          </div>`;
+      }).join('');
+
+      list.querySelectorAll('.resp-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const id = card.dataset.respId;
+          const resp = responders.find(r => r.id === id);
+          if (resp) map.flyTo([resp.lat, resp.lng], 17, { duration: 0.8 });
+        });
+      });
     }
+
+    // ──────────────────────────────────────
+    //  FLY TO / HIGHLIGHT
+    // ──────────────────────────────────────
+    function flyToIncident(id) {
+      const inc = incidents.find(i => i.id === id);
+      if (!inc) return;
+      map.flyTo([inc.lat, inc.lng], 17, { duration: 0.8 });
+      // Open popup
+      const marker = incidentMarkers.find(m => m._incId === id);
+      if (marker) setTimeout(() => marker.openPopup(), 400);
+    }
+
+    function highlightIncidentCard(id) {
+      selectedIncidentId = id;
+      renderIncidents(document.getElementById('spSearch').value);
+    }
+
+    // ──────────────────────────────────────
+    //  ASSIGN MODAL
+    // ──────────────────────────────────────
+    function openAssign(incidentId) {
+      const inc = incidents.find(i => i.id === incidentId);
+      if (!inc) return;
+
+      selectedIncidentId = incidentId;
+      selectedResponderId = null;
+
+      document.getElementById('assignTarget').textContent = `Assign a responder to ${inc.id} — ${inc.category} at ${inc.location}`;
+
+      const available = responders.filter(r => r.status === 'Available');
+      const container = document.getElementById('assignOptions');
+
+      if (!available.length) {
+        container.innerHTML = '<p style="text-align:center;color:#94a3b8;padding:20px;">No available responders.</p>';
+      } else {
+        const icons = { ambulance:'🚑', fire:'🚒', police:'🚓', rescue:'🚐' };
+        container.innerHTML = available.map(r => `
+          <div class="resp-option" data-resp-id="${r.id}">
+            <div class="resp-icon ${r.typeClass}">${icons[r.typeClass] || '🚗'}</div>
+            <div class="resp-opt-info">
+              <div class="resp-opt-name">${r.name}</div>
+              <div class="resp-opt-meta">${r.type} · ${r.personnel} personnel</div>
+            </div>
+          </div>
+        `).join('');
+
+        container.querySelectorAll('.resp-option').forEach(opt => {
+          opt.addEventListener('click', () => {
+            container.querySelectorAll('.resp-option').forEach(o => o.classList.remove('selected'));
+            opt.classList.add('selected');
+            selectedResponderId = opt.dataset.respId;
+            document.getElementById('assignConfirm').disabled = false;
+          });
+        });
+      }
+
+      document.getElementById('assignConfirm').disabled = true;
+      document.getElementById('assignOverlay').classList.add('visible');
+    }
+
+    function confirmAssign() {
+      if (!selectedIncidentId || !selectedResponderId) return;
+
+      const inc = incidents.find(i => i.id === selectedIncidentId);
+      const resp = responders.find(r => r.id === selectedResponderId);
+      if (!inc || !resp) return;
+
+      // Update data
+      inc.status = 'Dispatched';
+      resp.status = 'Dispatched';
+      resp.assignedTo = inc.id;
+      resp.lat = inc.lat + (Math.random() - 0.5) * 0.001;
+      resp.lng = inc.lng + (Math.random() - 0.5) * 0.001;
+
+      // Close modal & refresh
+      document.getElementById('assignOverlay').classList.remove('visible');
+      renderMapMarkers();
+      renderIncidents(document.getElementById('spSearch').value);
+      renderResponders(document.getElementById('spSearch').value);
+      updateStats();
+      showToast(`✅ ${resp.name} dispatched to ${inc.id}`);
+    }
+
+    function cancelAssign() {
+      document.getElementById('assignOverlay').classList.remove('visible');
+      selectedResponderId = null;
+    }
+
+    // ──────────────────────────────────────
+    //  STATS
+    // ──────────────────────────────────────
+    function updateStats() {
+      const active = incidents.filter(i => i.status !== 'Resolved').length;
+      const available = responders.filter(r => r.status === 'Available').length;
+      const dispatched = responders.filter(r => r.status === 'Dispatched').length;
+      const resolved = incidents.filter(i => i.status === 'Resolved').length;
+
+      document.getElementById('statActive').textContent = active;
+      document.getElementById('statAvailable').textContent = available;
+      document.getElementById('statDispatched').textContent = dispatched;
+      document.getElementById('statResolved').textContent = resolved;
+      document.getElementById('activeCount').textContent = active;
+    }
+
+    // ──────────────────────────────────────
+    //  EVENTS
+    // ──────────────────────────────────────
+    function bindEvents() {
+      // Map filters
+      document.querySelectorAll('.map-filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.map-filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeFilter = btn.dataset.filter;
+          renderMapMarkers();
+        });
+      });
+
+      // Tab switching
+      document.querySelectorAll('.sp-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.sp-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          activeTab = tab.dataset.tab;
+
+          document.getElementById('incidentsList').style.display = activeTab === 'incidents' ? '' : 'none';
+          document.getElementById('respondersList').style.display = activeTab === 'responders' ? '' : 'none';
+
+          const searchVal = document.getElementById('spSearch').value;
+          if (activeTab === 'incidents') renderIncidents(searchVal);
+          else renderResponders(searchVal);
+        });
+      });
+
+      // Search
+      document.getElementById('spSearch').addEventListener('input', function () {
+        if (activeTab === 'incidents') renderIncidents(this.value);
+        else renderResponders(this.value);
+      });
+
+      // Assign modal
+      document.getElementById('assignConfirm').addEventListener('click', confirmAssign);
+      document.getElementById('assignCancel').addEventListener('click', cancelAssign);
+      document.getElementById('assignOverlay').addEventListener('click', function (e) {
+        if (e.target === this) cancelAssign();
+      });
+
+      // Mobile side panel toggle
+      document.getElementById('spToggle').addEventListener('click', () => {
+        document.getElementById('sidePanel').classList.toggle('open');
+      });
+    }
+
+    // ──────────────────────────────────────
+    //  TOAST
+    // ──────────────────────────────────────
+    function showToast(msg) {
+      const el = document.getElementById('dpToast');
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 3000);
+    }
+
+    // ──────────────────────────────────────
+    //  RESPONDER → INCIDENT ASSIGNMENT (from responders tab)
+    // ──────────────────────────────────────
+    function showAssignForResponder(respId) {
+      // Find unassigned new incidents and let dispatcher pick
+      const unhandled = incidents.filter(i => i.status === 'New');
+      if (!unhandled.length) {
+        showToast('⚠️ No new incidents to assign.');
+        return;
+      }
+      // Open assign for the first new incident (user can pick from popup)
+      openAssign(unhandled[0].id);
+    }
+
+    // ── Public API ──
+    window.dispatchApp = {
+      openAssign,
+      flyToIncident,
+      showAssignForResponder
+    };
+
+  })();
   </script>
+
+  <script src="js/accessibility.js"></script>
+
+  <!-- ========== Accessibility FAB ========== -->
+  <button id="a11yFab" class="a11y-fab" title="Accessibility Settings" aria-label="Open Accessibility Settings">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M12 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm9 7h-6l-1.41 7.06L16 22h-2.5l-1.5-5-1.5 5H8l2.41-5.94L9 9H3V7h18v2z"/></svg>
+  </button>
+  <div id="a11yOverlay" class="a11y-overlay"></div>
+  <div id="a11yPanel" class="a11y-panel" role="dialog" aria-label="Accessibility Settings">
+    <div class="a11y-panel-header"><h3><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm9 7h-6l-1.41 7.06L16 22h-2.5l-1.5-5-1.5 5H8l2.41-5.94L9 9H3V7h18v2z"/></svg> Accessibility Settings</h3><button id="a11yCloseBtn" class="a11y-close-btn" aria-label="Close">&times;</button></div>
+    <div class="a11y-panel-body">
+      <div class="a11y-section"><h4 class="a11y-section-title"><span class="a11y-icon purple"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5C10.55 5.4 8.45 5 6.5 5 5.33 5 4.11 5.15 3 5.5v14.07c0 .25.25.46.5.37C4.57 19.52 5.53 19.35 6.5 19.35c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5.97 0 1.93.09 2.88.36.23.07.62-.09.62-.36V5z"/></svg></span> Reading Assistance</h4>
+        <div class="a11y-option"><div class="a11y-option-info"><strong>Text-to-Speech</strong><small>Click any text to hear it read aloud</small></div><label class="a11y-switch"><input type="checkbox" id="a11yTTS"><span class="a11y-slider"></span></label></div>
+        <button id="a11yReadPage" class="a11y-read-page-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg> Read Page Aloud</button>
+        <div class="a11y-option"><div class="a11y-option-info"><strong>Dyslexia-Friendly Font</strong><small>Switch to OpenDyslexic typeface</small></div><label class="a11y-switch"><input type="checkbox" id="a11yDyslexia"><span class="a11y-slider"></span></label></div>
+        <div class="a11y-option"><div class="a11y-option-info"><strong>Text Size</strong><small>Adjust base text size</small></div><div class="a11y-range-wrap"><input type="range" id="a11yTextSize" class="a11y-range" min="80" max="200" step="10" value="100"><span id="a11yTextSizeVal" class="a11y-range-val">100%</span></div></div>
+      </div>
+      <div class="a11y-section"><h4 class="a11y-section-title"><span class="a11y-icon blue"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg></span> Visual Modes</h4>
+        <div class="a11y-option"><div class="a11y-option-info"><strong>High Contrast</strong><small>Dark background with bright text</small></div><label class="a11y-switch"><input type="checkbox" id="a11yContrast"><span class="a11y-slider"></span></label></div>
+        <div class="a11y-option"><div class="a11y-option-info"><strong>Large UI Elements</strong><small>Bigger buttons, text, and spacing</small></div><label class="a11y-switch"><input type="checkbox" id="a11yLargeUI"><span class="a11y-slider"></span></label></div>
+        <div class="a11y-option"><div class="a11y-option-info"><strong>Simple Mode</strong><small>Hide charts and non-essential details</small></div><label class="a11y-switch"><input type="checkbox" id="a11ySimple"><span class="a11y-slider"></span></label></div>
+        <div class="a11y-option"><div class="a11y-option-info"><strong>Colorblind Palette</strong><small>Adjusted colors for color vision deficiency</small></div><label class="a11y-switch"><input type="checkbox" id="a11yColorblind"><span class="a11y-slider"></span></label></div>
+      </div>
+      <div class="a11y-section"><h4 class="a11y-section-title"><span class="a11y-icon amber"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span> Navigation & Feedback</h4>
+        <div class="a11y-option"><div class="a11y-option-info"><strong>Voice Guidance</strong><small>Announce navigation changes aloud</small></div><label class="a11y-switch"><input type="checkbox" id="a11yVoice"><span class="a11y-slider"></span></label></div>
+        <div class="a11y-option"><div class="a11y-option-info"><strong>Icon Labels</strong><small>Show text labels alongside icons</small></div><label class="a11y-switch"><input type="checkbox" id="a11yIconLabels"><span class="a11y-slider"></span></label></div>
+        <div class="a11y-option"><div class="a11y-option-info"><strong>Confirmation Prompts</strong><small>Ask before critical actions</small></div><label class="a11y-switch"><input type="checkbox" id="a11yConfirm"><span class="a11y-slider"></span></label></div>
+      </div>
+      <div class="a11y-section"><h4 class="a11y-section-title"><span class="a11y-icon red"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg></span> Emergency</h4>
+        <div class="a11y-option"><div class="a11y-option-info"><strong>One-Tap Emergency</strong><small>Show quick emergency shortcut button</small></div><label class="a11y-switch"><input type="checkbox" id="a11yEmergency"><span class="a11y-slider"></span></label></div>
+        <button id="a11yEmergencyAction" class="a11y-emergency-btn" style="display:none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg> Send Emergency Alert</button>
+      </div>
+    </div>
+    <div class="a11y-panel-footer"><button id="a11yResetBtn" class="a11y-reset-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg> Reset All Settings</button></div>
+  </div>
 </body>
 </html>

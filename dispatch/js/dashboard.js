@@ -223,7 +223,7 @@ function populateIncidentsTable() {
     const row = document.createElement('tr');
     row.innerHTML = `
       <td>
-        <span class="incident-id">${incident.id}</span>
+        <span class="incident-id fw-bold">${incident.id}</span>
       </td>
       <td>
         <span class="emergency-type ${Utils.getEmergencyClass(incident.type)}">
@@ -238,7 +238,7 @@ function populateIncidentsTable() {
         </span>
       </td>
       <td>
-        <span class="time-text">${incident.reported}</span>
+        <span class="time-text fw-bold text-danger">${incident.reported}</span>
       </td>
       <td>
         <span class="status-badge ${Utils.getStatusClass(incident.status)}">
@@ -246,18 +246,11 @@ function populateIncidentsTable() {
         </span>
       </td>
       <td>
-        <span class="connectivity-badge ${Utils.getConnectivityClass(incident.mode)}">
-          ${incident.mode}
-        </span>
-      </td>
-      <td>
         <div class="table-actions">
-          <button class="action-btn view" onclick="viewIncident('${incident.id}')" title="View Details">
-            <i class="fas fa-eye"></i>
-          </button>
-          <button class="action-btn dispatch" onclick="dispatchResponder('${incident.id}')" title="Dispatch">
-            <i class="fas fa-truck"></i>
-          </button>
+          ${incident.status === 'Pending' || incident.status === 'Verified' ? 
+            `<button class="btn btn-sm btn-danger text-white" onclick="dispatchResponder('${incident.id}')">Assign Responder</button>` : 
+            `<button class="btn btn-sm btn-outline-secondary" onclick="viewIncident('${incident.id}')">View Details</button>`
+          }
         </div>
       </td>
     `;

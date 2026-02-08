@@ -1,0 +1,641 @@
+/* ========================================
+   PULSE Accessibility Panel
+   Inclusive Design for Elderly & PWDs
+   ======================================== */
+
+/* ── Load Dyslexia Font ── */
+@import url('https://fonts.cdnfonts.com/css/opendyslexic');
+
+/* ── Floating Accessibility Button ── */
+.a11y-fab {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 10000;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, #4a6cf7, #3b5de7);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(74, 108, 247, 0.45);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.a11y-fab:hover,
+.a11y-fab:focus-visible {
+  transform: scale(1.1);
+  box-shadow: 0 6px 24px rgba(74, 108, 247, 0.6);
+  outline: 3px solid #fff;
+}
+.a11y-fab svg { pointer-events: none; }
+
+/* ── Panel Overlay ── */
+.a11y-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 10001;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s, visibility 0.25s;
+}
+.a11y-overlay.open { opacity: 1; visibility: visible; }
+
+/* ── Slide-in Panel ── */
+.a11y-panel {
+  position: fixed;
+  top: 0;
+  right: -480px;
+  width: 440px;
+  max-width: 94vw;
+  height: 100vh;
+  z-index: 10002;
+  background: #fff;
+  box-shadow: -4px 0 32px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  transition: right 0.3s cubic-bezier(0.4,0,0.2,1);
+  overflow: hidden;
+}
+.a11y-panel.open { right: 0; }
+
+/* Panel header */
+.a11y-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid #e9ecef;
+  flex-shrink: 0;
+}
+.a11y-panel-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e1e2d;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.a11y-panel-header h3 svg { flex-shrink: 0; }
+.a11y-close-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: none;
+  background: #f1f3f9;
+  color: #555;
+  font-size: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+.a11y-close-btn:hover { background: #e2e5ed; }
+
+/* Panel body */
+.a11y-panel-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 24px 24px;
+}
+
+/* Panel footer */
+.a11y-panel-footer {
+  padding: 16px 24px;
+  border-top: 1px solid #e9ecef;
+  flex-shrink: 0;
+  background: #fafbfc;
+}
+
+/* Section groups */
+.a11y-section {
+  margin-bottom: 22px;
+}
+.a11y-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #9ca3af;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #f1f3f9;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Icon badges in section titles */
+.a11y-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.a11y-icon.purple  { background: #ede9fe; color: #7c3aed; }
+.a11y-icon.blue    { background: #dbeafe; color: #2563eb; }
+.a11y-icon.amber   { background: #fef3c7; color: #d97706; }
+.a11y-icon.green   { background: #d1fae5; color: #059669; }
+.a11y-icon.rose    { background: #ffe4e6; color: #e11d48; }
+.a11y-icon.cyan    { background: #cffafe; color: #0891b2; }
+.a11y-icon.red     { background: #fee2e2; color: #dc2626; }
+.a11y-icon.gray    { background: #f3f4f6; color: #4b5563; }
+
+/* ── Option row (toggle) ── */
+.a11y-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  gap: 12px;
+}
+.a11y-option-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+.a11y-option-info strong {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e1e2d;
+  line-height: 1.3;
+}
+.a11y-option-info small {
+  font-size: 11.5px;
+  color: #9ca3af;
+  margin-top: 2px;
+}
+
+/* ── Custom toggle switch ── */
+.a11y-switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 26px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.a11y-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+.a11y-slider {
+  position: absolute;
+  inset: 0;
+  background: #d1d5db;
+  border-radius: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.a11y-slider::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  left: 3px;
+  top: 3px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+.a11y-switch input:checked + .a11y-slider {
+  background: #4a6cf7;
+}
+.a11y-switch input:checked + .a11y-slider::after {
+  transform: translateX(20px);
+}
+.a11y-switch input:focus-visible + .a11y-slider {
+  outline: 2px solid #4a6cf7;
+  outline-offset: 2px;
+}
+
+/* ── Range slider ── */
+.a11y-range-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding-top: 4px;
+}
+.a11y-range {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: #e5e7eb;
+  outline: none;
+  cursor: pointer;
+}
+.a11y-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #4a6cf7;
+  border: 3px solid #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+  cursor: pointer;
+}
+.a11y-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #4a6cf7;
+  border: 3px solid #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+  cursor: pointer;
+}
+.a11y-range:focus-visible {
+  outline: 2px solid #4a6cf7;
+  outline-offset: 2px;
+}
+.a11y-range-val {
+  font-size: 13px;
+  font-weight: 700;
+  color: #4a6cf7;
+  background: #ede9fe;
+  padding: 2px 10px;
+  border-radius: 6px;
+  min-width: 48px;
+  text-align: center;
+}
+
+/* ── Read Page Aloud button ── */
+.a11y-read-page-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 16px;
+  border: 1px solid #4a6cf7;
+  border-radius: 8px;
+  background: #eef2ff;
+  color: #4a6cf7;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+  margin-top: 6px;
+}
+.a11y-read-page-btn:hover { background: #dbeafe; }
+.a11y-read-page-btn.reading {
+  background: #dc3545;
+  border-color: #dc3545;
+  color: #fff;
+  animation: a11y-pulse 1.5s infinite;
+}
+@keyframes a11y-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* ── Emergency shortcut ── */
+.a11y-emergency-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 14px 20px;
+  border: 2px dashed #dc3545;
+  border-radius: 12px;
+  background: #fff5f5;
+  color: #dc3545;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  margin-top: 6px;
+}
+.a11y-emergency-btn:hover {
+  background: #fee2e2;
+  border-color: #b91c1c;
+}
+
+/* ── Reset button ── */
+.a11y-reset-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #f9fafb;
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.a11y-reset-btn:hover { background: #f3f4f6; }
+
+/* ── Toast notification ── */
+.a11y-toast {
+  position: fixed;
+  bottom: 96px;
+  right: 28px;
+  z-index: 10003;
+  background: #1e1e2d;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s, transform 0.3s;
+  pointer-events: none;
+  max-width: 320px;
+}
+.a11y-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── TTS highlight ring on hovered elements ── */
+.a11y-tts-highlight {
+  outline: 3px solid #4a6cf7 !important;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ========================================
+   Applied Accessibility Modes
+   ======================================== */
+
+/* ── High Contrast (Dark) ── */
+body.a11y-high-contrast {
+  background: #0a0a0a !important;
+  color: #f0f0f0 !important;
+}
+body.a11y-high-contrast .sidebar-nav-wrapper {
+  background: #111 !important;
+  border-right: 1px solid #333 !important;
+}
+body.a11y-high-contrast .sidebar-nav a,
+body.a11y-high-contrast .sidebar-nav .text {
+  color: #e0e0e0 !important;
+}
+body.a11y-high-contrast .sidebar-nav .nav-item.active a,
+body.a11y-high-contrast .sidebar-nav .nav-item.active .text {
+  color: #fff !important;
+  background: #222 !important;
+}
+body.a11y-high-contrast .header {
+  background: #111 !important;
+  border-bottom: 1px solid #333 !important;
+}
+body.a11y-high-contrast .main-wrapper {
+  background: #0a0a0a !important;
+}
+body.a11y-high-contrast .card-style,
+body.a11y-high-contrast .card {
+  background: #1a1a1a !important;
+  border: 1px solid #444 !important;
+  color: #e0e0e0 !important;
+}
+body.a11y-high-contrast h1, body.a11y-high-contrast h2,
+body.a11y-high-contrast h3, body.a11y-high-contrast h4,
+body.a11y-high-contrast h5, body.a11y-high-contrast h6 {
+  color: #fff !important;
+}
+body.a11y-high-contrast p,
+body.a11y-high-contrast span,
+body.a11y-high-contrast label,
+body.a11y-high-contrast td,
+body.a11y-high-contrast th,
+body.a11y-high-contrast li {
+  color: #e0e0e0 !important;
+}
+body.a11y-high-contrast .table { color: #e0e0e0 !important; }
+body.a11y-high-contrast .table thead th {
+  background: #222 !important;
+  color: #fff !important;
+  border-color: #444 !important;
+}
+body.a11y-high-contrast .table td {
+  border-color: #333 !important;
+}
+body.a11y-high-contrast .table-hover tbody tr:hover {
+  background: #222 !important;
+}
+body.a11y-high-contrast .btn-primary,
+body.a11y-high-contrast .main-btn.primary-btn {
+  background: #5a7aff !important;
+  border-color: #5a7aff !important;
+  color: #fff !important;
+}
+body.a11y-high-contrast .btn-secondary {
+  background: #444 !important;
+  border-color: #555 !important;
+  color: #fff !important;
+}
+body.a11y-high-contrast .footer {
+  background: #111 !important;
+  border-top: 1px solid #333 !important;
+  color: #999 !important;
+}
+body.a11y-high-contrast .breadcrumb-item,
+body.a11y-high-contrast .breadcrumb-item a,
+body.a11y-high-contrast .text-sm { color: #aaa !important; }
+body.a11y-high-contrast input,
+body.a11y-high-contrast select,
+body.a11y-high-contrast textarea {
+  background: #222 !important;
+  color: #eee !important;
+  border-color: #555 !important;
+}
+body.a11y-high-contrast .dropdown-menu {
+  background: #1a1a1a !important;
+  border-color: #444 !important;
+}
+body.a11y-high-contrast .dropdown-menu a,
+body.a11y-high-contrast .dropdown-menu li {
+  color: #ddd !important;
+}
+body.a11y-high-contrast .dropdown-menu a:hover {
+  background: #333 !important;
+}
+body.a11y-high-contrast .profile-info h6,
+body.a11y-high-contrast .profile-info p {
+  color: #ddd !important;
+}
+/* High-contrast panel */
+body.a11y-high-contrast .a11y-panel {
+  background: #1a1a1a !important;
+  color: #e0e0e0 !important;
+}
+body.a11y-high-contrast .a11y-panel-header {
+  border-color: #333 !important;
+}
+body.a11y-high-contrast .a11y-panel-header h3 {
+  color: #f0f0f0 !important;
+}
+body.a11y-high-contrast .a11y-option-info strong {
+  color: #f0f0f0 !important;
+}
+body.a11y-high-contrast .a11y-option-info small {
+  color: #888 !important;
+}
+body.a11y-high-contrast .a11y-section-title {
+  color: #888 !important;
+  border-color: #333 !important;
+}
+body.a11y-high-contrast .a11y-close-btn {
+  background: #333 !important;
+  color: #ddd !important;
+}
+body.a11y-high-contrast .a11y-panel-footer {
+  background: #151515 !important;
+  border-color: #333 !important;
+}
+body.a11y-high-contrast .a11y-reset-btn {
+  background: #222 !important;
+  border-color: #444 !important;
+  color: #ccc !important;
+}
+body.a11y-high-contrast .a11y-read-page-btn {
+  background: #222 !important;
+  border-color: #5a7aff !important;
+  color: #7a9aff !important;
+}
+body.a11y-high-contrast .a11y-range {
+  background: #444 !important;
+}
+body.a11y-high-contrast .a11y-slider {
+  background: #555 !important;
+}
+body.a11y-high-contrast .a11y-range-val {
+  background: #333 !important;
+  color: #7a9aff !important;
+}
+body.a11y-high-contrast .a11y-overlay {
+  background: rgba(0,0,0,0.6);
+}
+
+/* ── Dyslexia-Friendly Font ── */
+body.a11y-dyslexia-font,
+body.a11y-dyslexia-font * {
+  font-family: 'OpenDyslexic', 'Comic Sans MS', 'Verdana', Arial, sans-serif !important;
+  letter-spacing: 0.06em !important;
+  word-spacing: 0.16em !important;
+}
+body.a11y-dyslexia-font p,
+body.a11y-dyslexia-font td,
+body.a11y-dyslexia-font th,
+body.a11y-dyslexia-font li,
+body.a11y-dyslexia-font span,
+body.a11y-dyslexia-font label {
+  line-height: 1.8 !important;
+}
+
+/* ── Large UI Mode ── */
+body.a11y-large-ui {
+  font-size: 18px !important;
+}
+body.a11y-large-ui .main-wrapper {
+  font-size: 18px !important;
+}
+body.a11y-large-ui .btn,
+body.a11y-large-ui button:not(.a11y-fab):not(.a11y-close-btn):not(.a11y-switch):not(.dropdown-toggle) {
+  padding: 12px 24px !important;
+  font-size: 16px !important;
+  min-height: 48px;
+}
+body.a11y-large-ui .badge {
+  font-size: 14px !important;
+  padding: 6px 14px !important;
+}
+body.a11y-large-ui .card-style {
+  padding: 24px !important;
+}
+body.a11y-large-ui .table td,
+body.a11y-large-ui .table th {
+  padding: 14px 12px !important;
+  font-size: 16px !important;
+}
+body.a11y-large-ui .nav-item a {
+  padding: 14px 20px !important;
+  font-size: 16px !important;
+}
+body.a11y-large-ui .sidebar-nav .text {
+  font-size: 17px !important;
+}
+body.a11y-large-ui .sidebar-nav .icon svg {
+  width: 24px !important;
+  height: 24px !important;
+}
+body.a11y-large-ui h2 { font-size: 28px !important; }
+body.a11y-large-ui h5 { font-size: 20px !important; }
+body.a11y-large-ui .card-header h5 { font-size: 18px !important; }
+body.a11y-large-ui .header { min-height: 72px !important; }
+body.a11y-large-ui .header .profile-info .info h6 { font-size: 15px !important; }
+body.a11y-large-ui .a11y-option-info strong { font-size: 16px !important; }
+body.a11y-large-ui .a11y-option-info small { font-size: 13px !important; }
+
+/* ── Simple Mode ── */
+body.a11y-simple-mode .card-body canvas {
+  display: none !important;
+}
+body.a11y-simple-mode .notification-box {
+  display: none !important;
+}
+body.a11y-simple-mode .breadcrumb-wrapper {
+  display: none !important;
+}
+body.a11y-simple-mode .terms {
+  display: none !important;
+}
+body.a11y-simple-mode .footer {
+  display: none !important;
+}
+
+/* ── Color-blind Friendly ── */
+body.a11y-colorblind .badge.bg-danger {
+  background-color: #d55e00 !important;
+}
+body.a11y-colorblind .badge.bg-success {
+  background-color: #0072b2 !important;
+}
+body.a11y-colorblind .badge.bg-warning {
+  background-color: #e69f00 !important;
+  color: #000 !important;
+}
+body.a11y-colorblind .badge.bg-info {
+  background-color: #56b4e9 !important;
+}
+
+/* ── Icon Labels ── */
+body.a11y-icon-labels .sidebar-nav .icon {
+  position: relative;
+}
+body.a11y-icon-labels .btn svg,
+body.a11y-icon-labels .action-btn svg {
+  margin-right: 4px;
+}
+
+/* ── Panel responsive ── */
+@media (max-width: 480px) {
+  .a11y-panel { width: 100vw; }
+  .a11y-fab { bottom: 16px; right: 16px; width: 50px; height: 50px; }
+  .a11y-toast { left: 16px; right: 16px; bottom: 80px; }
+}
