@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="images/PULSE OG.png" type="image/png" />
+    <title>PULSE ADMIN | Choose Role</title>
+
+    <!-- ========== All CSS files linkup ========= -->
+    <link rel="stylesheet" href="admin/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="admin/assets/css/lineicons.css" />
+    <link rel="stylesheet" href="admin/assets/css/materialdesignicons.min.css" />
+    <link rel="stylesheet" href="admin/assets/css/main.css" />
+    <style>
+      body {
+        background: url('admin/assets/images/sanjuan.jpg') center/cover no-repeat;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .signin-container {
+        width: 100%;
+        max-width: 500px;
+        margin: 20px;
+      }
+      .choice-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(6px);
+        border-radius: 16px;
+        padding: 48px 32px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .brand-logo {
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+        margin: 0 auto 16px;
+      }
+      .choice-title {
+        font-weight: 700;
+        margin-bottom: 8px;
+        font-size: 1.5rem;
+      }
+      .choice-subtitle {
+        color: #6b7280;
+        margin-bottom: 28px;
+        font-size: 0.95rem;
+      }
+      .choice-actions {
+        display: grid;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+      .choice-actions a {
+        width: 100%;
+        padding: 16px 18px;
+        font-size: 1.1rem;
+        border: none;
+        cursor: pointer;
+      }
+      .hidden-form {
+        display: none;
+      }
+      .visible-form {
+        display: block;
+      }
+      .form-wrapper {
+        margin-bottom: 20px;
+      }
+      .form-wrapper input {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 0.95rem;
+      }
+      .back-btn {
+        background: none;
+        border: none;
+        color: #667eea;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 8px 0;
+        margin-bottom: 16px;
+        font-size: 0.9rem;
+      }
+      .back-btn:hover {
+        text-decoration: underline;
+      }
+      .legal-text {
+        color: #6b7280;
+        margin-top: 16px;
+        font-size: 0.8rem;
+        text-align: center;
+      }
+      .legal-text a {
+        color: #667eea;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ======== Preloader =========== -->
+    <div id="preloader">
+      <div class="spinner"></div>
+    </div>
+    <!-- ======== Preloader =========== -->
+
+    <!-- ========== role-picker start ========== -->
+    <section class="signin-container">
+      <!-- Role Selection View -->
+      <div id="roleView" class="visible-form">
+        <div class="choice-card text-center">
+          <img class="brand-logo" src="images/PULSE OG.png" alt="Brand Logo" />
+          <h2 class="choice-title">Welcome Back!</h2>
+          <p class="choice-subtitle">Please click or tap your destination.</p>
+          <div class="choice-actions">
+            <button type="button" onclick="showLoginForm('admin')" class="main-btn primary-btn btn-hover">Admin</button>
+            <button type="button" onclick="showLoginForm('dispatcher')" class="main-btn danger-btn btn-hover">Dispatcher</button>
+          </div>
+          <p class="legal-text">By using this service, you understand and agree to the PULSE Online Services <a href="#">Terms of Use</a> and <a href="#">Privacy Statement</a></p>
+        </div>
+      </div>
+      <!-- Role-specific Sign In (single form, role-restricted) -->
+      <div id="loginView" class="hidden-form">
+        <div class="choice-card">
+          <button class="back-btn" onclick="backToRole()">← Back to Role Selection</button>
+          <h2 id="loginTitle" class="choice-title text-center" style="margin-bottom: 28px;">Sign In</h2>
+          <form id="loginForm" class="form-wrapper">
+            <input id="email" type="text" placeholder="Username or Email" required autocomplete="username" inputmode="text" />
+            <input id="password" type="password" placeholder="Password" required autocomplete="current-password" />
+            <button id="signInBtn" type="submit" class="main-btn btn-hover w-100" style="padding: 14px;">Sign In</button>
+          </form>
+          <p class="legal-text">By using this service, you understand and agree to the PULSE Online Services <a href="#">Terms of Use</a> and <a href="#">Privacy Statement</a></p>
+        </div>
+      </div>
+      
+    </section>
+    <!-- ========== role-picker end ========== -->
+
+    <!-- ========= All Javascript files linkup ======== -->
+    <script src="admin/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="admin/assets/js/main.js"></script>
+    <script>
+      let currentRole = null;
+
+      function showLoginForm(role) {
+        currentRole = role;
+        const roleView = document.getElementById('roleView');
+        const loginView = document.getElementById('loginView');
+        const loginTitle = document.getElementById('loginTitle');
+        const signInBtn = document.getElementById('signInBtn');
+
+        roleView.classList.add('hidden-form');
+        roleView.classList.remove('visible-form');
+
+        loginTitle.textContent = role === 'admin' ? 'Admin Sign In' : 'Dispatcher Sign In';
+        // Toggle button color by role
+        signInBtn.classList.remove('primary-btn', 'danger-btn');
+        if (role === 'admin') {
+          signInBtn.classList.add('primary-btn');
+        } else {
+          signInBtn.classList.add('danger-btn');
+        }
+        loginView.classList.remove('hidden-form');
+        loginView.classList.add('visible-form');
+      }
+
+      function backToRole() {
+        currentRole = null;
+        const roleView = document.getElementById('roleView');
+        const loginView = document.getElementById('loginView');
+
+        loginView.classList.add('hidden-form');
+        loginView.classList.remove('visible-form');
+
+        roleView.classList.remove('hidden-form');
+        roleView.classList.add('visible-form');
+      }
+
+      // Role-restricted login: only accept credential for chosen role
+      (function attachLoginHandler() {
+        const form = document.getElementById('loginForm');
+        if (!form) return;
+        // ensure button is enabled/clickable
+        const signBtn = document.getElementById('signInBtn');
+        if (signBtn) signBtn.disabled = false;
+
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+
+          const email = document.getElementById('email').value.trim();
+          const password = document.getElementById('password').value;
+
+          if (currentRole === 'admin') {
+            if (email === 'admin' && password === '12345') {
+              window.location.href = 'admin/index.html';
+            } else {
+              alert('Invalid login');
+            }
+          } else if (currentRole === 'dispatcher') {
+            if ((email === 'dispatcher' || email === 'dispatch') && password === '54321') {
+              window.location.href = 'dispatch/index.html';
+            } else {
+              alert('Invalid login');
+            }
+          } else {
+            alert('Please select a role first');
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

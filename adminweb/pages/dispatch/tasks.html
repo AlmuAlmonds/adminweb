@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PULSE Responder - Tasks</title>
+<link rel="stylesheet" href="../../assets/global.css">
+</head>
+
+<body class="tasks-page">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <h3><img src="../../images/PULSE OG.png" alt="PULSE" style="height: 20px; margin-right: 8px; vertical-align: middle;"> P.U.L.S.E DISPATCH</h3>
+    <a href="dispatch.html">Dashboard</a>
+    <a href="#" class="active">Tasks</a>
+    <a href="responews.html">News & Events</a>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+        <h2>Overview</h2>
+
+        <!-- ICONS FIRST, SEARCH LAST (UNCHANGED) -->
+        <div class="topbar-right">
+            <div class="icons">
+    <button class="icon-btn" onclick="location.href='resposettings.html'">⚙️</button>
+    <button class="icon-btn">🔔</button>
+</div>
+
+
+            <div class="search">
+                <input type="text" placeholder="Search for something">
+            </div>
+        </div>
+    </div>
+
+    <!-- STATUS -->
+    <div class="status-bar">
+        <div class="status ongoing">ONGOING</div>
+        <div class="status pending">PENDING</div>
+        <div class="status cancelled">CANCELLED</div>
+        <div class="status records">RECORDS</div>
+    </div>
+
+    <!-- REQUEST TYPE -->
+    <div class="request-tabs">
+        <span id="tab-backup" class="active" onclick="showBackup()">BACKUP REQUESTS</span>
+        <span id="tab-user" onclick="showUser()">USER REQUESTS</span>
+    </div>
+
+    <!-- BACKUP REQUESTS -->
+    <div id="backup" class="card">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>NAME</th>
+                    <th>PHONE</th>
+                    <th>DATE & TIME</th>
+                    <th>TYPE</th>
+                    <th>ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>01</td>
+                    <td>ALMU</td>
+                    <td>090000000</td>
+                    <td>12-12-21 | 12:21</td>
+                    <td>POLICE</td>
+                    <td><a href="tasksopen.html" class="open-btn">OPEN</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- USER REQUESTS -->
+    <div id="user" class="card hidden">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>NAME</th>
+                    <th>PHONE</th>
+                    <th>DATE & TIME</th>
+                    <th>TYPE</th>
+                    <th>ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>01</td>
+                    <td>ALMU</td>
+                    <td>090000000</td>
+                    <td>12-12-21 | 12:21</td>
+                    <td>FIRE</td>
+                    <td><a href="tasksopen.html" class="open-btn">OPEN</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+function showBackup() {
+    document.getElementById("backup").classList.remove("hidden");
+    document.getElementById("user").classList.add("hidden");
+    document.getElementById("tab-backup").classList.add("active");
+    document.getElementById("tab-user").classList.remove("active");
+}
+
+function showUser() {
+    document.getElementById("user").classList.remove("hidden");
+    document.getElementById("backup").classList.add("hidden");
+    document.getElementById("tab-user").classList.add("active");
+    document.getElementById("tab-backup").classList.remove("active");
+}
+</script>
+
+</body>
+</html>

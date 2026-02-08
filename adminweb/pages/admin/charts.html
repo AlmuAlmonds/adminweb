@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PULSE Admin – Charts</title>
+<link rel="stylesheet" href="../../assets/global.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="charts-page">
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <h3><img src="../../images/PULSE OG.png" alt="PULSE" style="height: 20px; margin-right: 8px; vertical-align: middle;"> P.U.L.S.E Admin</h3>
+    <a href="admin.html">Dashboard</a>
+    <a href="admintasks.html">Tasks</a>
+    <a href="accounts.html">Accounts</a>
+    <a href="news&events.html">News & Events</a>
+    <div class="sidebar-divider">SECURITY</div>
+    <a href="loginlogs.html">Login Logs</a>
+</div>
+
+<!-- Main -->
+<div class="main">
+
+    <!-- Topbar -->
+    <div class="topbar">
+        <h2>Overview</h2>
+        <div class="topbar-right">
+            <div class="icons">
+                <span onclick="location.href='settings.html'">⚙️</span>
+                <span>🔔</span>
+            </div>
+            <div class="search">
+                <input type="text" placeholder="Search for something">
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Charts -->
+    <div class="grid">
+        <div class="card">
+            <h4>Activity Logs per Day</h4>
+            <canvas id="barChart"></canvas>
+        </div>
+
+        <div class="card">
+            <h4>User Types</h4>
+            <canvas id="pieChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Bottom Charts -->
+    <div class="grid-bottom">
+        <div class="card">
+            <h4>Monthly Requests</h4>
+            <canvas id="lineChart"></canvas>
+        </div>
+
+        <div class="card">
+            <h4>System Activity</h4>
+            <canvas id="areaChart"></canvas>
+        </div>
+    </div>
+
+</div>
+
+<script>
+/* Bar Chart */
+new Chart(document.getElementById('barChart'), {
+    type: 'bar',
+    data: {
+        labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+        datasets: [{
+            label: 'Logs',
+            data: [12, 19, 8, 15, 10, 7, 5],
+            backgroundColor: '#3b82f6'
+        }]
+    }
+});
+
+/* Pie Chart */
+new Chart(document.getElementById('pieChart'), {
+    type: 'pie',
+    data: {
+        labels: ['Users', 'Responders', 'Admins'],
+        datasets: [{
+            data: [60, 30, 10],
+            backgroundColor: ['#3b82f6', '#22c55e', '#f97316']
+        }]
+    }
+});
+
+/* Line Chart */
+new Chart(document.getElementById('lineChart'), {
+    type: 'line',
+    data: {
+        labels: ['Jan','Feb','Mar','Apr','May','Jun'],
+        datasets: [{
+            label: 'Requests',
+            data: [10, 15, 8, 20, 17, 25],
+            borderColor: '#6366f1',
+            fill: false
+        }]
+    }
+});
+
+/* Area Chart */
+new Chart(document.getElementById('areaChart'), {
+    type: 'line',
+    data: {
+        labels: ['1','2','3','4','5','6'],
+        datasets: [{
+            label: 'Activity',
+            data: [5, 9, 7, 14, 10, 18],
+            borderColor: '#ef4444',
+            backgroundColor: 'rgba(239,68,68,0.2)',
+            fill: true
+        }]
+    }
+});
+</script>
+
+</body>
+</html>

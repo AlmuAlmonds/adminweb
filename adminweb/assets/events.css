@@ -1,0 +1,186 @@
+/* ----- From pages/admin/events.html ----- */
+.events-page * {
+    box-sizing: border-box;
+    font-family: 'Poppins', Arial, sans-serif;
+}
+
+.events-page {
+    margin: 0;
+    background: #F5F0E8;
+}
+
+/* Sidebar */
+.events-page .sidebar {
+    width: 230px;
+    height: 100vh;
+    background: #ffffff;
+    position: fixed;
+    padding: 20px;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+}
+
+.events-page .sidebar h3 {
+    margin-bottom: 30px;
+    color: #333;
+    font-weight: 600;
+}
+
+.events-page .sidebar a {
+    display: block;
+    padding: 12px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: #333;
+    border-radius: 12px;
+}
+
+.events-page .sidebar a.active {
+    background: #3498db;
+    color: #fff;
+}
+
+.events-page .sidebar-divider {
+    margin: 20px 0 10px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #6b7280;
+    text-transform: uppercase;
+    padding-left: 12px;
+    pointer-events: none;
+}
+
+/* Main */
+.events-page .main {
+    margin-left: 250px;
+    padding: 20px;
+}
+
+/* Topbar */
+.events-page .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.events-page .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.events-page .icons span {
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.events-page .search input {
+    padding: 8px 15px;
+    width: 250px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+}
+
+/* Tabs */
+.events-page .tabs {
+    margin-bottom: 20px;
+}
+
+.events-page .tabs span {
+    padding: 8px 20px;
+    background: #3498db;
+    color: white;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+/* Update Cards */
+.events-page .card-group {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.events-page .update-card {
+    flex: 1;
+    padding: 30px;
+    border-radius: 15px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    cursor: pointer;
+}
+
+.events-page .update-news {
+    background: #0f4c75;
+}
+
+.events-page .update-events {
+    background: #6ea8d8;
+    color: #000;
+}
+
+/* Table Card */
+.events-page .card {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.events-page .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.events-page .table-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.events-page table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.events-page th, .events-page td {
+    padding: 14px;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 14px;
+}
+
+.events-page th {
+    background: #f3f4f6;
+    text-align: left;
+}
+
+.events-page tr.highlight {
+    background: #e4dada;
+}
+
+/* Action Icons */
+.events-page .actions a {
+    margin-right: 10px;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Footer */
+.events-page .card-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
+}
+
+.events-page .add-btn {
+    padding: 8px 16px;
+    border: 1px solid #333;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+}

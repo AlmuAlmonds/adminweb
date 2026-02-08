@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" href="../images/PULSE OG.png" type="image/png" />
+  <title>PULSE ADMIN | Incident Map</title>
+  <link rel="stylesheet" href="../admin/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../admin/assets/css/lineicons.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="../admin/assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="../admin/assets/css/main.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" href="../images/PULSE OG.png" type="image/png" />
+  <title>PULSE ADMIN | Map View</title>
+
+  <!-- ========== All CSS files linkup ========= -->
+  <link rel="stylesheet" href="../admin/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../admin/assets/css/lineicons.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="../admin/assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="../admin/assets/css/main.css" />
+  <!-- Leaflet CSS for Maps -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <style>
+    /* Map Page Specific Styles */
+    .map-container {
+      display: grid;
+      grid-template-columns: 1fr 350px;
+      gap: 20px;
+      height: calc(100vh - 160px);
+    }
+    
+    .map-wrapper {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+      position: relative;
+    }
+    
+    #map {
+      width: 100%;
+      height: 100%;
+      min-height: 500px;
+    }
+    
+    .map-controls {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .map-control-btn {
+      background: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    
+    .map-control-btn:hover {
+      background: #f5f5f5;
+    }
+    
+    .map-control-btn.active {
+      background: var(--pulse-primary);
+      color: white;
+    }
+    
+    .map-legend {
+      position: absolute;
+      bottom: 15px;
+      left: 15px;
+      z-index: 1000;
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    
+    .legend-title {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+    
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    
+    .legend-dot.medical { background: #e74c3c; }
+    .legend-dot.fire { background: #f39c12; }
+    .legend-dot.crime { background: #3498db; }
+    .legend-dot.disaster { background: #9b59b6; }
+    .legend-dot.rescue { background: #1abc9c; }
+    
+    .sidebar-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .panel-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    
+    .panel-header {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .panel-body {
+      padding: 15px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    
+    .incident-list-item {
+      padding: 12px;
+      border-radius: 8px;
+      background: #f9f9f9;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-left: 3px solid #ddd;
+    }
+    
+    .incident-list-item:hover {
+      background: #f0f0f0;
+    }
+    
+    .incident-list-item.high { border-left-color: #e74c3c; }
+    .incident-list-item.medium { border-left-color: #f39c12; }
+    .incident-list-item.low { border-left-color: #3498db; }
+    
+    .incident-list-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    
+    .incident-type-small {
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .incident-type-small.medical { color: #e74c3c; }
+    .incident-type-small.fire { color: #f39c12; }
+    .incident-type-small.crime { color: #3498db; }
+    .incident-type-small.disaster { color: #9b59b6; }
+    .incident-type-small.rescue { color: #1abc9c; }
+    
+    .incident-time-small {
+      font-size: 11px;
+      color: #999;
+    }
+    
+    .incident-location-small {
+      font-size: 12px;
+      color: #666;
+    }
+    
+    .filter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    .filter-chip {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      border: 1px solid #ddd;
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .filter-chip:hover,
+    .filter-chip.active {
+      background: var(--pulse-primary);
+      color: white;
+      border-color: var(--pulse-primary);
+    }
+    
+    .responder-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px;
+      border-radius: 8px;
+      background: #f9f9f9;
+      margin-bottom: 8px;
+    }
+    
+    .responder-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+    
+    .responder-icon.ambulance { background: #e74c3c; }
+    .responder-icon.fire { background: #f39c12; }
+    .responder-icon.police { background: #3498db; }
+    .responder-icon.rescue { background: #1abc9c; }
+    
+    .responder-info {
+      flex: 1;
+    }
+    
+    .responder-name {
+      font-weight: 600;
+      font-size: 13px;
+    }
+    
+    .responder-status {
+      font-size: 11px;
+      color: #666;
+    }
+    
+    .responder-status.available { color: #27ae60; }
+    .responder-status.dispatched { color: #f39c12; }
+    
+    @media (max-width: 1024px) {
+      .map-container {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+      
+      .map-wrapper {
+        height: 400px;
+      }
+      
+      .sidebar-panel {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      
+      .panel-card {
+        flex: 1;
+        min-width: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- ======== Preloader =========== -->
+  <div id="preloader">
+    <div class="spinner"></div>
+  </div>
+  <!-- ======== Preloader =========== -->
+
+  <!-- ======== sidebar-nav start =========== -->
+  <aside class="sidebar-nav-wrapper">
+    <div class="navbar-logo">
+      <a href="index.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+        <img src="../images/PULSE OG.png" alt="logo" style="width: 45px; height: 45px; object-fit: contain;" />
+        <span style="font-size: 18px; font-weight: 600; color: #3b5998;">PULSE Admin</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <ul>
+        <!-- Dashboard -->
+        <li class="nav-item">
+          <a href="index.html">
+            <span class="icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 13H10C10.55 13 11 12.55 11 12V4C11 3.45 10.55 3 10 3H4C3.45 3 3 3.45 3 4V12C3 12.55 3.45 13 4 13ZM4 21H10C10.55 21 11 20.55 11 20V16C11 15.45 10.55 15 10 15H4C3.45 15 3 15.45 3 16V20C3 20.55 3.45 21 4 21ZM14 21H20C20.55 21 21 20.55 21 20V12C21 11.45 20.55 11 20 11H14C13.45 11 13 11.45 13 12V20C13 20.55 13.45 21 14 21ZM13 4V8C13 8.55 13.45 9 14 9H20C20.55 9 21 8.55 21 8V4C21 3.45 20.55 3 20 3H14C13.45 3 13 3.45 13 4Z" fill="currentColor"/>
+              </svg>
+            </span>
+            <span class="text">Dashboard</span>
+          </a>
+        </li>
+        <!-- Emergencies -->
+        <li class="nav-item">
+          <a href="emergencies.html">
+            <span class="icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 7C13.66 7 15 8.34 15 10C15 11.66 13.66 13 12 13C10.34 13 9 11.66 9 10C9 8.34 10.34 7 12 7ZM12 19.2C9.5 19.2 7.29 17.92 6 15.98C6.03 13.99 10 12.9 12 12.9C13.99 12.9 17.97 13.99 18 15.98C16.71 17.92 14.5 19.2 12 19.2Z" fill="currentColor"/>
+              </svg>
+            </span>
+            <span class="text">Emergencies</span>
+          </a>
+        </li>
+        <!-- Map -->
+        <li class="nav-item active">
+          <a href="map.html">
+            <span class="icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 7C13.66 7 15 8.34 15 10C15 11.66 13.66 13 12 13C10.34 13 9 11.66 9 10C9 8.34 10.34 7 12 7Z" fill="currentColor"/>
+              </svg>
+            </span>
+            <span class="text">Map</span>
+          </a>
+        </li>
+        <!-- User Management -->
+        <li class="nav-item">
+          <a href="users.html">
+            <span class="icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V19C4 19.55 4.45 20 5 20H19C19.55 20 20 19.55 20 19V18C20 15.34 14.67 14 12 14Z" fill="currentColor"/>
+              </svg>
+            </span>
+            <span class="text">User Management</span>
+          </a>
+        </li>
+        <!-- Dispatch -->
+        <li class="nav-item">
+          <a href="dispatch.html">
+            <span class="icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 18.5C16.9 18.5 16 19.4 16 20.5C16 21.6 16.9 22.5 18 22.5C19.1 22.5 20 21.6 20 20.5C20 19.4 19.1 18.5 18 18.5ZM19.43 8.98C19.74 8.5 20 7.96 20 7.44V4C20 2.9 19.1 2 18 2H4C2.9 2 2 2.9 2 4V10C2 11.1 2.9 12 4 12H14.54C14.6 12 14.67 12 14.73 11.99C14.12 12.89 13.6 14.02 13.37 15.28H4C2.9 15.28 2 16.18 2 17.28V22C2 23.1 2.9 24 4 24H16.73C16.14 23.05 15.8 21.96 15.8 20.8C15.8 16.89 18.98 13.7 22.9 13.7C23.61 13.7 24.3 13.78 24.97 13.95V9C24.97 8.48 24.74 7.97 24.41 7.49L19.43 8.98ZM4 10V4H18V7.44L4 10ZM6 17.5C4.9 17.5 4 18.4 4 19.5C4 20.6 4.9 21.5 6 21.5C7.1 21.5 8 20.6 8 19.5C8 18.4 7.1 17.5 6 17.5Z" fill="currentColor"/>
+              </svg>
+            </span>
+            <span class="text">Dispatch</span>
+          </a>
+        </li>
+        <!-- Reports -->
+        <li class="nav-item">
+          <a href="reports.html">
+            <span class="icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 9.2H3C2.4 9.2 2 9.6 2 10.2V21C2 21.6 2.4 22 3 22H21C21.6 22 22 21.6 22 21V10.2C22 9.6 21.6 9.2 21 9.2H19.1C19.1 8.6 19.1 8.1 19.1 7.6C19.1 5.9 20.4 4.4 22 4.2V2.2C20.8 2.4 19.6 3 18.7 3.9C17.8 3 16.3 2 14.6 2C10.1 2 6.6 5.5 6.6 10C6.6 10.1 6.6 10.2 6.6 10.2C5.4 10.4 4.6 11.4 4.6 12.6V21C4.6 21.6 5 22 5.6 22H23C23.6 22 24 21.6 24 21V19.9C23.3 20 22.6 20 22 20H4V10.2C4 9.6 4.4 9.2 5 9.2Z" fill="currentColor"/>
+              </svg>
+            </span>
+            <span class="text">Reports</span>
+          </a>
+        </li>
+        <!-- Logs -->
+        <li class="nav-item">
+          <a href="logs.html">
+            <span class="icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11.99 2C6.47 2 2 6.48 2 12C2 17.52 6.47 22 11.99 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 11.99 2ZM12 20C7.58 20 4 16.42 4 12C4 7.58 7.58 4 12 4C16.42 4 20 7.58 20 12C20 16.42 16.42 20 12 20ZM12.5 7H11V13L16.25 16.15L17 14.92L12.5 12.25V7Z" fill="currentColor"/>
+              </svg>
+            </span>
+            <span class="text">Logs</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+  <div class="overlay"></div>
+  <!-- ======== sidebar-nav end =========== -->
+
+  <!-- ======== main-wrapper start =========== -->
+  <main class="main-wrapper">
+    <!-- ========== header start ========== -->
+    <header class="header">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-5 col-md-5 col-6">
+            <div class="header-left d-flex align-items-center">
+              <div class="menu-toggle-btn mr-15">
+                <button id="menu-toggle" class="main-btn primary-btn btn-hover">
+                  <i class="lni lni-chevron-left me-2"></i> Menu
+                </button>
+              </div>
+              <div class="header-search d-none d-md-flex">
+                <form action="#">
+                  <input type="text" placeholder="Search..." />
+                  <button><i class="lni lni-search-alt"></i></button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-7 col-md-7 col-6">
+            <div class="header-right">
+              <!-- profile start -->
+              <div class="profile-box ml-15">
+                <button class="dropdown-toggle bg-transparent border-0" type="button" id="profile" data-bs-toggle="dropdown" aria-expanded="false">
+                  <div class="profile-info">
+                    <div class="info">
+                      <div class="image">
+                        <img src="assets/images/profile/profile-image.png" alt="" />
+                      </div>
+                    </div>
+                  </div>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profile">
+                  <li>
+                    <a href="#0">
+                      <i class="lni lni-user"></i>
+                      Profile
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#0">
+                      <i class="lni lni-cog"></i>
+                      Settings
+                    </a>
+                  </li>
+                  <li>
+                    <hr class="dropdown-divider" />
+                  </li>
+                  <li>
+                    <a href="#0">
+                      <i class="lni lni-exit"></i>
+                      Sign Out
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <!-- profile end -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- ========== header end ========== -->
+
+    <!-- ========== section start ========== -->
+    <section class="section">
+      <div class="container-fluid">
+        <!-- page title & breadcrumb start -->
+        <div class="row align-items-center mb-4">
+          <div class="col-sm-4">
+            <div class="page-title-box">
+              <h4 class="page-title">Incident Map</h4>
+            </div>
+          </div>
+          <div class="col-sm-8">
+            <div class="breadcrumb-links">
+              <a href="index.html">Dashboard</a>
+              <span>Map</span>
+            </div>
+          </div>
+        </div>
+        <!-- page title & breadcrumb end -->
+
+        <!-- Map Row -->
+        <div class="row">
+          <div class="col-lg-9">
+            <div class="card">
+              <div class="card-body p-0">
+                <div id="map" style="height: 600px; border-radius: 8px;"></div>
+                
+                <!-- Map Legend -->
+                <div style="position: absolute; bottom: 20px; left: 20px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); z-index: 100; display: none;" id="mapLegend">
+                  <div class="small" style="font-weight: 600; margin-bottom: 10px;">Emergency Types</div>
+                  <div class="small mb-1"><span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #e74c3c; margin-right: 6px;"></span>Medical</div>
+                  <div class="small mb-1"><span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #f39c12; margin-right: 6px;"></span>Fire</div>
+                  <div class="small mb-1"><span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #3498db; margin-right: 6px;"></span>Crime</div>
+                  <div class="small mb-1"><span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #9b59b6; margin-right: 6px;"></span>Disaster</div>
+                  <div class="small"><span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #1abc9c; margin-right: 6px;"></span>Rescue</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sidebar Panels -->
+          <div class="col-lg-3">
+            <!-- Active Incidents Panel -->
+            <div class="card mb-3">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Active Incidents</h5>
+                <span class="badge bg-danger">8</span>
+              </div>
+              <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+                <div class="btn-group btn-group-sm mb-3 d-flex gap-1" role="group">
+                  <button type="button" class="btn btn-outline-secondary btn-sm active">All</button>
+                  <button type="button" class="btn btn-outline-danger btn-sm">High</button>
+                  <button type="button" class="btn btn-outline-warning btn-sm">Med</button>
+                  <button type="button" class="btn btn-outline-info btn-sm">Low</button>
+                </div>
+                <div id="incidentsList">
+                  <!-- Populated by JS -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Responders Panel -->
+            <div class="card">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Responders</h5>
+                <span class="badge bg-success">5</span>
+              </div>
+              <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+                <div id="respondersList">
+                  <!-- Populated by JS -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ========== section end ========== -->
+  </main>
+  <!-- ======== main-wrapper end =========== -->
+
+  <!-- Leaflet JS -->
+  <script src="../admin/assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../admin/assets/js/main.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/mock-data.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      initializePage();
+      initializeMap();
+      populateIncidentsList();
+      populateRespondersList();
+      setupMenuToggle();
+    });
+    
+    let map;
+    let markers = [];
+    
+    function setupMenuToggle() {
+      const menuToggle = document.getElementById('menu-toggle');
+      const sidebar = document.querySelector('.sidebar-nav-wrapper');
+      if (menuToggle) {
+        menuToggle.addEventListener('click', function() {
+          sidebar.classList.toggle('active');
+        });
+      }
+    }
+    
+    function initializePage() {
+      // Initialize page
+    }
+    
+    function initializeMap() {
+      // Center on San Juan City, Metro Manila
+      const sanJuanCenter = [14.6019, 121.0355];
+      
+      map = L.map('map').setView(sanJuanCenter, 15);
+      
+      // Add OpenStreetMap tiles
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+      }).addTo(map);
+      
+      // Add sample incident markers
+      const incidentLocations = [
+        { lat: 14.6055, lng: 121.0385, type: 'Medical', status: 'Pending', id: 'INC-001' },
+        { lat: 14.5980, lng: 121.0320, type: 'Fire', status: 'Dispatched', id: 'INC-002' },
+        { lat: 14.6035, lng: 121.0290, type: 'Crime', status: 'Verified', id: 'INC-003' },
+        { lat: 14.5995, lng: 121.0410, type: 'Rescue', status: 'Dispatched', id: 'INC-004' },
+        { lat: 14.6070, lng: 121.0340, type: 'Medical', status: 'Pending', id: 'INC-005' }
+      ];
+      
+      const markerColors = {
+        'Medical': '#e74c3c',
+        'Fire': '#f39c12',
+        'Crime': '#3498db',
+        'Disaster': '#9b59b6',
+        'Rescue': '#1abc9c'
+      };
+      
+      incidentLocations.forEach(incident => {
+        const color = markerColors[incident.type];
+        const marker = L.circleMarker([incident.lat, incident.lng], {
+          radius: 12,
+          fillColor: color,
+          color: '#fff',
+          weight: 2,
+          opacity: 1,
+          fillOpacity: 0.8
+        }).addTo(map);
+        
+        marker.bindPopup(`
+          <div style="min-width: 150px;">
+            <strong>${incident.type} Emergency</strong><br>
+            <span style="color: #666;">ID: ${incident.id}</span><br>
+            <span style="color: ${color};">● ${incident.status}</span>
+          </div>
+        `);
+        
+        markers.push(marker);
+      });
+      
+      // Add responder markers
+      const responderLocations = [
+        { lat: 14.6000, lng: 121.0350, name: 'Unit A-01', type: 'ambulance' },
+        { lat: 14.6025, lng: 121.0380, name: 'Unit F-01', type: 'fire' },
+        { lat: 14.6050, lng: 121.0300, name: 'Unit P-01', type: 'police' }
+      ];
+      
+      responderLocations.forEach(resp => {
+        const icon = L.divIcon({
+          className: 'custom-responder-icon',
+          html: `<div style="background: #27ae60; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">
+            <i class="lni lni-truck" style="font-size: 12px;"></i>
+          </div>`,
+          iconSize: [30, 30]
+        });
+        
+        L.marker([resp.lat, resp.lng], { icon: icon })
+          .bindPopup(`<strong>${resp.name}</strong><br>Status: Available`)
+          .addTo(map);
+      });
+    }
+    
+    function populateIncidentsList() {
+      const list = document.getElementById('incidentsList');
+      
+      const incidents = [
+        { id: 'INC-001', type: 'Medical', location: 'Barangay Addition Hills', reported: '14:23', priority: 'High' },
+        { id: 'INC-002', type: 'Fire', location: 'Barangay Little Baguio', reported: '14:18', priority: 'Critical' },
+        { id: 'INC-003', type: 'Crime', location: 'Pinaglabanan Road', reported: '14:15', priority: 'High' },
+        { id: 'INC-004', type: 'Rescue', location: 'San Juan Avenue', reported: '14:10', priority: 'Medium' },
+        { id: 'INC-005', type: 'Medical', location: 'Greenmeadows Subdv', reported: '14:05', priority: 'Medium' }
+      ];
+      
+      const iconMap = {
+        'Medical': 'lni-heart',
+        'Fire': 'lni-fire',
+        'Crime': 'lni-shield',
+        'Rescue': 'lni-alert'
+      };
+      
+      list.innerHTML = incidents.map(incident => `
+        <div class="small p-2 mb-2 border-bottom cursor-pointer" onclick="focusIncident('${incident.id}')" style="border-radius: 4px; background: #f9f9f9; cursor: pointer;">
+          <div class="d-flex align-items-center gap-2 mb-1">
+            <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; background: ${incident.priority === 'Critical' ? '#e74c3c' : incident.priority === 'High' ? '#f39c12' : '#3498db'}; color: white; font-size: 10px; font-weight: 600;">${incident.priority}</span>
+            <span style="font-weight: 600;">${incident.type}</span>
+          </div>
+          <div style="font-size: 11px; color: #666;">${incident.location}</div>
+          <div style="font-size: 10px; color: #999;">Report: ${incident.reported}</div>
+        </div>
+      `).join('');
+    }
+    
+    function populateRespondersList() {
+      const list = document.getElementById('respondersList');
+      
+      const responders = [
+        { id: 'RES-001', name: 'Unit A-01', type: 'Ambulance', status: 'Available', location: 'CEDOC HQ' },
+        { id: 'RES-002', name: 'Unit F-01', type: 'Fire Truck', status: 'Dispatched', location: 'Addition Hills' },
+        { id: 'RES-003', name: 'Unit P-01', type: 'Patrol Car', status: 'Available', location: 'CEDOC HQ' },
+        { id: 'RES-004', name: 'Unit R-01', type: 'Rescue Van', status: 'Dispatched', location: 'Little Baguio' },
+        { id: 'RES-005', name: 'Unit A-02', type: 'Ambulance', status: 'En Route', location: 'En Route' }
+      ];
+      
+      const iconMap = {
+        'Ambulance': 'lni-ambulance',
+        'Fire Truck': 'lni-fire',
+        'Patrol Car': 'lni-shield',
+        'Rescue Van': 'lni-life-ring'
+      };
+      
+      const badgeMap = {
+        'Available': 'success',
+        'Dispatched': 'warning',
+        'En Route': 'info',
+        'Offline': 'secondary'
+      };
+      
+      list.innerHTML = responders.map(responder => `
+        <div class="d-flex align-items-center gap-2 mb-2 p-2" style="background: #f9f9f9; border-radius: 4px;">
+          <div style="width: 35px; height: 35px; border-radius: 6px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0;">
+            <i class="lni ${iconMap[responder.type]} " style="font-size: 14px;"></i>
+          </div>
+          <div class="flex-grow-1" style="min-width: 0;">
+            <div class="small" style="font-weight: 600; margin-bottom: 2px;">${responder.name}</div>
+            <div class="small" style="font-size: 11px; color: #666;">${responder.location}</div>
+          </div>
+          <span class="badge bg-${badgeMap[responder.status]} rounded-pill">${responder.status}</span>
+        </div>
+      `).join('');
+    }
+    
+    function focusIncident(id) {
+      // In real app: pan map to incident location
+      console.log('Focusing on incident:', id);
+    }
+  </script>
+</body>
+</html>

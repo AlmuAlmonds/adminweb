@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="../images/PULSE OG.png" type="image/png" />
+    <title>PULSE CEDOC | Public Advisory Board</title>
+
+    <!-- ========== All CSS files linkup ========= -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/lineicons.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <style>
+      /* Emergency Board Styling */
+      .advisory-banner {
+        background: linear-gradient(135deg, #1a3a52 0%, #2d5f8d 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      }
+      .advisory-icon {
+        font-size: 48px;
+      }
+      .advisory-content h2 {
+        font-size: 28px;
+        font-weight: 700;
+        margin: 0 0 5px 0;
+      }
+      .advisory-content p {
+        margin: 0;
+        opacity: 0.9;
+      }
+      .filter-badge {
+        padding: 12px 28px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        background: white;
+        color: #333;
+      }
+      .filter-badge:hover {
+        background: #f5f5f5;
+        transform: translateY(-2px);
+      }
+      .filter-badge.active {
+        background: #365CF5;
+        color: white;
+        border-color: #254dbd;
+      }
+      .filter-buttons {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-bottom: 25px;
+      }
+      .update-card {
+        border-radius: 20px;
+        padding: 50px 30px;
+        text-align: center;
+        color: white;
+        margin-bottom: 25px;
+        min-height: 180px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      .update-card.news {
+        background: #2d4a5e;
+      }
+      .update-card.events {
+        background: #7cb4d4;
+      }
+      .update-card h3 {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .update-card .label {
+        font-size: 16px;
+        opacity: 0.9;
+      }
+      .entries-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+      .entries-title {
+        font-size: 16px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .btn-refresh {
+        background: #5cb85c;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .btn-refresh:hover {
+        background: #4cae4c;
+      }
+      .entries-controls {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+      .entries-controls label {
+        font-size: 14px;
+        color: #666;
+      }
+      .entries-controls select {
+        padding: 8px 15px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+      }
+      .entries-controls input {
+        padding: 8px 15px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+        min-width: 200px;
+      }
+      .events-table {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .events-table th {
+        background: #f8f9fa;
+        font-weight: 600;
+        font-size: 12px;
+        color: #666;
+        text-transform: uppercase;
+        padding: 15px 20px;
+        border: none;
+      }
+      .events-table td {
+        padding: 15px 20px;
+        vertical-align: middle;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 14px;
+      }
+      .events-table tbody tr:nth-child(even) {
+        background: #fdf5f5;
+      }
+      .events-table tbody tr:hover {
+        background: #f0f7ff;
+      }
+      .img-thumb {
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+      }
+      .btn-link-icon {
+        color: #999;
+        font-size: 18px;
+        cursor: pointer;
+      }
+      .btn-link-icon:hover {
+        color: #3b5998;
+      }
+      .btn-edit-icon {
+        color: #f0ad4e;
+        font-size: 18px;
+        cursor: pointer;
+      }
+      .btn-edit-icon:hover {
+        color: #ec971f;
+      }
+      .btn-add-new {
+        background: #5cb85c;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        float: right;
+        margin-top: 20px;
+      }
+      .btn-add-new:hover {
+        background: #4cae4c;
+        color: white;
+        text-decoration: none;
+      }
+      
+      /* Card Buttons Styling */
+      .update-card-btn {
+        border-radius: 20px;
+        padding: 50px 30px;
+        text-align: center;
+        color: white;
+        margin-bottom: 25px;
+        min-height: 180px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+      .update-card-btn.news {
+        background: #2d4a5e;
+      }
+      .update-card-btn.news:hover {
+        background: #1e3344;
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(45, 74, 94, 0.4);
+        color: white;
+      }
+      .update-card-btn.events {
+        background: #7cb4d4;
+      }
+      .update-card-btn.events:hover {
+        background: #5a9bc2;
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(124, 180, 212, 0.4);
+        color: white;
+      }
+      .update-card-btn h3 {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+      .update-card-btn .label {
+        font-size: 18px;
+        font-weight: 600;
+        opacity: 0.95;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        letter-spacing: 0.5px;
+      }
+      
+      /* Section Title Styling */
+      .section-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 20px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .section-title i {
+        color: #d9a441;
+      }
+      
+      /* Filter badge transitions */
+      .filter-badge {
+        transition: all 0.3s ease;
+      }
+      .filter-badge.active {
+        background: #c49536;
+        transform: scale(1.05);
+      }
+
+      /* Accessibility Styles */
+      .access-high-contrast {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+      }
+      .access-high-contrast .card-style,
+      .access-high-contrast .events-table,
+      .access-high-contrast .table,
+      .access-high-contrast .header,
+      .access-high-contrast .sidebar-nav-wrapper,
+      .access-high-contrast .main-wrapper {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+      }
+      .access-high-contrast a { color: #0000ee !important; }
+      .access-large-text { font-size: 18px; }
+      .access-text-spacing { letter-spacing: 0.3px; line-height: 1.6; }
+      .access-reduce-motion *, .access-reduce-motion *::before, .access-reduce-motion *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+
+      /* Settings dropdown & switch */
+      .settings-box button {
+        width: 40px; height: 40px; border-radius: 50%; background: #f5f6fa; display: inline-flex; align-items: center; justify-content: center;
+      }
+      .settings-dropdown {
+        width: 280px; padding: 10px 0;
+      }
+      .settings-title { font-weight: 600; font-size: 13px; padding: 8px 16px; color: #555; }
+      .settings-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; }
+      .settings-item label { font-size: 13px; color: #333; }
+      .switch { position: relative; width: 42px; height: 24px; }
+      .switch input { opacity: 0; width: 0; height: 0; }
+      .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #ddd; transition: .2s; border-radius: 24px; }
+      .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; top: 3px; background: white; transition: .2s; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+      .switch input:checked + .slider { background: #3b5998; }
+      .switch input:checked + .slider:before { transform: translateX(18px); }
+
+      /* High Contrast (Dark) */
+      .access-contrast-dark {
+        background-color: #0f172a !important; /* slate-900 */
+        color: #ffffff !important;
+      }
+      .access-contrast-dark .card-style,
+      .access-contrast-dark .events-table,
+      .access-contrast-dark .table,
+      .access-contrast-dark .header,
+      .access-contrast-dark .sidebar-nav-wrapper,
+      .access-contrast-dark .main-wrapper {
+        background-color: #111827 !important; /* gray-900 */
+        color: #ffffff !important;
+      }
+      .access-contrast-dark a { color: #93c5fd !important; }
+      .access-contrast-dark .btn-refresh,
+      .access-contrast-dark .filter-badge { background: #1f2937 !important; color: #ffffff !important; }
+
+      /* Color Blind Friendly Palette (Deuteranopia-safe) */
+      .access-colorblind {
+        --cb-blue: #2E86AB;   /* blue */
+        --cb-yellow: #F6C85F; /* yellow */
+        --cb-purple: #6F4E7C; /* purple */
+        --cb-teal: #41B3A3;   /* teal */
+        --cb-gray: #6c757d;   /* gray */
+      }
+      .access-colorblind .filter-badge { background: var(--cb-yellow) !important; color: #1f1f1f !important; }
+      .access-colorblind .update-card-btn.news { background: var(--cb-blue) !important; }
+      .access-colorblind .update-card-btn.events { background: var(--cb-teal) !important; }
+      .access-colorblind .btn-refresh { background: var(--cb-teal) !important; }
+
+      /* Simple Mode: larger buttons, spacing, hide non-essential UI */
+      .access-simple .header-search { display: none !important; }
+      .access-simple .filter-badge,
+      .access-simple .btn-refresh,
+      .access-simple .btn-add-new { padding: 16px 24px; font-size: 16px; border-radius: 12px; }
+      .access-simple .update-card-btn { min-height: 220px; }
+      .access-simple .entries-controls { gap: 20px; }
+
+      /* Text size helpers (applied via root font-size) */
+      .text-size-indicator { font-weight: 700; }
+    </style>
+  </head>
+  <body>
+    <!-- ======== Preloader =========== -->
+    <div id="preloader">
+      <div class="spinner"></div>
+    </div>
+    <!-- ======== Preloader =========== -->
+
+    <!-- ======== sidebar-nav start =========== -->
+    <aside class="sidebar-nav-wrapper">
+      <div class="navbar-logo">
+        <a href="index.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+          <img src="../images/PULSE OG.png" alt="logo" style="width: 45px; height: 45px; object-fit: contain;" />
+          <span style="font-size: 18px; font-weight: 600; color: #3b5998;">PULSE Admin</span>
+        </a>
+      </div>
+      <nav class="sidebar-nav">
+        <ul>
+          <!-- Dashboard -->
+          <li class="nav-item">
+            <a href="index.html">
+              <span class="icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4 13H10C10.55 13 11 12.55 11 12V4C11 3.45 10.55 3 10 3H4C3.45 3 3 3.45 3 4V12C3 12.55 3.45 13 4 13ZM4 21H10C10.55 21 11 20.55 11 20V16C11 15.45 10.55 15 10 15H4C3.45 15 3 15.45 3 16V20C3 20.55 3.45 21 4 21ZM14 21H20C20.55 21 21 20.55 21 20V12C21 11.45 20.55 11 20 11H14C13.45 11 13 11.45 13 12V20C13 20.55 13.45 21 14 21ZM13 4V8C13 8.55 13.45 9 14 9H20C20.55 9 21 8.55 21 8V4C21 3.45 20.55 3 20 3H14C13.45 3 13 3.45 13 4Z" fill="currentColor"/>
+                </svg>
+              </span>
+              <span class="text">Dashboard</span>
+            </a>
+          </li>
+          <!-- Tasks -->
+          <li class="nav-item">
+            <a href="tasks.html">
+              <span class="icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM10.71 16.29C10.32 16.68 9.69 16.68 9.3 16.29L5.71 12.7C5.32 12.31 5.32 11.68 5.71 11.29C6.1 10.9 6.73 10.9 7.12 11.29L10 14.17L16.88 7.29C17.27 6.9 17.9 6.9 18.29 7.29C18.68 7.68 18.68 8.31 18.29 8.7L10.71 16.29Z" fill="currentColor"/>
+                </svg>
+              </span>
+              <span class="text">Tasks</span>
+            </a>
+          </li>
+          <!-- Accounts -->
+          <li class="nav-item">
+            <a href="accounts.html">
+              <span class="icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V19C4 19.55 4.45 20 5 20H19C19.55 20 20 19.55 20 19V18C20 15.34 14.67 14 12 14Z" fill="currentColor"/>
+                </svg>
+              </span>
+              <span class="text">User Management</span>
+            </a>
+          </li>
+          <!-- News & Events -->
+          <li class="nav-item active" style="margin-bottom: 15px;">
+            <a href="news-events.html">
+              <span class="icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20 3H4C2.9 3 2 3.9 2 5V19C2 20.1 2.9 21 4 21H20C21.1 21 22 20.1 22 19V5C22 3.9 21.1 3 20 3ZM5 7H10V13H5V7ZM19 17H5V15H19V17ZM19 13H12V11H19V13ZM19 9H12V7H19V9Z" fill="currentColor"/>
+                </svg>
+              </span>
+              <span class="text">News & Events</span>
+            </a>
+          </li>
+          <!-- Security Divider -->
+          <li class="nav-item" style="pointer-events: none; margin-top: 10px;">
+            <span style="display: flex; align-items: center; padding: 12px 20px; color: #ffc107; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">
+              <span class="icon" style="margin-right: 10px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1ZM12 11.99H19C18.47 16.11 15.72 19.78 12 20.93V12H5V6.3L12 3.19V11.99Z" fill="#ffc107"/>
+                </svg>
+              </span>
+              Security
+            </span>
+          </li>
+          <!-- Login Logs -->
+          <li class="nav-item">
+            <a href="loginlogs.html">
+              <span class="icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M11.99 2C6.47 2 2 6.48 2 12C2 17.52 6.47 22 11.99 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 11.99 2ZM12 20C7.58 20 4 16.42 4 12C4 7.58 7.58 4 12 4C16.42 4 20 7.58 20 12C20 16.42 16.42 20 12 20ZM12.5 7H11V13L16.25 16.15L17 14.92L12.5 12.25V7Z" fill="currentColor"/>
+                </svg>
+              </span>
+              <span class="text">Login Logs</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+    <div class="overlay"></div>
+    <!-- ======== sidebar-nav end =========== -->
+
+    <!-- ======== main-wrapper start =========== -->
+    <main class="main-wrapper">
+      <!-- ========== header start ========== -->
+      <header class="header">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-5 col-md-5 col-6">
+              <div class="header-left d-flex align-items-center">
+                <div class="menu-toggle-btn mr-15">
+                  <button id="menu-toggle" class="main-btn primary-btn btn-hover">
+                    <i class="lni lni-chevron-left me-2"></i> Menu
+                  </button>
+                </div>
+                <div class="header-search d-none d-md-flex">
+                  <form action="#">
+                    <input type="text" placeholder="Search for something" />
+                    <button><i class="lni lni-search-alt"></i></button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-7 col-md-7 col-6">
+              <div class="header-right">
+                <!-- notification start -->
+                <div class="notification-box ml-15 d-none d-md-flex">
+                  <button class="dropdown-toggle" type="button" id="notification" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M11 20.1667C9.88317 20.1667 8.88718 19.63 8.23901 18.7917H13.761C13.113 19.63 12.1169 20.1667 11 20.1667Z"
+                        fill="" />
+                      <path
+                        d="M10.1157 2.74999C10.1157 2.24374 10.5117 1.83333 11 1.83333C11.4883 1.83333 11.8842 2.24374 11.8842 2.74999V2.82604C14.3932 3.26245 16.3051 5.52474 16.3051 8.24999V14.287C16.3051 14.5301 16.3982 14.7633 16.564 14.9352L18.2029 16.6342C18.4814 16.9229 18.2842 17.4167 17.8903 17.4167H4.10961C3.71574 17.4167 3.5185 16.9229 3.797 16.6342L5.43589 14.9352C5.6017 14.7633 5.69485 14.5301 5.69485 14.287V8.24999C5.69485 5.52474 7.60672 3.26245 10.1157 2.82604V2.74999Z"
+                        fill="" />
+                    </svg>
+                    <span></span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notification">
+                    <li>
+                      <a href="#0">
+                        <div class="image">
+                          <img src="assets/images/lead/lead-6.png" alt="" />
+                        </div>
+                        <div class="content">
+                          <h6>New event posted</h6>
+                          <span>10 mins ago</span>
+                        </div>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <!-- notification end -->
+                <!-- message start -->
+                <div class="header-message-box ml-15 d-none d-md-flex">
+                  <button class="dropdown-toggle" type="button" id="message" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M7.74866 5.97421C7.91444 5.96367 8.08162 5.95833 8.25005 5.95833C12.5532 5.95833 16.0417 9.4468 16.0417 13.75C16.0417 13.9184 16.0364 14.0856 16.0259 14.2514C16.3246 14.138 16.6127 14.003 16.8883 13.8482L19.2306 14.629C19.7858 14.8141 20.3141 14.2858 20.129 13.7306L19.3482 11.3882C19.8694 10.4604 20.1667 9.38996 20.1667 8.25C20.1667 4.70617 17.2939 1.83333 13.75 1.83333C11.0077 1.83333 8.66702 3.55376 7.74866 5.97421Z"
+                        fill="" />
+                      <path
+                        d="M14.6667 13.75C14.6667 17.2938 11.7939 20.1667 8.25004 20.1667C7.11011 20.1667 6.03962 19.8694 5.11182 19.3482L2.76946 20.129C2.21421 20.3141 1.68597 19.7858 1.87105 19.2306L2.65184 16.8882C2.13062 15.9604 1.83338 14.89 1.83338 13.75C1.83338 10.2062 4.70622 7.33333 8.25004 7.33333C11.7939 7.33333 14.6667 10.2062 14.6667 13.75ZM5.95838 13.75C5.95838 13.2437 5.54797 12.8333 5.04171 12.8333C4.53545 12.8333 4.12504 13.2437 4.12504 13.75C4.12504 14.2563 4.53545 14.6667 5.04171 14.6667C5.54797 14.6667 5.95838 14.2563 5.95838 13.75ZM9.16671 13.75C9.16671 13.2437 8.7563 12.8333 8.25004 12.8333C7.74379 12.8333 7.33338 13.2437 7.33338 13.75C7.33338 14.2563 7.74379 14.6667 8.25004 14.6667C8.7563 14.6667 9.16671 14.2563 9.16671 13.75ZM11.4584 14.6667C11.9647 14.6667 12.375 14.2563 12.375 13.75C12.375 13.2437 11.9647 12.8333 11.4584 12.8333C10.9521 12.8333 10.5417 13.2437 10.5417 13.75C10.5417 14.2563 10.9521 14.6667 11.4584 14.6667Z"
+                        fill="" />
+                    </svg>
+                    <span></span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="message">
+                    <li>
+                      <a href="#0">
+                        <div class="image">
+                          <img src="assets/images/lead/lead-5.png" alt="" />
+                        </div>
+                        <div class="content">
+                          <h6>Jacob Jones</h6>
+                          <p>News article approved</p>
+                          <span>10 mins ago</span>
+                        </div>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <!-- message end -->
+                <!-- settings start -->
+                <div class="settings-box ml-15 d-none d-md-flex">
+                  <button class="dropdown-toggle" type="button" title="Settings" data-bs-toggle="modal" data-bs-target="#accessibilityModal">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 0 0 .12-.65l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.027 7.027 0 0 0-1.62-.94l-.36-2.54A.5.5 0 0 0 12.34 1h-3.68a.5.5 0 0 0-.5.42l-.36 2.54c-.59.22-1.14.52-1.62.94l-2.39-.96a.5.5 0 0 0-.6.22L1.47 7c-.14.24-.09.54.12.73l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94L1.59 12.77a.5.5 0 0 0-.12.65l1.92 3.32c.14.24.43.34.68.23l2.39-.96c.48.42 1.03.72 1.62.94l.36 2.54c.04.24.25.42.5.42h3.68c.25 0 .46-.18.5-.42l.36-2.54c.59-.22 1.14-.52 1.62-.94l2.39.96c.25.1.54 0 .68-.23l1.92-3.32a.5.5 0 0 0-.12-.65l-2.03-1.58ZM10.5 13.5A2.5 2.5 0 1 1 13 11a2.5 2.5 0 0 1-2.5 2.5Z" fill="currentColor"/>
+                    </svg>
+                  </button>
+                </div>
+                <!-- settings end -->
+                <!-- profile start -->
+                <div class="profile-box ml-15">
+                  <button class="dropdown-toggle bg-transparent border-0" type="button" id="profile"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="profile-info">
+                      <div class="info">
+                        <div class="image">
+                          <img src="assets/images/profile/profile-image.png" alt="" />
+                        </div>
+                        <div>
+                          <h6 class="fw-500">Adam Joe</h6>
+                          <p>Admin</p>
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profile">
+                    <li>
+                      <div class="author-info flex items-center !p-1">
+                        <div class="image">
+                          <img src="assets/images/profile/profile-image.png" alt="image">
+                        </div>
+                        <div class="content">
+                          <h4 class="text-sm">Adam Joe</h4>
+                          <a class="text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white text-xs" href="#">Email@gmail.com</a>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                      <a href="#0">
+                        <i class="lni lni-user"></i> View Profile
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#0">
+                        <i class="lni lni-alarm"></i> Notifications
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#0"> <i class="lni lni-inbox"></i> Messages </a>
+                    </li>
+                    <li>
+                      <a href="#0"> <i class="lni lni-cog"></i> Settings </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                      <a href="#0"> <i class="lni lni-exit"></i> Sign Out </a>
+                    </li>
+                  </ul>
+                </div>
+                <!-- profile end -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+      <!-- ========== header end ========== -->
+
+      <!-- ========== section start ========== -->
+      <section class="section">
+        <div class="container-fluid">
+          <!-- ========== title-wrapper start ========== -->
+          <div class="title-wrapper pt-30">
+            <div class="row align-items-center">
+              <div class="col-md-6">
+                <div class="title">
+                  <h2>📢 Public Advisory & Emergency Bulletin Board</h2>
+                  <p style="color: #666; font-size: 14px; margin-top: 5px;">Real-time alerts, safety notices, and emergency announcements for San Juan CEDOC</p>
+                </div>
+              </div>
+              <!-- end col -->
+              <div class="col-md-6">
+                <div class="breadcrumb-wrapper">
+                  <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item">
+                        <a href="index.html">Dashboard</a>
+                      </li>
+                      <li class="breadcrumb-item active" aria-current="page">
+                        Public Advisory Board
+                      </li>
+                    </ol>
+                  </nav>
+                </div>
+              </div>
+              <!-- end col -->
+            </div>
+            <!-- end row -->
+          </div>
+          <!-- ========== title-wrapper end ========== -->
+
+          <!-- Advisory Banner -->
+          <div class="advisory-banner">
+            <div class="advisory-icon">🚨</div>
+            <div class="advisory-content">
+              <h2>Active Emergency Response Center</h2>
+              <p>Stay informed with real-time advisories for San Juan CEDOC. Check back frequently for critical alerts.</p>
+            </div>
+            <button class="main-btn primary-btn btn-hover" style="margin-left: auto; white-space: nowrap;">
+              <i class="lni lni-bolt"></i> PUBLISH URGENT ALERT
+            </button>
+          </div>
+
+          <style>
+            .switchable-section{display:none}
+            .switchable-section.active{display:block;animation:fadeIn .25s ease-in}
+            @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+            .priority-critical { background: #ffebee !important; border-left: 4px solid #dc3545; }
+            .priority-high { background: #fff3e0 !important; border-left: 4px solid #ff9800; }
+            .priority-medium { background: #e3f2fd !important; border-left: 4px solid #2196f3; }
+            .priority-low { background: #f5f5f5 !important; border-left: 4px solid #9e9e9e; }
+            .priority-badge { padding: 4px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; }
+            .priority-critical-badge { background: #dc3545; color: white; }
+            .priority-high-badge { background: #ff9800; color: white; }
+            .priority-medium-badge { background: #2196f3; color: white; }
+            .priority-low-badge { background: #9e9e9e; color: white; }
+            .pin-btn { cursor: pointer; color: #ffc107; font-size: 18px; }
+            .pin-btn.pinned { color: #ff6b6b; }
+            .status-active { color: #27ae60; font-weight: 600; }
+            .status-expired { color: #dc3545; font-weight: 600; }
+            .audience-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; margin-right: 5px; }
+            .audience-all { background: #e0e0e0; color: #333; }
+            .audience-citizens { background: #e3f2fd; color: #1976d2; }
+            .audience-responders { background: #fff3e0; color: #f57c00; }
+            .audience-pwds { background: #f3e5f5; color: #7b1fa2; }
+          </style>
+          <div class="filter-buttons" style="margin-bottom: 25px;">
+            <button type="button" id="btnActive" class="filter-badge active">
+              <i class="lni lni-check-circle"></i> Active Advisories
+            </button>
+            <button type="button" id="btnAll" class="filter-badge">
+              <i class="lni lni-list"></i> All Advisories
+            </button>
+            <button type="button" id="btnExpired" class="filter-badge">
+              <i class="lni lni-archive"></i> Expired
+            </button>
+          </div>
+
+          
+
+          <!-- Active Advisories Section -->
+          <div id="news-section" class="card-style mb-30 switchable-section active">
+            <h3 class="section-title" style="margin-bottom: 20px;">
+              <i class="lni lni-alert"></i> Active Advisory Bulletins
+            </h3>
+
+            <div class="entries-controls">
+              <label>FILTER BY PRIORITY</label>
+              <select>
+                <option>All Levels</option>
+                <option>🔴 Critical</option>
+                <option>🟠 High</option>
+                <option>🔵 Medium/Informational</option>
+              </select>
+              <label>SEARCH</label>
+              <input type="text" placeholder="Search advisories..." />
+            </div>
+
+            <div class="table-responsive">
+              <table class="table events-table">
+                <thead>
+                  <tr>
+                    <th style="width: 5%;">PIN</th>
+                    <th style="width: 8%;">ADVISORY ID</th>
+                    <th style="width: 10%;">TYPE</th>
+                    <th style="width: 20%;">TITLE</th>
+                    <th style="width: 12%;">PRIORITY</th>
+                    <th style="width: 15%;">TARGET AUDIENCE</th>
+                    <th style="width: 15%;">DATE POSTED</th>
+                    <th style="width: 8%;">EXPIRES</th>
+                    <th style="width: 10%;">STATUS</th>
+                    <th style="width: 12%;">ACTIONS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Critical Alert -->
+                  <tr class="priority-critical">
+                    <td><span class="pin-btn pinned">📌</span></td>
+                    <td><strong>ADV-2026-001</strong></td>
+                    <td><span class="priority-badge priority-critical-badge">🚨 Emergency Advisory</span></td>
+                    <td><strong>SEVERE WEATHER WARNING: High Wind Alert</strong></td>
+                    <td><span class="priority-badge priority-critical-badge">CRITICAL</span></td>
+                    <td><span class="audience-badge audience-all">🌐 All Citizens</span></td>
+                    <td>Feb 7, 2026 | 14:30</td>
+                    <td>Feb 8, 12:00</td>
+                    <td><span class="status-active">✓ Active</span></td>
+                    <td><button class="btn btn-sm btn-primary">View</button> <button class="btn btn-sm btn-warning">Edit</button></td>
+                  </tr>
+
+                  <!-- High Priority -->
+                  <tr class="priority-high">
+                    <td><span class="pin-btn">📍</span></td>
+                    <td><strong>ADV-2026-002</strong></td>
+                    <td><span class="priority-badge priority-high-badge">⚠️ Safety Notice</span></td>
+                    <td>Community Health Outreach - Free Medical Clinic</td>
+                    <td><span class="priority-badge priority-high-badge">HIGH</span></td>
+                    <td><span class="audience-badge audience-pwds">♿ PWDs & Elderly</span></td>
+                    <td>Feb 7, 2026 | 12:15</td>
+                    <td>Feb 10, 18:00</td>
+                    <td><span class="status-active">✓ Active</span></td>
+                    <td><button class="btn btn-sm btn-primary">View</button> <button class="btn btn-sm btn-warning">Edit</button></td>
+                  </tr>
+
+                  <!-- Weather Alert -->
+                  <tr class="priority-high">
+                    <td><span class="pin-btn">📍</span></td>
+                    <td><strong>ADV-2026-003</strong></td>
+                    <td><span class="priority-badge priority-high-badge">🌦️ Weather Alert</span></td>
+                    <td>Heat Index Advisory: Extreme Heat Expected Today</td>
+                    <td><span class="priority-badge priority-high-badge">HIGH</span></td>
+                    <td><span class="audience-badge audience-citizens">👥 Citizens</span></td>
+                    <td>Feb 7, 2026 | 08:00</td>
+                    <td>Feb 7, 20:00</td>
+                    <td><span class="status-active">✓ Active</span></td>
+                    <td><button class="btn btn-sm btn-primary">View</button> <button class="btn btn-sm btn-warning">Edit</button></td>
+                  </tr>
+
+                  <!-- News/Info -->
+                  <tr class="priority-medium">
+                    <td><span class="pin-btn">📍</span></td>
+                    <td><strong>ADV-2026-004</strong></td>
+                    <td><span class="priority-badge priority-medium-badge">📰 News</span></td>
+                    <td>San Juan City Launches Community Safety Program</td>
+                    <td><span class="priority-badge priority-medium-badge">MEDIUM</span></td>
+                    <td><span class="audience-badge audience-all">🌐 All Citizens</span></td>
+                    <td>Feb 6, 2026 | 10:30</td>
+                    <td>Feb 13, 23:59</td>
+                    <td><span class="status-active">✓ Active</span></td>
+                    <td><button class="btn btn-sm btn-primary">View</button> <button class="btn btn-sm btn-warning">Edit</button></td>
+                  </tr>
+
+                  <!-- Responder Notice -->
+                  <tr class="priority-medium">
+                    <td><span class="pin-btn">📍</span></td>
+                    <td><strong>ADV-2026-005</strong></td>
+                    <td><span class="priority-badge priority-medium-badge">👮 Responder Notice</span></td>
+                    <td>Traffic Advisory: Road Closure on Main Street for Maintenance</td>
+                    <td><span class="priority-badge priority-medium-badge">MEDIUM</span></td>
+                    <td><span class="audience-badge audience-responders">👮 Responders</span></td>
+                    <td>Feb 6, 2026 | 16:45</td>
+                    <td>Feb 9, 18:00</td>
+                    <td><span class="status-active">✓ Active</span></td>
+                    <td><button class="btn btn-sm btn-primary">View</button> <button class="btn btn-sm btn-warning">Edit</button></td>
+                  </tr>
+
+                  <!-- Low Priority Info -->
+                  <tr class="priority-low">
+                    <td><span class="pin-btn">📍</span></td>
+                    <td><strong>ADV-2026-006</strong></td>
+                    <td><span class="priority-badge priority-low-badge">ℹ️ Information</span></td>
+                    <td>Schedule: Barangay Assembly Meeting Next Week</td>
+                    <td><span class="priority-badge priority-low-badge">LOW</span></td>
+                    <td><span class="audience-badge audience-all">🌐 All Citizens</span></td>
+                    <td>Feb 5, 2026 | 14:00</td>
+                    <td>Feb 12, 23:59</td>
+                    <td><span class="status-active">✓ Active</span></td>
+                    <td><button class="btn btn-sm btn-primary">View</button> <button class="btn btn-sm btn-warning">Edit</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <button class="btn-add-new" style="background: #27ae60;">
+              <i class="lni lni-plus"></i> ADD NEW ADVISORY
+            </button>
+            <div style="clear: both;"></div>
+          </div>
+
+          <!-- All/Expired Advisories Section -->
+          <div id="events-section" class="card-style mb-30 switchable-section">
+            <h3 class="section-title" style="margin-bottom: 20px;">
+              <i class="lni lni-folder-alt"></i> All Public Advisories
+            </h3>
+
+            <div class="entries-controls">
+              <label>FILTER BY TYPE</label>
+              <select>
+                <option>All Types</option>
+                <option>Emergency Advisory</option>
+                <option>Weather Alert</option>
+                <option>Safety Notice</option>
+                <option>News</option>
+              </select>
+              <label>SEARCH</label>
+              <input type="text" placeholder="Search all advisories..." />
+            </div>
+
+            <div class="table-responsive">
+              <table class="table events-table">
+                <thead>
+                  <tr>
+                    <th style="width: 5%;">PIN</th>
+                    <th style="width: 8%;">ADVISORY ID</th>
+                    <th style="width: 10%;">TYPE</th>
+                    <th style="width: 20%;">TITLE</th>
+                    <th style="width: 12%;">PRIORITY</th>
+                    <th style="width: 15%;">TARGET AUDIENCE</th>
+                    <th style="width: 15%;">DATE POSTED</th>
+                    <th style="width: 10%;">STATUS</th>
+                    <th style="width: 12%;">ACTIONS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Expired Example -->
+                  <tr style="opacity: 0.7; background: #f5f5f5;">
+                    <td><span class="pin-btn">📍</span></td>
+                    <td><strong>ADV-2026-009</strong></td>
+                    <td><span class="priority-badge priority-low-badge">🌦️ Weather</span></td>
+                    <td>Heavy Rain Warning - Expired</td>
+                    <td><span class="priority-badge priority-low-badge">MEDIUM</span></td>
+                    <td><span class="audience-badge audience-all">🌐 All</span></td>
+                    <td>Feb 4, 2026 | 09:00</td>
+                    <td><span class="status-expired">✕ Expired (Feb 5)</span></td>
+                    <td><button class="btn btn-sm btn-secondary">Archive</button></td>
+                  </tr>
+
+                  <!-- Previous News -->
+                  <tr>
+                    <td><span class="pin-btn">📍</span></td>
+                    <td><strong>ADV-2026-007</strong></td>
+                    <td><span class="priority-badge priority-medium-badge">📰 News</span></td>
+                    <td>Municipal Hall Renovation Project Updates</td>
+                    <td><span class="priority-badge priority-medium-badge">LOW</span></td>
+                    <td><span class="audience-badge audience-all">🌐 All Citizens</span></td>
+                    <td>Feb 3, 2026 | 11:20</td>
+                    <td><span class="status-active">✓ Active</span></td>
+                    <td><button class="btn btn-sm btn-primary">View</button> <button class="btn btn-sm btn-warning">Edit</button></td>
+                  </tr>
+
+                  <!-- Previous Alert -->
+                  <tr>
+                    <td><span class="pin-btn">📍</span></td>
+                    <td><strong>ADV-2026-008</strong></td>
+                    <td><span class="priority-badge priority-high-badge">⚠️ Safety Notice</span></td>
+                    <td>Dengue Prevention Awareness Campaign</td>
+                    <td><span class="priority-badge priority-high-badge">HIGH</span></td>
+                    <td><span class="audience-badge audience-citizens">👥 Citizens</span></td>
+                    <td>Feb 2, 2026 | 15:45</td>
+                    <td><span class="status-active">✓ Active</span></td>
+                    <td><button class="btn btn-sm btn-primary">View</button> <button class="btn btn-sm btn-warning">Edit</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <button class="btn-add-new" style="background: #27ae60;">
+              <i class="lni lni-plus"></i> ADD NEW ADVISORY
+            </button>
+            <div style="clear: both;"></div>
+          </div>
+
+        </div>
+        <!-- end container -->
+      </section>
+      <!-- ========== section end ========== -->
+
+      <!-- ========== footer start =========== -->
+      <footer class="footer">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-6 order-last order-md-first">
+              <div class="copyright text-center text-md-start">
+                <p class="text-sm">
+                  PULSE Admin Dashboard
+                </p>
+              </div>
+            </div>
+            <!-- end col-->
+            <div class="col-md-6">
+              <div class="terms d-flex justify-content-center justify-content-md-end">
+                <a href="#0" class="text-sm">Term & Conditions</a>
+                <a href="#0" class="text-sm ml-15">Privacy & Policy</a>
+              </div>
+            </div>
+          </div>
+          <!-- end row -->
+        </div>
+        <!-- end container -->
+      </footer>
+      <!-- ========== footer end =========== -->
+    </main>
+    <!-- ======== main-wrapper end =========== -->
+
+    <!-- ========= All Javascript files linkup ======== -->
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    
+    <!-- Accessibility Settings Modal -->
+    <div class="modal fade" id="accessibilityModal" tabindex="-1" aria-labelledby="accessibilityModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="accessibilityModalLabel"><i class="lni lni-cog me-2"></i>PULSE Accessibility Settings</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row g-3">
+              <!-- Text Size -->
+              <div class="col-12">
+                <div class="card p-3">
+                  <div class="d-flex align-items-center mb-2">
+                    <i class="lni lni-text-size me-2"></i>
+                    <h6 class="m-0">Text Size</h6>
+                    <span class="ms-auto text-muted text-size-indicator" id="currentTextSize">Medium</span>
+                  </div>
+                  <div class="d-flex flex-wrap gap-2">
+                    <button class="btn btn-outline-secondary" id="btnSizeSm" aria-label="Small">A-</button>
+                    <button class="btn btn-outline-secondary" id="btnSizeMd" aria-label="Medium">A</button>
+                    <button class="btn btn-outline-secondary" id="btnSizeLg" aria-label="Large">A+</button>
+                    <button class="btn btn-outline-secondary" id="btnSizeXl" aria-label="Extra Large">A++</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- High Contrast -->
+              <div class="col-md-6">
+                <div class="card p-3 d-flex align-items-center justify-content-between flex-row">
+                  <div class="d-flex align-items-center">
+                    <i class="lni lni-night me-2"></i>
+                    <div>
+                      <div class="fw-semibold">High Contrast (Dark)</div>
+                      <small class="text-muted">Dark background, bright text</small>
+                    </div>
+                  </div>
+                  <label class="switch ms-3"><input type="checkbox" id="toggleContrast"><span class="slider"></span></label>
+                </div>
+              </div>
+
+              <!-- Color Blind Friendly -->
+              <div class="col-md-6">
+                <div class="card p-3 d-flex align-items-center justify-content-between flex-row">
+                  <div class="d-flex align-items-center">
+                    <i class="lni lni-palette me-2"></i>
+                    <div>
+                      <div class="fw-semibold">Color Blind Friendly</div>
+                      <small class="text-muted">Safer palette for visibility</small>
+                    </div>
+                  </div>
+                  <label class="switch ms-3"><input type="checkbox" id="toggleColorblind"><span class="slider"></span></label>
+                </div>
+              </div>
+
+              <!-- Simple Mode -->
+              <div class="col-md-6">
+                <div class="card p-3 d-flex align-items-center justify-content-between flex-row">
+                  <div class="d-flex align-items-center">
+                    <i class="lni lni-layout me-2"></i>
+                    <div>
+                      <div class="fw-semibold">Simple Mode</div>
+                      <small class="text-muted">Reduce clutter, larger controls</small>
+                    </div>
+                  </div>
+                  <label class="switch ms-3"><input type="checkbox" id="toggleSimple"><span class="slider"></span></label>
+                </div>
+              </div>
+
+              <!-- Reduce Motion -->
+              <div class="col-md-6">
+                <div class="card p-3 d-flex align-items-center justify-content-between flex-row">
+                  <div class="d-flex align-items-center">
+                    <i class="lni lni-shield me-2"></i>
+                    <div>
+                      <div class="fw-semibold">Reduce Motion</div>
+                      <small class="text-muted">Disable animations and transitions</small>
+                    </div>
+                  </div>
+                  <label class="switch ms-3"><input type="checkbox" id="toggleReduceMotion"><span class="slider"></span></label>
+                </div>
+              </div>
+
+              <!-- Language & TTS -->
+              <div class="col-md-6">
+                <div class="card p-3">
+                  <div class="d-flex align-items-center mb-2">
+                    <i class="lni lni-world me-2"></i>
+                    <h6 class="m-0">Language</h6>
+                  </div>
+                  <select class="form-select" id="selectLanguage" aria-label="Language">
+                    <option value="en-US">English</option>
+                    <option value="fil-PH">Filipino</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card p-3">
+                  <div class="d-flex align-items-center mb-2">
+                    <i class="lni lni-mic me-2"></i>
+                    <h6 class="m-0">Text-to-Speech</h6>
+                  </div>
+                  <button class="btn btn-primary w-100" id="btnReadAloud"><i class="lni lni-volume"></i> Read Page Aloud</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // Section switcher for advisory board
+      function showSection(sectionKey) {
+        const newsSection = document.getElementById('news-section');
+        const eventsSection = document.getElementById('events-section');
+        const btnActive = document.getElementById('btnActive');
+        const btnAll = document.getElementById('btnAll');
+        const btnExpired = document.getElementById('btnExpired');
+
+        const showActive = sectionKey === 'active';
+        const showAll = sectionKey === 'all';
+        const showExpired = sectionKey === 'expired';
+        
+        newsSection?.classList.toggle('active', showActive);
+        eventsSection?.classList.toggle('active', !showActive);
+        btnActive?.classList.toggle('active', showActive);
+        btnAll?.classList.toggle('active', showAll);
+        btnExpired?.classList.toggle('active', showExpired);
+      }
+
+      // Wire buttons
+      document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('btnActive')?.addEventListener('click', () => showSection('active'));
+        document.getElementById('btnAll')?.addEventListener('click', () => showSection('all'));
+        document.getElementById('btnExpired')?.addEventListener('click', () => showSection('expired'));
+      });
+      
+      // Handle anchor link clicks on cards
+      document.querySelectorAll('.update-card-btn').forEach(card => {
+        card.addEventListener('click', function(e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href').substring(1);
+          const target = document.getElementById(targetId);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+
+      // Accessibility: settings & persistence
+      const ACCESS_KEYS = {
+        textSize: 'access_text_size',
+        contrastDark: 'access_contrast_dark',
+        colorblind: 'access_colorblind',
+        simple: 'access_simple',
+        reduceMotion: 'access_reduce_motion',
+        language: 'access_language'
+      };
+
+      function setRootFontSize(sizeKey) {
+        const sizes = { sm: '14px', md: '16px', lg: '18px', xl: '20px' };
+        const labels = { sm: 'Small', md: 'Medium', lg: 'Large', xl: 'Extra Large' };
+        const val = sizes[sizeKey] || sizes.md;
+        document.documentElement.style.fontSize = val;
+        document.getElementById('currentTextSize').textContent = labels[sizeKey] || labels.md;
+        localStorage.setItem(ACCESS_KEYS.textSize, sizeKey);
+      }
+
+      function applySettingsFromStorage() {
+        const body = document.body;
+        const size = localStorage.getItem(ACCESS_KEYS.textSize) || 'md';
+        const contrast = localStorage.getItem(ACCESS_KEYS.contrastDark) === 'true';
+        const cb = localStorage.getItem(ACCESS_KEYS.colorblind) === 'true';
+        const simple = localStorage.getItem(ACCESS_KEYS.simple) === 'true';
+        const rm = localStorage.getItem(ACCESS_KEYS.reduceMotion) === 'true';
+        const lang = localStorage.getItem(ACCESS_KEYS.language) || 'en-US';
+
+        setRootFontSize(size);
+        document.getElementById('selectLanguage').value = lang;
+        document.getElementById('toggleContrast')?.setAttribute('checked', contrast ? 'checked' : '');
+        document.getElementById('toggleColorblind')?.setAttribute('checked', cb ? 'checked' : '');
+        document.getElementById('toggleSimple')?.setAttribute('checked', simple ? 'checked' : '');
+        document.getElementById('toggleReduceMotion')?.setAttribute('checked', rm ? 'checked' : '');
+
+        body.classList.toggle('access-contrast-dark', contrast);
+        body.classList.toggle('access-colorblind', cb);
+        body.classList.toggle('access-simple', simple);
+        body.classList.toggle('access-reduce-motion', rm);
+        document.documentElement.lang = lang.startsWith('fil') ? 'fil' : 'en';
+      }
+
+      function toggleClassPersist(key, className, enabled) {
+        localStorage.setItem(key, enabled ? 'true' : 'false');
+        document.body.classList.toggle(className, enabled);
+      }
+
+      // Text-to-Speech
+      function readPageAloud() {
+        const synth = window.speechSynthesis;
+        if (!synth) { alert('Speech synthesis not supported in this browser.'); return; }
+        synth.cancel();
+        const lang = localStorage.getItem(ACCESS_KEYS.language) || 'en-US';
+        const text = document.querySelector('main')?.innerText || document.body.innerText;
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = lang;
+        const voices = synth.getVoices();
+        const match = voices.find(v => v.lang.toLowerCase().startsWith(lang.toLowerCase()));
+        if (match) utter.voice = match;
+        utter.rate = 0.95;
+        utter.pitch = 1.0;
+        synth.speak(utter);
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        applySettingsFromStorage();
+
+        // Text size controls
+        document.getElementById('btnSizeSm')?.addEventListener('click', () => setRootFontSize('sm'));
+        document.getElementById('btnSizeMd')?.addEventListener('click', () => setRootFontSize('md'));
+        document.getElementById('btnSizeLg')?.addEventListener('click', () => setRootFontSize('lg'));
+        document.getElementById('btnSizeXl')?.addEventListener('click', () => setRootFontSize('xl'));
+
+        // Toggles
+        document.getElementById('toggleContrast')?.addEventListener('change', (e) => {
+          toggleClassPersist(ACCESS_KEYS.contrastDark, 'access-contrast-dark', e.target.checked);
+        });
+        document.getElementById('toggleColorblind')?.addEventListener('change', (e) => {
+          toggleClassPersist(ACCESS_KEYS.colorblind, 'access-colorblind', e.target.checked);
+        });
+        document.getElementById('toggleSimple')?.addEventListener('change', (e) => {
+          toggleClassPersist(ACCESS_KEYS.simple, 'access-simple', e.target.checked);
+        });
+        document.getElementById('toggleReduceMotion')?.addEventListener('change', (e) => {
+          toggleClassPersist(ACCESS_KEYS.reduceMotion, 'access-reduce-motion', e.target.checked);
+        });
+
+        // Language select
+        document.getElementById('selectLanguage')?.addEventListener('change', (e) => {
+          const val = e.target.value;
+          localStorage.setItem(ACCESS_KEYS.language, val);
+          document.documentElement.lang = val.startsWith('fil') ? 'fil' : 'en';
+        });
+
+        // TTS
+        document.getElementById('btnReadAloud')?.addEventListener('click', () => {
+          // some browsers populate voices asynchronously
+          if (speechSynthesis.getVoices().length === 0) {
+            speechSynthesis.onvoiceschanged = readPageAloud;
+          } else {
+            readPageAloud();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

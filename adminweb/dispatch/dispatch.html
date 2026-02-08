@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" href="../images/PULSE OG.png" type="image/png" />
+  <title>PULSE ADMIN | Dispatch Monitor</title>
+
+  <!-- ========== All CSS files linkup ========= -->
+  <link rel="stylesheet" href="../admin/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../admin/assets/css/lineicons.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="../admin/assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="../admin/assets/css/main.css" />
+  <style>
+    /* Dispatch Page Specific Styles */
+    .dispatch-grid {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 20px;
+      min-height: calc(100vh - 180px);
+    }
+    
+    .dispatch-main {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .dispatch-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+    }
+    
+    .dispatch-stat {
+      background: white;
+      border-radius: 10px;
+      padding: 15px 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .dispatch-stat-icon {
+      width: 45px;
+      height: 45px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+    }
+    
+    .dispatch-stat-icon.available { background: #27ae60; }
+    .dispatch-stat-icon.dispatched { background: #f39c12; }
+    .dispatch-stat-icon.returning { background: #3498db; }
+    .dispatch-stat-icon.offline { background: #95a5a6; }
+    
+    .dispatch-stat-info h4 {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0;
+    }
+    
+    .dispatch-stat-info p {
+      font-size: 12px;
+      color: #666;
+      margin: 0;
+    }
+    
+    .responder-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 15px;
+    }
+    
+    .responder-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-left: 4px solid #ddd;
+      transition: all 0.2s;
+    }
+    
+    .responder-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+    
+    .responder-card.available { border-left-color: #27ae60; }
+    .responder-card.dispatched { border-left-color: #f39c12; }
+    .responder-card.returning { border-left-color: #3498db; }
+    .responder-card.offline { border-left-color: #95a5a6; }
+    
+    .responder-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 15px;
+    }
+    
+    .responder-unit-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .unit-icon {
+      width: 45px;
+      height: 45px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+    }
+    
+    .unit-icon.ambulance { background: #e74c3c; }
+    .unit-icon.fire { background: #f39c12; }
+    .unit-icon.police { background: #3498db; }
+    .unit-icon.rescue { background: #1abc9c; }
+    
+    .unit-details h4 {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 600;
+    }
+    
+    .unit-details p {
+      margin: 0;
+      font-size: 12px;
+      color: #666;
+    }
+    
+    .unit-status-badge {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+    
+    .unit-status-badge.available {
+      background: #e8f5e9;
+      color: #27ae60;
+    }
+    
+    .unit-status-badge.dispatched {
+      background: #fef3e2;
+      color: #f39c12;
+    }
+    
+    .unit-status-badge.returning {
+      background: #e8f4fd;
+      color: #3498db;
+    }
+    
+    .unit-status-badge.offline {
+      background: #f5f5f5;
+      color: #666;
+    }
+    
+    .responder-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+    
+    .detail-item i {
+      width: 14px;
+      color: #999;
+    }
+    
+    .responder-assignment {
+      padding: 12px;
+      background: #f9f9f9;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+    
+    .assignment-label {
+      font-size: 11px;
+      color: #666;
+      margin-bottom: 5px;
+    }
+    
+    .assignment-incident {
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .responder-actions {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .resp-action-btn {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: all 0.2s;
+    }
+    
+    .resp-action-btn.primary {
+      background: var(--pulse-primary);
+      color: white;
+    }
+    
+    .resp-action-btn.secondary {
+      background: #f0f0f0;
+      color: #333;
+    }
+    
+    .resp-action-btn:hover {
+      transform: scale(1.02);
+    }
+    
+    /* Timeline Panel */
+    .timeline-panel {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .panel-header {
+      padding: 20px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .panel-header h3 {
+      margin: 0;
+      font-size: 16px;
+    }
+    
+    .incident-selector {
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 13px;
+    }
+    
+    .panel-body {
+      padding: 20px;
+      flex: 1;
+      overflow-y: auto;
+    }
+    
+    .selected-incident {
+      padding: 15px;
+      background: #fde8e8;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    
+    .selected-incident-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .selected-incident-type {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: #e74c3c;
+    }
+    
+    .selected-incident-id {
+      font-size: 12px;
+      color: #666;
+      font-family: monospace;
+    }
+    
+    .selected-incident-location {
+      font-size: 13px;
+      color: #666;
+    }
+    
+    .dispatch-timeline {
+      position: relative;
+      padding-left: 25px;
+    }
+    
+    .dispatch-timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: #eee;
+    }
+    
+    .timeline-step {
+      position: relative;
+      padding-bottom: 25px;
+    }
+    
+    .timeline-step:last-child {
+      padding-bottom: 0;
+    }
+    
+    .step-marker {
+      position: absolute;
+      left: -25px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #ddd;
+      border: 3px solid white;
+      box-shadow: 0 0 0 2px #ddd;
+    }
+    
+    .timeline-step.completed .step-marker {
+      background: #27ae60;
+      box-shadow: 0 0 0 2px #27ae60;
+    }
+    
+    .timeline-step.active .step-marker {
+      background: #3498db;
+      box-shadow: 0 0 0 2px #3498db;
+      animation: pulse-marker 2s infinite;
+    }
+    
+    @keyframes pulse-marker {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+    
+    .step-content {
+      padding-left: 10px;
+    }
+    
+    .step-time {
+      font-size: 11px;
+      color: #999;
+      font-family: monospace;
+    }
+    
+    .step-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin: 5px 0;
+    }
+    
+    .step-details {
+      font-size: 12px;
+      color: #666;
+    }
+    
+    .timeline-step.pending .step-title,
+    .timeline-step.pending .step-details {
+      color: #ccc;
+    }
+    
+    @media (max-width: 1200px) {
+      .dispatch-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .dispatch-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .timeline-panel {
+        max-height: 500px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .dispatch-stats {
+        grid-template-columns: 1fr;
+      }
+      
+      .responder-cards {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- ======== Preloader =========== -->
+  <div id="preloader">
+    <div class="spinner"></div>
+  </div>
+  <!-- ======== Preloader =========== -->
+
+  <!-- ======== sidebar-nav start =========== -->
+  <aside class="sidebar-nav-wrapper">
+    <div class="navbar-logo">
+      <a href="index.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+        <img src="../images/PULSE OG.png" alt="logo" style="width: 45px; height: 45px; object-fit: contain;" />
+        <span style="font-size: 18px; font-weight: 600; color: #3b5998;">PULSE Admin</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <ul>
+        <!-- Dashboard -->
+        <li class="nav-item">
+          <a href="index.html">
+            <span class="icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 13H10C10.55 13 11 12.55 11 12V4C11 3.45 10.55 3 10 3H4C3.45 3 3 3.45 3 4V12C3 12.55 3.45 13 4 13ZM4 21H10C10.55 21 11 20.55 11 20V16C11 15.45 10.55 15 10 15H4C3.45 15 3 15.45 3 16V20C3 20.55 3.45 21 4 21ZM14 21H20C20.55 21 21 20.55 21 20V12C21 11.45 20.55 11 20 11H14C13.45 11 13 11.45 13 12V20C13 20.55 13.45 21 14 21ZM13 4V8C13 8.55 13.45 9 14 9H20C20.55 9 21 8.55 21 8V4C21 3.45 20.55 3 20 3H14C13.45 3 13 3.45 13 4Z" fill="currentColor"/>
+              </svg>
+            </span>
+            <span class="text">Dashboard</span>
+          </a>
+        </li>
+        <!-- Emergencies -->
+        <li class="nav-item">
+          <a href="emergencies.html">
+            <span class="icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 7C13.66 7 15 8.34 15 10C15 11.66 13.66 13 12 13C10.34 13 9 11.66 9 10C9 8.34 10.34 7 12 7ZM12 19.2C9.5 19.2 7.29 17.92 6 15.98C6.03 13.99 10 12.9 12 12.9C13.99 12.9 17.97 13.99 18 15.98C16.71 17.92 14.5 19.2 12 19.2Z" fill="currentColor"/>
+              </svg>
+            </span>
+            <span class="text">Emergencies</span>
+          </a>
+        </li>
+        <!-- Map -->
+        <li class="nav-item">
+          <a href="map.html">
+            <span class="icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 7C13.66 7 15 8.34 15 10C15 11.66 13.66 13 12 13C10.34 13 9 11.66 9 10C9 8.34 10.34 7 12 7Z" fill="currentColor"/>
+              </svg>
+            </span>
+            <span class="text">Map</span>
+          </a>
+        </li>
+        <!-- User Management -->
+        <li class="nav-item">
+          <a href="users.html">
+            <span class="icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V19C4 19.55 4.45 20 5 20H19C19.55 20 20 19.55 20 19V18C20 15.34 14.67 14 12 14Z" fill="currentColor"/>
+              </svg>
+            </span>
+            <span class="text">User Management</span>
+          </a>
+        </li>
+        <!-- Dispatch -->
+        <li class="nav-item active">
+          <a href="dispatch.html">
+            <span class="icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 18.5C16.9 18.5 16 19.4 16 20.5C16 21.6 16.9 22.5 18 22.5C19.1 22.5 20 21.6 20 20.5C20 19.4 19.1 18.5 18 18.5ZM19.43 8.98C19.74 8.5 20 7.96 20 7.44V4C20 2.9 19.1 2 18 2H4C2.9 2 2 2.9 2 4V10C2 11.1 2.9 12 4 12H14.54C14.6 12 14.67 12 14.73 11.99C14.12 12.89 13.6 14.02 13.37 15.28H4C2.9 15.28 2 16.18 2 17.28V22C2 23.1 2.9 24 4 24H16.73C16.14 23.05 15.8 21.96 15.8 20.8C15.8 16.89 18.98 13.7 22.9 13.7C23.61 13.7 24.3 13.78 24.97 13.95V9C24.97 8.48 24.74 7.97 24.41 7.49L19.43 8.98ZM4 10V4H18V7.44L4 10ZM6 17.5C4.9 17.5 4 18.4 4 19.5C4 20.6 4.9 21.5 6 21.5C7.1 21.5 8 20.6 8 19.5C8 18.4 7.1 17.5 6 17.5Z" fill="currentColor"/>
+              </svg>
+            </span>
+            <span class="text">Dispatch</span>
+          </a>
+        </li>
+        <!-- Reports -->
+        <li class="nav-item">
+          <a href="reports.html">
+            <span class="icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 9.2H3C2.4 9.2 2 9.6 2 10.2V21C2 21.6 2.4 22 3 22H21C21.6 22 22 21.6 22 21V10.2C22 9.6 21.6 9.2 21 9.2H19.1C19.1 8.6 19.1 8.1 19.1 7.6C19.1 5.9 20.4 4.4 22 4.2V2.2C20.8 2.4 19.6 3 18.7 3.9C17.8 3 16.3 2 14.6 2C10.1 2 6.6 5.5 6.6 10C6.6 10.1 6.6 10.2 6.6 10.2C5.4 10.4 4.6 11.4 4.6 12.6V21C4.6 21.6 5 22 5.6 22H23C23.6 22 24 21.6 24 21V19.9C23.3 20 22.6 20 22 20H4V10.2C4 9.6 4.4 9.2 5 9.2Z" fill="currentColor"/>
+              </svg>
+            </span>
+            <span class="text">Reports</span>
+          </a>
+        </li>
+        <!-- Logs -->
+        <li class="nav-item">
+          <a href="logs.html">
+            <span class="icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11.99 2C6.47 2 2 6.48 2 12C2 17.52 6.47 22 11.99 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 11.99 2ZM12 20C7.58 20 4 16.42 4 12C4 7.58 7.58 4 12 4C16.42 4 20 7.58 20 12C20 16.42 16.42 20 12 20ZM12.5 7H11V13L16.25 16.15L17 14.92L12.5 12.25V7Z" fill="currentColor"/>
+              </svg>
+            </span>
+            <span class="text">Logs</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+  <div class="overlay"></div>
+  <!-- ======== sidebar-nav end =========== -->
+
+  <!-- ======== main-wrapper start =========== -->
+  <main class="main-wrapper">
+    <!-- ========== header start ========== -->
+    <header class="header">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-5 col-md-5 col-6">
+            <div class="header-left d-flex align-items-center">
+              <div class="menu-toggle-btn mr-15">
+                <button id="menu-toggle" class="main-btn primary-btn btn-hover">
+                  <i class="lni lni-chevron-left me-2"></i> Menu
+                </button>
+              </div>
+              <div class="header-search d-none d-md-flex">
+                <form action="#">
+                  <input type="text" placeholder="Search..." />
+                  <button><i class="lni lni-search-alt"></i></button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-7 col-md-7 col-6">
+            <div class="header-right">
+              <!-- profile start -->
+              <div class="profile-box ml-15">
+                <button class="dropdown-toggle bg-transparent border-0" type="button" id="profile" data-bs-toggle="dropdown" aria-expanded="false">
+                  <div class="profile-info">
+                    <div class="info">
+                      <div class="image">
+                        <img src="assets/images/profile/profile-image.png" alt="" />
+                      </div>
+                    </div>
+                  </div>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profile">
+                  <li>
+                    <a href="#0">
+                      <i class="lni lni-user"></i>
+                      Profile
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#0">
+                      <i class="lni lni-cog"></i>
+                      Settings
+                    </a>
+                  </li>
+                  <li>
+                    <hr class="dropdown-divider" />
+                  </li>
+                  <li>
+                    <a href="#0">
+                      <i class="lni lni-exit"></i>
+                      Sign Out
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <!-- profile end -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- ========== header end ========== -->
+
+    <!-- ========== section start ========== -->
+    <section class="section">
+      <div class="container-fluid">
+        <!-- page title & breadcrumb start -->
+        <div class="row align-items-center mb-4">
+          <div class="col-sm-4">
+            <div class="page-title-box">
+              <h4 class="page-title">Dispatch Monitoring</h4>
+            </div>
+          </div>
+          <div class="col-sm-8">
+            <div class="breadcrumb-links">
+              <a href="index.html">Dashboard</a>
+              <span>Dispatch</span>
+            </div>
+          </div>
+        </div>
+        <!-- page title & breadcrumb end -->
+
+        <!-- Responder Stats -->
+        <div class="row mb-4">
+          <div class="col-xxl-3 col-lg-6">
+            <div class="card card-stat">
+              <div class="card-body">
+                <div class="d-flex align-items-end justify-content-between">
+                  <div>
+                    <p class="dz-emai-con">On Duty</p>
+                    <h2>42</h2>
+                  </div>
+                  <div class="card-icon success">
+                    <i class="lni lni-checkmark-circle"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xxl-3 col-lg-6">
+            <div class="card card-stat">
+              <div class="card-body">
+                <div class="d-flex align-items-end justify-content-between">
+                  <div>
+                    <p class="dz-emai-con">Idle</p>
+                    <h2>18</h2>
+                  </div>
+                  <div class="card-icon warning">
+                    <i class="lni lni-hourglass"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xxl-3 col-lg-6">
+            <div class="card card-stat">
+              <div class="card-body">
+                <div class="d-flex align-items-end justify-content-between">
+                  <div>
+                    <p class="dz-emai-con">Active Calls</p>
+                    <h2>7</h2>
+                  </div>
+                  <div class="card-icon primary">
+                    <i class="lni lni-phone"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xxl-3 col-lg-6">
+            <div class="card card-stat">
+              <div class="card-body">
+                <div class="d-flex align-items-end justify-content-between">
+                  <div>
+                    <p class="dz-emai-con">Avg ETA</p>
+                    <h2>4.3m</h2>
+                  </div>
+                  <div class="card-icon info">
+                    <i class="lni lni-map"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Responder Cards -->
+        <div class="row mb-4">
+          <div class="col-12">
+            <h5 class="mb-3">Active Responders</h5>
+            <div id="responderCards" class="row">
+              <!-- Populated by JavaScript -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Dispatch Timeline -->
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Dispatch Timeline</h5>
+                <select class="form-select" style="width: 250px;" id="incidentSelect">
+                  <option value="INC-001">INC-2026-0147 (Medical)</option>
+                  <option value="INC-002">INC-2026-0146 (Fire)</option>
+                  <option value="INC-003">INC-2026-0145 (Crime)</option>
+                </select>
+              </div>
+              <div class="card-body">
+                <div id="dispatchTimeline">
+                  <!-- Populated by JavaScript -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ========== section end ========== -->
+  </main>
+  <!-- ======== main-wrapper end =========== -->
+
+  <script src="../admin/assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../admin/assets/js/main.js"></script>
+  <script src="js/mock-data.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      initializePage();
+      populateResponderCards();
+      populateDispatchTimeline();
+      setupMenuToggle();
+    });
+    
+    function setupMenuToggle() {
+      const menuToggle = document.getElementById('menu-toggle');
+      const sidebar = document.querySelector('.sidebar-nav-wrapper');
+      if (menuToggle) {
+        menuToggle.addEventListener('click', function() {
+          sidebar.classList.toggle('active');
+        });
+      }
+    }
+    
+    function initializePage() {
+      // Initialize page
+    }
+    
+    function populateResponderCards() {
+      const container = document.getElementById('responderCards');
+      
+      const responders = [
+        { id: 'RES-001', name: 'Unit A-01', type: 'Ambulance', typeClass: 'ambulance', status: 'Available', personnel: 4, location: 'CEDOC HQ', incident: null },
+        { id: 'RES-002', name: 'Unit F-01', type: 'Fire Truck', typeClass: 'fire', status: 'Dispatched', personnel: 6, location: 'Brgy. Addition Hills', incident: 'INC-2026-0146' },
+        { id: 'RES-003', name: 'Unit P-01', type: 'Patrol Car', typeClass: 'police', status: 'Available', personnel: 2, location: 'CEDOC HQ', incident: null },
+        { id: 'RES-004', name: 'Unit R-01', type: 'Rescue Van', typeClass: 'rescue', status: 'Dispatched', personnel: 5, location: 'Brgy. Little Baguio', incident: 'INC-2026-0144' },
+        { id: 'RES-005', name: 'Unit A-02', type: 'Ambulance', typeClass: 'ambulance', status: 'Returning', personnel: 4, location: 'En Route', incident: null },
+        { id: 'RES-006', name: 'Unit F-02', type: 'Fire Truck', typeClass: 'fire', status: 'Available', personnel: 6, location: 'CEDOC HQ', incident: null }
+      ];
+      
+      const iconMap = {
+        'ambulance': 'lni-ambulance',
+        'fire': 'lni-fire',
+        'police': 'lni-shield',
+        'rescue': 'lni-life-ring'
+      };
+      
+      const badgeMap = {
+        'Available': 'success',
+        'Dispatched': 'warning',
+        'Returning': 'info',
+        'Offline': 'secondary'
+      };
+      
+      container.innerHTML = responders.map(resp => `
+        <div class="col-md-6 col-lg-4 mb-3">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <div class="d-flex align-items-center gap-2">
+                  <div style="width: 45px; height: 45px; border-radius: 10px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white;">
+                    <i class="lni ${iconMap[resp.typeClass]}"></i>
+                  </div>
+                  <div>
+                    <h6 class="mb-0">${resp.name}</h6>
+                    <p class="mb-0 text-muted" style="font-size: 12px;">${resp.type}</p>
+                  </div>
+                </div>
+                <span class="badge bg-${badgeMap[resp.status]}">${resp.status}</span>
+              </div>
+              
+              <div class="small text-muted mb-2">
+                <div class="mb-1"><i class="lni lni-users"></i> ${resp.personnel} Personnel</div>
+                <div class="mb-1"><i class="lni lni-map-marker"></i> ${resp.location}</div>
+                ${resp.incident ? `<div class="text-warning"><i class="lni lni-alarm"></i> ${resp.incident}</div>` : ''}
+              </div>
+              
+              <div class="d-flex gap-2 mt-3">
+                ${resp.status === 'Available' ? `
+                  <button class="btn btn-sm btn-primary w-100" onclick="assignUnit('${resp.id}')">
+                    <i class="lni lni-send"></i> Dispatch
+                  </button>
+                ` : resp.status === 'Dispatched' ? `
+                  <button class="btn btn-sm btn-outline-primary flex-1" onclick="viewAssignment('${resp.id}')">
+                    <i class="lni lni-eye"></i> Track
+                  </button>
+                  <button class="btn btn-sm btn-success flex-1" onclick="markComplete('${resp.id}')">
+                    <i class="lni lni-checkmark"></i> Complete
+                  </button>
+                ` : `
+                  <button class="btn btn-sm btn-outline-secondary w-100" onclick="viewDetails('${resp.id}')">
+                    <i class="lni lni-info"></i> Details
+                  </button>
+                `}
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    function populateDispatchTimeline() {
+      const timeline = document.getElementById('dispatchTimeline');
+      
+      const timelineData = [
+        { time: '14:23:45', event: 'Emergency Call Received', details: 'Fire emergency reported at Addition Hills', status: 'completed' },
+        { time: '14:24:12', event: 'Dispatch Center Notified', details: 'Alert sent to all available fire units', status: 'completed' },
+        { time: '14:24:35', event: 'Unit F-01 Dispatched', details: 'Fire truck unit dispatched with 6 personnel', status: 'completed' },
+        { time: '14:25:10', event: 'Unit En Route', details: 'Estimated arrival: 4 minutes 20 seconds', status: 'active' },
+        { time: '14:29:30', event: 'Unit Arriving', details: 'Approaching incident location', status: 'pending' },
+        { time: 'TBD', event: 'Scene Assessment', details: 'Waiting for unit to arrive', status: 'pending' }
+      ];
+      
+      timeline.innerHTML = timelineData.map((step, idx) => `
+        <div class="d-flex mb-4 pb-3 ${idx !== timelineData.length - 1 ? 'border-bottom' : ''}">
+          <div class="me-3">
+            <div style="width: 30px; height: 30px; border-radius: 50%; background: ${step.status === 'completed' ? '#27ae60' : step.status === 'active' ? '#f39c12' : '#e0e0e0'}; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+              ${step.status === 'completed' ? '<i class="lni lni-checkmark"></i>' : step.status === 'active' ? '<span style="width: 8px; height: 8px; background: white; border-radius: 50%;"></span>' : ''}
+            </div>
+          </div>
+          <div>
+            <div class="d-flex justify-content-between align-items-start">
+              <h6 class="mb-1">${step.event}</h6>
+              <small class="text-muted">${step.time}</small>
+            </div>
+            <p class="mb-0 text-muted" style="font-size: 13px;">${step.details}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    function assignUnit(id) {
+      alert('Opening dispatch assignment for ' + id);
+    }
+    
+    function viewAssignment(id) {
+      alert('Viewing assignment for ' + id);
+    }
+    
+    function markComplete(id) {
+      if (confirm('Mark this dispatch as complete?')) {
+        alert('Dispatch completed for ' + id);
+        populateResponderCards();
+      }
+    }
+    
+    function viewDetails(id) {
+      alert('Viewing details for ' + id);
+    }
+  </script>
+</body>
+</html>

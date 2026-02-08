@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" href="../images/PULSE OG.png" type="image/png" />
+  <title>PULSE ADMIN | Live Emergencies</title>
+  <link rel="stylesheet" href="../admin/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../admin/assets/css/lineicons.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="../admin/assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="../admin/assets/css/main.css" />
+</head>
+<body>
+  <!-- ======== Preloader =========== -->
+  <div id="preloader"><div class="spinner"></div></div>
+
+  <!-- ======== sidebar-nav start =========== -->
+  <aside class="sidebar-nav-wrapper">
+    <div class="navbar-logo">
+      <a href="index.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+        <img src="../images/PULSE OG.png" alt="logo" style="width: 45px; height: 45px; object-fit: contain;" />
+        <span style="font-size: 18px; font-weight: 600; color: #3b5998;">PULSE Admin</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <ul>
+        <li class="nav-item"><a href="index.html"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 13H10C10.55 13 11 12.55 11 12V4C11 3.45 10.55 3 10 3H4C3.45 3 3 3.45 3 4V12C3 12.55 3.45 13 4 13ZM4 21H10C10.55 21 11 20.55 11 20V16C11 15.45 10.55 15 10 15H4C3.45 15 3 15.45 3 16V20C3 20.55 3.45 21 4 21ZM14 21H20C20.55 21 21 20.55 21 20V12C21 11.45 20.55 11 20 11H14C13.45 11 13 11.45 13 12V20C13 20.55 13.45 21 14 21ZM13 4V8C13 8.55 13.45 9 14 9H20C20.55 9 21 8.55 21 8V4C21 3.45 20.55 3 20 3H14C13.45 3 13 3.45 13 4Z" fill="currentColor"/></svg></span><span class="text">Dashboard</span></a></li>
+        <li class="nav-item active"><a href="emergencies.html"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" fill="currentColor"/></svg></span><span class="text">Emergencies</span></a></li>
+        <li class="nav-item"><a href="map.html"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5.01L6.4 9 10 13.09 15.35 8l1.42 1.41L10 16z" fill="currentColor"/></svg></span><span class="text">Map</span></a></li>
+        <li class="nav-item"><a href="dispatch.html"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm11 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM5 11l1.5-4.5h11L19 11H5z" fill="currentColor"/></svg></span><span class="text">Dispatch</span></a></li>
+        <li class="nav-item"><a href="users.html"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V19C4 19.55 4.45 20 5 20H19C19.55 20 20 19.55 20 19V18C20 15.34 14.67 14 12 14Z" fill="currentColor"/></svg></span><span class="text">Users</span></a></li>
+        <li class="nav-item"><a href="reports.html"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z" fill="currentColor"/></svg></span><span class="text">Reports</span></a></li>
+        <li class="nav-item" style="margin-bottom: 15px;"><a href="logs.html"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.99 2C6.47 2 2 6.48 2 12C2 17.52 6.47 22 11.99 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 11.99 2ZM12 20C7.58 20 4 16.42 4 12C4 7.58 7.58 4 12 4C16.42 4 20 7.58 20 12C20 16.42 16.42 20 12 20ZM12.5 7H11V13L16.25 16.15L17 14.92L12.5 12.25V7Z" fill="currentColor"/></svg></span><span class="text">Logs</span></a></li>
+      </ul>
+    </nav>
+  </aside>
+  <div class="overlay"></div>
+
+  <!-- ======== main-wrapper start =========== -->
+  <main class="main-wrapper">
+    <!-- ========== header start ========== -->
+    <header class="header">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-5 col-md-5 col-6">
+            <div class="header-left d-flex align-items-center">
+              <div class="menu-toggle-btn mr-15">
+                <button id="menu-toggle" class="main-btn primary-btn btn-hover">
+                  <i class="lni lni-chevron-left me-2"></i> Menu
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-7 col-md-7 col-6">
+            <div class="header-right">
+              <div class="notification-box ml-15 d-none d-md-flex">
+                <button class="dropdown-toggle" type="button" id="notification" data-bs-toggle="dropdown" aria-expanded="false">
+                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11 20.1667C9.88317 20.1667 8.88718 19.63 8.23901 18.7917H13.761C13.113 19.63 12.1169 20.1667 11 20.1667Z" fill="" />
+                    <path d="M10.1157 2.74999C10.1157 2.24374 10.5117 1.83333 11 1.83333C11.4883 1.83333 11.8842 2.24374 11.8842 2.74999V2.82604C14.3932 3.26245 16.3051 5.52474 16.3051 8.24999V14.287C16.3051 14.5301 16.3982 14.7633 16.564 14.9352L18.2029 16.6342C18.4814 16.9229 18.2842 17.4167 17.8903 17.4167H4.10961C3.71574 17.4167 3.5185 16.9229 3.797 16.6342L5.43589 14.9352C5.6017 14.7633 5.69485 14.5301 5.69485 14.287V8.24999C5.69485 5.52474 7.60672 3.26245 10.1157 2.82604V2.74999Z" fill="" />
+                  </svg>
+                  <span></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notification">
+                  <li><a href="#0"><div class="image"><img src="../admin/assets/images/lead/lead-6.png" alt="" /></div><div class="content"><h6>New emergency</h6><span>2 mins ago</span></div></a></li>
+                </ul>
+              </div>
+              <div class="profile-box ml-15">
+                <button class="dropdown-toggle bg-transparent border-0" type="button" id="profile" data-bs-toggle="dropdown" aria-expanded="false">
+                  <div class="profile-info">
+                    <div class="info">
+                      <div class="image"><img src="../admin/assets/images/profile/profile-image.png" alt="" /></div>
+                      <div><h6 class="fw-500">CEDOC</h6><p>Staff</p></div>
+                    </div>
+                  </div>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profile">
+                  <li><a href="#0"><i class="lni lni-exit"></i> Sign Out</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ========== section start ========== -->
+    <section class="section">
+      <div class="container-fluid">
+        <div class="title-wrapper pt-30">
+          <div class="row align-items-center">
+            <div class="col-md-6"><div class="title"><h2>Live Emergencies</h2></div></div>
+            <div class="col-md-6">
+              <div class="breadcrumb-wrapper">
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Emergencies</li>
+                  </ol>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stat Cards -->
+        <div class="row g-3 mb-4">
+          <div class="col-lg-3 col-md-6">
+            <div class="card-style pb-30 mb-30"><div class="card-header mb-4"><h5>Active Cases</h5></div>
+              <div style="display:flex; align-items:flex-end; gap:10px;"><h2 style="margin:0; font-size:32px; color:#dc3545;">24</h2><span style="color:#28a745; font-size:12px; margin-bottom:4px;">+3 today</span></div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="card-style pb-30 mb-30"><div class="card-header mb-4"><h5>Critical Level</h5></div>
+              <div style="display:flex; align-items:flex-end; gap:10px;"><h2 style="margin:0; font-size:32px; color:#ffc107;">8</h2><span style="color:#ffc107; font-size:12px; margin-bottom:4px;">Moderate</span></div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="card-style pb-30 mb-30"><div class="card-header mb-4"><h5>Avg Response</h5></div>
+              <div style="display:flex; align-items:flex-end; gap:10px;"><h2 style="margin:0; font-size:28px; color:#0dcaf0;">6.2<span style="font-size:16px;">min</span></h2><span style="color:#28a745; font-size:12px; margin-bottom:4px;">-0.8 min</span></div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="card-style pb-30 mb-30"><div class="card-header mb-4"><h5>Resolved Today</h5></div>
+              <div style="display:flex; align-items:flex-end; gap:10px;"><h2 style="margin:0; font-size:32px; color:#28a745;">18</h2><span style="color:#28a745; font-size:12px; margin-bottom:4px;">75% rate</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Emergencies Table -->
+        <div class="card-style mb-30">
+          <div class="card-header"><h5>All Emergencies</h5></div>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Type</th>
+                  <th>Location</th>
+                  <th>Reported</th>
+                  <th>Severity</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="emergenciesTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== footer start =========== -->
+    <footer class="footer">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-6 order-last order-md-first">
+            <div class="copyright text-center text-md-start">
+              <p class="text-sm">PULSE Admin Dashboard</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="terms d-flex justify-content-center justify-content-md-end">
+              <a href="#0" class="text-sm">Privacy & Policy</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script src="../admin/assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../admin/assets/js/main.js"></script>
+  <script src="js/mock-data.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const emergencies = [
+        { id: 'EMG-001', type: 'Fire Emergency', loc: 'Purok 1', reported: '14:25', sev: 'Critical', status: 'Active' },
+        { id: 'EMG-002', type: 'Medical', loc: 'North Ave', reported: '14:18', sev: 'High', status: 'In Progress' },
+        { id: 'EMG-003', type: 'Accident', loc: 'Main St', reported: '14:10', sev: 'Medium', status: 'Responding' }
+      ];
+      const tbody = document.getElementById('emergenciesTable');
+      tbody.innerHTML = emergencies.map(e => `
+        <tr>
+          <td>${e.id}</td><td>${e.type}</td><td>${e.loc}</td><td>${e.reported}</td>
+          <td><span style="background:${e.sev === 'Critical' ? '#ffebee' : '#fff3cd'}; color:${e.sev === 'Critical' ? '#c41c3b' : '#856404'}; padding:4px 10px; border-radius:4px; font-size:12px;">${e.sev}</span></td>
+          <td><span style="background:#d1ecf1; color:#0c5460; padding:4px 10px; border-radius:4px; font-size:12px;">${e.status}</span></td>
+          <td><button style="background:#e3e8f0; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;">View</button></td>
+        </tr>
+      `).join('');
+    });
+  </script>
+</body>
+</html>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" href="../images/PULSE OG.png" type="image/png" />
+  <title>PULSE ADMIN | Live Emergencies</title>
+
+  <!-- ========== All CSS files linkup ========= -->
+  <link rel="stylesheet" href="../admin/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../admin/assets/css/lineicons.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="../admin/assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="../admin/assets/css/main.css" />
+  <style>
+    /* Emergency Page Specific Styles */
+    .page-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+    
+    .stat-item {
+      background: white;
+      border-radius: 10px;
+      padding: 15px 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .stat-icon {
+      width: 45px;
+      height: 45px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+    }
+    
+    .stat-icon.pending { background: #f39c12; }
+    .stat-icon.verified { background: #3498db; }
+    .stat-icon.dispatched { background: #e74c3c; }
+    .stat-icon.resolved { background: #27ae60; }
+    
+    .stat-info h4 {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0;
+    }
+    
+    .stat-info p {
+      font-size: 12px;
+      color: #666;
+      margin: 0;
+    }
+    
+    .emergency-filters {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .filter-group label {
+      font-weight: 500;
+      color: #666;
+      font-size: 14px;
+    }
+    
+    .filter-select {
+      padding: 8px 15px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      background: white;
+      cursor: pointer;
+    }
+    
+    .filter-select:focus {
+      outline: none;
+      border-color: #e74c3c;
+    }
+    
+    .search-box {
+      flex: 1;
+      min-width: 250px;
+      position: relative;
+    }
+    
+    .search-box input {
+      width: 100%;
+      padding: 10px 15px 10px 40px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    
+    .search-box i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #999;
+    }
+    
+    .auto-refresh-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 15px;
+      background: #e8f5e9;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #27ae60;
+    }
+    
+    .auto-refresh-indicator .dot {
+      width: 8px;
+      height: 8px;
+      background: #27ae60;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .list-view-toggle {
+      display: flex;
+      gap: 5px;
+    }
+    
+    .view-toggle-btn {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      background: white;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+    
+    .view-toggle-btn.active {
+      background: #e74c3c;
+      color: white;
+      border-color: #e74c3c;
+    }
+    
+    .emergency-grid {
+      display: none;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 20px;
+    }
+    
+    .emergency-grid.active {
+      display: grid;
+    }
+    
+    .emergency-list {
+      display: none;
+    }
+    
+    .emergency-list.active {
+      display: block;
+    }
+    
+    .emergency-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border-left: 4px solid #ddd;
+    }
+    
+    .emergency-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+    
+    .emergency-card.high-priority {
+      border-left-color: #e74c3c;
+    }
+    
+    .emergency-card.medium-priority {
+      border-left-color: #f39c12;
+    }
+    
+    .emergency-card.low-priority {
+      border-left-color: #3498db;
+    }
+    
+    .emergency-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 15px;
+    }
+    
+    .emergency-type-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    
+    .emergency-type-badge.medical {
+      background: #fde8e8;
+      color: #e74c3c;
+    }
+    
+    .emergency-type-badge.fire {
+      background: #fef3e2;
+      color: #f39c12;
+    }
+    
+    .emergency-type-badge.crime {
+      background: #e8f4fd;
+      color: #3498db;
+    }
+    
+    .emergency-type-badge.disaster {
+      background: #f3e8fd;
+      color: #9b59b6;
+    }
+    
+    .emergency-type-badge.rescue {
+      background: #e8fdf3;
+      color: #1abc9c;
+    }
+    
+    .priority-indicator {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 4px;
+    }
+    
+    .priority-indicator.high {
+      background: #fde8e8;
+      color: #e74c3c;
+    }
+    
+    .priority-indicator.medium {
+      background: #fef3e2;
+      color: #f39c12;
+    }
+    
+    .priority-indicator.low {
+      background: #e8f4fd;
+      color: #3498db;
+    }
+    
+    .emergency-id {
+      font-size: 12px;
+      color: #999;
+      font-family: monospace;
+      margin-top: 5px;
+    }
+    
+    .emergency-details {
+      margin-bottom: 15px;
+    }
+    
+    .detail-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    
+    .detail-row i {
+      width: 16px;
+      color: #666;
+      margin-top: 2px;
+    }
+    
+    .detail-row span {
+      color: #333;
+    }
+    
+    .emergency-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 15px;
+      border-top: 1px solid #eee;
+    }
+    
+    .status-connectivity {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .status-badge,
+    .connectivity-badge {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    
+    .status-badge.verified {
+      background: #e8f4fd;
+      color: #3498db;
+    }
+    
+    .status-badge.pending {
+      background: #fef3e2;
+      color: #f39c12;
+    }
+    
+    .status-badge.dispatched {
+      background: #fde8e8;
+      color: #e74c3c;
+    }
+    
+    .status-badge.resolved {
+      background: #e8f5e9;
+      color: #27ae60;
+    }
+    
+    .connectivity-badge.online {
+      background: #e8f5e9;
+      color: #27ae60;
+    }
+    
+    .connectivity-badge.offline {
+      background: #fef3e2;
+      color: #f39c12;
+    }
+    
+    .connectivity-badge.sms {
+      background: #e8f4fd;
+      color: #3498db;
+    }
+    
+    .card-actions {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .action-btn {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .action-btn.primary {
+      background: #e74c3c;
+      color: white;
+    }
+    
+    .action-btn.secondary {
+      background: #f0f0f0;
+      color: #333;
+    }
+    
+    .action-btn:hover {
+      transform: scale(1.05);
+    }
+    
+    /* Table View Styles */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .data-table th,
+    .data-table td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .data-table th {
+      background: #f9f9f9;
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      color: #666;
+    }
+    
+    .data-table tbody tr:hover {
+      background: #f9f9f9;
+    }
+    
+    .incident-id {
+      font-family: monospace;
+      font-size: 12px;
+      color: #666;
+    }
+    
+    .emergency-type {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+    }
+    
+    .emergency-type.medical { color: #e74c3c; }
+    .emergency-type.fire { color: #f39c12; }
+    .emergency-type.crime { color: #3498db; }
+    .emergency-type.disaster { color: #9b59b6; }
+    .emergency-type.rescue { color: #1abc9c; }
+    
+    .table-actions {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .table-actions .action-btn {
+      padding: 4px 8px;
+      font-size: 11px;
+    }
+    
+    @media (max-width: 768px) {
+      .emergency-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .emergency-filters {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .search-box {
+        min-width: 100%;
+      }
+      
+      .data-table {
+        font-size: 12px;
+      }
+      
+      .data-table th,
+      .data-table td {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <i class="fas fa-heartbeat"></i>
+        <span>PULSE Admin</span>
+      </div>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <ul>
+        <li>
+          <a href="index.html">
+            <i class="fas fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="active">
+          <a href="emergencies.html">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>Live Emergencies</span>
+          </a>
+        </li>
+        <li>
+          <a href="map.html">
+            <i class="fas fa-map-marked-alt"></i>
+            <span>Map View</span>
+          </a>
+        </li>
+        <li>
+          <a href="users.html">
+            <i class="fas fa-users"></i>
+            <span>User Management</span>
+          </a>
+        </li>
+        <li>
+          <a href="dispatch.html">
+            <i class="fas fa-truck"></i>
+            <span>Dispatch</span>
+          </a>
+        </li>
+        <li>
+          <a href="reports.html">
+            <i class="fas fa-chart-bar"></i>
+            <span>Reports</span>
+          </a>
+        </li>
+        <li>
+          <a href="logs.html">
+            <i class="fas fa-history"></i>
+            <span>System Logs</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    
+    <div class="sidebar-footer">
+      <a href="#" class="logout-btn">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+      </a>
+    </div>
+  </aside>
+  
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <button class="sidebar-toggle" id="sidebarToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+        <h1>Live Emergencies</h1>
+      </div>
+      
+      <div class="header-right">
+        <div class="live-indicator">
+          <span class="live-dot"></span>
+          <span>LIVE</span>
+        </div>
+        <div class="header-time" id="currentTime">--:--:--</div>
+        <button class="btn-icon" id="refreshData">
+          <i class="fas fa-sync-alt"></i>
+        </button>
+      </div>
+    </header>
+    
+    <!-- Content -->
+    <div class="content-wrapper">
+      <!-- Page Stats -->
+      <div class="page-stats">
+        <div class="stat-item">
+          <div class="stat-icon pending">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="stat-info">
+            <h4>12</h4>
+            <p>Pending</p>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon verified">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="stat-info">
+            <h4>8</h4>
+            <p>Verified</p>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon dispatched">
+            <i class="fas fa-truck"></i>
+          </div>
+          <div class="stat-info">
+            <h4>15</h4>
+            <p>Dispatched</p>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon resolved">
+            <i class="fas fa-check-double"></i>
+          </div>
+          <div class="stat-info">
+            <h4>89</h4>
+            <p>Resolved Today</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Filters -->
+      <div class="emergency-filters">
+        <div class="filter-group">
+          <label>Status:</label>
+          <select class="filter-select" id="statusFilter">
+            <option value="all">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="verified">Verified</option>
+            <option value="dispatched">Dispatched</option>
+            <option value="resolved">Resolved</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label>Type:</label>
+          <select class="filter-select" id="typeFilter">
+            <option value="all">All Types</option>
+            <option value="medical">Medical</option>
+            <option value="fire">Fire</option>
+            <option value="crime">Crime</option>
+            <option value="disaster">Disaster</option>
+            <option value="rescue">Rescue</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label>Connectivity:</label>
+          <select class="filter-select" id="connectivityFilter">
+            <option value="all">All Modes</option>
+            <option value="online">Online</option>
+            <option value="offline">Offline Sync</option>
+            <option value="sms">SMS</option>
+          </select>
+        </div>
+        
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Search by ID, location, or description..." id="searchInput">
+        </div>
+        
+        <div class="auto-refresh-indicator">
+          <div class="dot"></div>
+          <span>Auto-refresh: 10s</span>
+        </div>
+        
+        <div class="list-view-toggle">
+          <button class="view-toggle-btn active" data-view="grid">
+            <i class="fas fa-th-large"></i>
+          </button>
+          <button class="view-toggle-btn" data-view="list">
+            <i class="fas fa-list"></i>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Emergency Cards Grid -->
+      <div class="emergency-grid active" id="emergencyGrid">
+        <!-- Cards will be populated by JavaScript -->
+      </div>
+      
+      <!-- Emergency List View -->
+      <div class="emergency-list" id="emergencyList">
+        <div class="card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Location</th>
+                <th>Reported</th>
+                <th>Status</th>
+                <th>Mode</th>
+                <th>Priority</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="emergencyTableBody">
+              <!-- Rows will be populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <script src="js/mock-data.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      initializePage();
+      populateEmergencies();
+      initializeFilters();
+      initializeViewToggle();
+      initializeAutoRefresh();
+    });
+    
+    function initializePage() {
+      // Update time
+      updateCurrentTime();
+      setInterval(updateCurrentTime, 1000);
+    }
+    
+    function updateCurrentTime() {
+      const timeElement = document.getElementById('currentTime');
+      if (timeElement) {
+        timeElement.textContent = new Date().toLocaleTimeString('en-US', {
+          hour: '2-digit', minute: '2-digit', second: '2-digit'
+        });
+      }
+    }
+    
+    function populateEmergencies() {
+      const grid = document.getElementById('emergencyGrid');
+      const tableBody = document.getElementById('emergencyTableBody');
+      
+      // Extended incident data for this page
+      const incidents = [
+        ...MOCK_DATA.recentIncidents,
+        {
+          id: 'INC-2026-0141',
+          type: 'Medical',
+          location: 'Brgy. Tibagan, San Juan City',
+          reported: '45 mins ago',
+          status: 'Verified',
+          mode: 'Online',
+          priority: 'Medium'
+        },
+        {
+          id: 'INC-2026-0140',
+          type: 'Crime',
+          location: 'Brgy. Maytunas, San Juan City',
+          reported: '1 hour ago',
+          status: 'Pending',
+          mode: 'SMS',
+          priority: 'High'
+        },
+        {
+          id: 'INC-2026-0139',
+          type: 'Fire',
+          location: 'Brgy. Onse, San Juan City',
+          reported: '1.5 hours ago',
+          status: 'Resolved',
+          mode: 'Online',
+          priority: 'High'
+        }
+      ];
+      
+      // Populate Grid View
+      grid.innerHTML = incidents.map(incident => `
+        <div class="emergency-card ${incident.priority.toLowerCase()}-priority">
+          <div class="emergency-header">
+            <div>
+              <span class="emergency-type-badge ${Utils.getEmergencyClass(incident.type)}">
+                <i class="fas ${Utils.getEmergencyIcon(incident.type)}"></i>
+                ${incident.type}
+              </span>
+              <div class="emergency-id">${incident.id}</div>
+            </div>
+            <span class="priority-indicator ${incident.priority.toLowerCase()}">${incident.priority}</span>
+          </div>
+          
+          <div class="emergency-details">
+            <div class="detail-row">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>${incident.location}</span>
+            </div>
+            <div class="detail-row">
+              <i class="fas fa-clock"></i>
+              <span>Reported ${incident.reported}</span>
+            </div>
+          </div>
+          
+          <div class="emergency-footer">
+            <div class="status-connectivity">
+              <span class="status-badge ${Utils.getStatusClass(incident.status)}">${incident.status}</span>
+              <span class="connectivity-badge ${Utils.getConnectivityClass(incident.mode)}">${incident.mode}</span>
+            </div>
+            <div class="card-actions">
+              <button class="action-btn secondary" onclick="viewDetails('${incident.id}')">
+                <i class="fas fa-eye"></i>
+              </button>
+              <button class="action-btn primary" onclick="dispatchUnit('${incident.id}')">
+                <i class="fas fa-truck"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      
+      // Populate Table View
+      tableBody.innerHTML = incidents.map(incident => `
+        <tr>
+          <td><span class="incident-id">${incident.id}</span></td>
+          <td>
+            <span class="emergency-type ${Utils.getEmergencyClass(incident.type)}">
+              <i class="fas ${Utils.getEmergencyIcon(incident.type)}"></i> ${incident.type}
+            </span>
+          </td>
+          <td>${incident.location}</td>
+          <td>${incident.reported}</td>
+          <td><span class="status-badge ${Utils.getStatusClass(incident.status)}">${incident.status}</span></td>
+          <td><span class="connectivity-badge ${Utils.getConnectivityClass(incident.mode)}">${incident.mode}</span></td>
+          <td><span class="priority-indicator ${incident.priority.toLowerCase()}">${incident.priority}</span></td>
+          <td>
+            <div class="table-actions">
+              <button class="action-btn view" onclick="viewDetails('${incident.id}')"><i class="fas fa-eye"></i></button>
+              <button class="action-btn dispatch" onclick="dispatchUnit('${incident.id}')"><i class="fas fa-truck"></i></button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+    
+    function initializeFilters() {
+      const filters = ['statusFilter', 'typeFilter', 'connectivityFilter'];
+      filters.forEach(id => {
+        document.getElementById(id)?.addEventListener('change', applyFilters);
+      });
+      
+      document.getElementById('searchInput')?.addEventListener('input', applyFilters);
+    }
+    
+    function applyFilters() {
+      // Filter logic would go here
+      console.log('Filters applied');
+    }
+    
+    function initializeViewToggle() {
+      const toggleBtns = document.querySelectorAll('.view-toggle-btn');
+      const grid = document.getElementById('emergencyGrid');
+      const list = document.getElementById('emergencyList');
+      
+      toggleBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          toggleBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          
+          if (btn.dataset.view === 'grid') {
+            grid.classList.add('active');
+            list.classList.remove('active');
+          } else {
+            grid.classList.remove('active');
+            list.classList.add('active');
+          }
+        });
+      });
+    }
+    
+    function initializeAutoRefresh() {
+      setInterval(() => {
+        console.log('Auto-refreshing...');
+        // In real app: fetch new data
+      }, 10000);
+    }
+    
+    function viewDetails(id) {
+      alert(`Viewing details for ${id}`);
+    }
+    
+    function dispatchUnit(id) {
+      alert(`Dispatching unit for ${id}`);
+    }
+  </script>
+</body>
+</html>

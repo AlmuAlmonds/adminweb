@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PULSE Responder Dashboard</title>
+
+<!-- IMPORTANT: RELATIVE PATH -->
+<link rel="stylesheet" href="../../assets/global.css">
+</head>
+
+<body class="dispatch-page">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <h3><img src="../../images/PULSE OG.png" alt="PULSE" style="height: 20px; margin-right: 8px; vertical-align: middle;"> P.U.L.S.E DISPATCH</h3>
+    <a href="dispatch.html" class="active">Dashboard</a>
+    <a href="tasks.html">Tasks</a>
+    <a href="responews.html">News & Events</a>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+    <div class="topbar">
+        <h2>Overview</h2>
+        <div class="topbar-right">
+            <div class="icons">
+                <button onclick="location.href='resposettings.html'">⚙️</button>
+                <button>🔔</button>
+            </div>
+            <div class="search">
+                <input type="text" placeholder="Search for something">
+            </div>
+        </div>
+    </div>
+
+    <div class="grid">
+
+        <!-- LEFT COLUMN -->
+        <div class="card">
+            <h4>OPEN REQUESTS</h4>
+            <div class="numbers">
+                <span class="blue">10</span>
+                <span class="red">1</span>
+            </div>
+        </div>
+
+        <!-- RIGHT TOP -->
+        <div class="card">
+            <div class="user-backup">
+                <span class="blue">USER &</span>
+                <span class="red"> BACKUP</span><br>
+                <span class="red">REQUESTS</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h4>PENDING REQUESTS</h4>
+            <div class="numbers">
+                <span class="blue">8</span>
+                <span class="red">2</span>
+            </div>
+        </div>
+
+        <!-- RIGHT BIG -->
+        <div class="card span-rows-3">
+            <h4>ALL REQUESTS BY STATUS</h4>
+
+            <div class="progress-item">
+                <label>RESOLVED REQUESTS</label>
+                <div class="progress-bar"><span class="progress-fill progress-80"></span></div>
+            </div>
+
+            <div class="progress-item">
+                <label>OPEN REQUESTS</label>
+                <div class="progress-bar"><span class="progress-fill progress-60"></span></div>
+            </div>
+
+            <div class="progress-item">
+                <label>PENDING REQUESTS</label>
+                <div class="progress-bar"><span class="progress-fill progress-45"></span></div>
+            </div>
+
+            <div class="progress-item">
+                <label>IN PROGRESS REQUESTS</label>
+                <div class="progress-bar"><span class="progress-fill progress-30"></span></div>
+            </div>
+
+            <div class="progress-item">
+                <label>CANCELLED REQUESTS</label>
+                <div class="progress-bar"><span class="progress-fill progress-15"></span></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h4>IN PROGRESS REQUESTS</h4>
+            <div class="numbers">
+                <span class="blue">2</span>
+                <span class="red">4</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h4>RESOLVED REQUESTS</h4>
+            <div class="numbers">
+                <span class="blue">221</span>
+                <span class="red">30</span>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

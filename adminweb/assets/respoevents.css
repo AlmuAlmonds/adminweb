@@ -1,0 +1,160 @@
+/* ----- From pages/dispatch/respoevents.html ----- */
+.respoevents-page * {
+    box-sizing: border-box;
+    font-family: 'Poppins', Arial, sans-serif;
+}
+
+.respoevents-page {
+    margin: 0;
+    background: #F5F0E8;
+}
+
+/* ===== SIDEBAR ===== */
+.respoevents-page .sidebar {
+    width: 230px;
+    height: 100vh;
+    background: #6B8C6F;
+    position: fixed;
+    padding: 20px;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.08);
+}
+
+.respoevents-page .sidebar h3 {
+    margin-bottom: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.respoevents-page .sidebar a {
+    text-decoration: none;
+    color: #ecf0f1;
+    border-radius: 12px;
+}
+
+.tasks-page .sidebar a.active {
+    background: #5A7B5E;
+    color: #fff;
+}
+
+/* ===== MAIN ===== */
+.tasks-page .main {
+    margin-left: 250px;
+    padding: 20px;
+}
+
+/* ===== TOPBAR (UNCHANGED) ===== */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.icons {
+    display: flex;
+    gap: 8px;
+}
+
+.icons span {
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.search input {
+    padding: 8px 15px;
+    width: 250px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+}
+.icon-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 50%;
+}
+
+.icon-btn:hover {
+    background: #e5e7eb;
+}
+
+
+/* ===== STATUS BUTTONS ===== */
+.status-bar {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.status {
+    padding: 8px 18px;
+    border-radius: 20px;
+    color: white;
+    font-size: 12px;
+}
+
+.ongoing { background: #7f1d1d; }
+.pending { background: #14532d; }
+.cancelled { background: #7c2d12; }
+.records { background: #1e3a8a; }
+
+/* ===== REQUEST TABS ===== */
+.request-tabs {
+    margin-bottom: 10px;
+}
+
+.request-tabs span {
+    margin-right: 20px;
+    font-size: 13px;
+    cursor: pointer;
+    padding-bottom: 5px;
+}
+
+.request-tabs .active {
+    color: #3498db;
+    border-bottom: 2px solid #3498db;
+}
+
+/* ===== TABLE CARD ===== */
+.card {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 14px;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 14px;
+}
+
+th {
+    background: #f3f4f6;
+    text-align: left;
+}
+
+.open-btn {
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: none;
+    background: #3498db;
+    color: white;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
